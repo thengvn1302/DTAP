@@ -38,7 +38,7 @@ OUT_PDF = ROOT / "DTAP_changes_marked.pdf"
 
 # Word-level comparison is used when two aligned blocks are at least this similar;
 # below it the old block is shown deleted and the new block added in full.
-WORD_LEVEL_MIN = 0.55
+WORD_LEVEL_MIN = 0.70
 # Minimum similarity for two blocks to be aligned at all.
 ALIGN_MIN = 0.35
 # Minimum similarity for a deleted and an added block to count as a move.

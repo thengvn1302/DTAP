@@ -106,7 +106,7 @@ section were rewritten. The names in parentheses of lemmas, propositions, remark
 corollaries were removed to shorten the text.
 \end{response}
 \changes Abstract;\internal{C1} \secref{sec:intro};\internal{C3--C14}
-\secref{sec:prelim};\internal{C20--C28} \secref{ssec:model-stmt}--\secref{ssec:complexity};\internal{C30--C43}
+\secref{sec:prelim};\internal{C20--C28} Sections~\ref{ms-ssec:model-stmt}--\ref{ms-ssec:complexity};\internal{C30--C43}
 \secref{sec:experiments};\internal{C71--C110} \secref{sec:conclusion}.\internal{C111}
 
 \begin{comment}{Comment M3.}
@@ -128,10 +128,11 @@ methods for the (multiple-sets) SFP:
 \item Y.~Yang, Q.~Yang, S.~Zhang, Modified alternating direction methods for the modified
   multiple-sets split feasibility problems, \emph{J.\ Optim.\ Theory Appl.} 163 (2014) 130--147.
 \end{itemize}
-They are discussed in the first paragraph of the Introduction (\pg{sec:intro}). The
-reference list now uses one format: initials for given names, journal names in italics,
-volume, issue, pages, year and, where available, the DOI. References that were only needed for the removed
-material were deleted.
+They are cited in the first paragraph of the Introduction, where self-adaptive steps and
+decomposition strategies for the SFP are recalled. The reference list now uses one format:
+initials for given names, journal names in italics, volume, issue, pages, year and, where
+available, the DOI. References that were only needed for the removed material were deleted.
+\confirm{phản biện chê \emph{thiếu} tài liệu, nhưng bản sửa bỏ 18 tài liệu, trong đó có các công trình SFP kinh điển (Xu 2010, Fukushima 1986, Censor et al.\ 2006, Chen et al.\ 2019). Cân nhắc giữ lại vài tài liệu này, hoặc chuẩn bị giải thích nếu phản biện hỏi}
 \end{response}
 \changes First paragraph of \secref{sec:intro};\internal{C3} reference list.\internal{C121--C123}
 
@@ -178,7 +179,7 @@ page 2, line 35, please polish the sentence ``The NSFP is not itself new''
 The sentence has been replaced by ``Nonlinear SFP and generalized convex feasibility have
 several relevant antecedents.''
 \end{response}
-\changes \secref{sec:intro}, third paragraph (\pg{sec:intro}).\internal{C5, C9}
+\changes \secref{sec:intro}, third paragraph.\internal{C5, C9}
 
 \begin{comment}{Comment m4.}
 page 2, line 39, ``active index set'' or ``active set''?
@@ -314,8 +315,8 @@ page 13, the subtitle of 4.3, what is the meaning of ``standing assumption''?
 \end{comment}
 \begin{response}
 We meant assumptions that are in force throughout the analysis. To avoid ambiguity, the
-subsection and the assumption are now simply titled ``Assumptions''
-(\secref{ssec:assumptions}).
+subsection is now titled ``Assumptions'' (\secref{ssec:assumptions}), and
+Assumption~\ref{ms-ass:standing} no longer carries the name ``Standing assumptions''.
 \end{response}
 \changes \secref{ssec:assumptions}.\internal{C36, C37}
 
@@ -346,8 +347,10 @@ page 20, line 35, $K\cap\bigcap_{i\in I}\cvx$. I don't think this expression is 
 \end{comment}
 \begin{response}
 We now write $\Omega=\{x\in K:F_i(x)\le b_i\text{ for all }i\in I^{\cvx}\}$ in
-Corollary~\ref{ms-cor:cvx}, and the analogous inclusion in Stage~1 of the proof of
-Theorem~\ref{ms-thm:strong} is written in the same way.
+Corollary~\ref{ms-cor:cvx}. In Stage~1 of the proof of Theorem~\ref{ms-thm:strong}, the
+intersection is now written as the single set
+$\bigcap_{i\in I^{\cvx}}\{x\in K:F_i(x)\le b_i\}$, and the case $I^{\mathrm{ps}}=\emptyset$
+concludes directly with $C\subseteq\Omega$.
 \end{response}
 \changes Corollary~\ref{ms-cor:cvx}; proof of Theorem~\ref{ms-thm:strong}.\internal{C56, C59}
 
@@ -374,7 +377,8 @@ the referee. We list them for completeness.
   the Conclusion.\internal{C1, C7, C64, C68, C78, C111}
 \item \textbf{Domain of the component functions.} The functions are now defined on an open
   neighbourhood $U$ of $K$, and (A2) requires continuous differentiability on $U$. This
-  covers fractional functions whose denominators are positive only near $K$. A short
+  covers fractional functions whose denominators are positive on $K$ but not necessarily on
+  the whole space. A short
   paragraph after Assumption~\ref{ms-ass:standing} explains this and why $\Omega$ is
   convex.\internal{C32, C35, C37, C49, C50, C54}
 \item \textbf{Scope of the method and of the analysis.} New Remarks~\ref{ms-rem:weight-scope}
@@ -394,7 +398,7 @@ the referee. We list them for completeness.
   \confirm{mô tả cũ ``fit on each fold's training portion'' là sai sót mô tả hay code đã đổi? Response cần nói đúng}
 \item \textbf{Recomputed values.} The stability values in Table~\ref{ms-tab:nfeat}, the SVM
   AUC values in Tables~\ref{ms-tab:acc} and~\ref{ms-tab:perf-summary}, and the $p$-values
-  in Table~\ref{ms-tab:wilcoxon} were recomputed with the protocol above; Table~\ref{ms-tab:wilcoxon}
+  in Table~\ref{ms-tab:wilcoxon} were recomputed; Table~\ref{ms-tab:wilcoxon}
   now reports raw and Holm-adjusted $p$-values. Accuracies and all $5$-NN results are
   unchanged. Columns for SG-const and SG-dyn were added.\internal{C99, C100, C102, C104}
   \confirm{nêu nguyên nhân chính xác của việc AUC/ổn định thay đổi (seed hiệu chỉnh SVM? hiệu chỉnh $N_f/(N_f-1)$ của chỉ số Nogueira?)}
@@ -411,9 +415,9 @@ the referee. We list them for completeness.
   reproducibility paragraph.\internal{C57, C71, C105}
 \item \textbf{Model details.} Implementation details of the feature-selection model are now
   stated: the regularization constants $\delta_Q$ and $\varepsilon_\rho$, the variance
-  floor in the fuzzy relation, the tie-breaking rule in the decision matrix, the
-  correction of the projection-neural-network equation (notation $\Pi$ and output
-  projection), and the fact that the cumulative selection rule neither enforces a feature
+  floor in the fuzzy relation, the tie-breaking rule in the decision matrix, the notation $\Pi$ in the
+  projection-neural-network equation (to avoid a clash with the decision matrix $P$), the
+  projection of the network output onto the simplex, and the fact that the cumulative selection rule neither enforces a feature
   budget nor preserves feasibility.\internal{C74, C76, C79, C87}
 \item \textbf{Smaller corrections.} The cost of the simplex projection is $O(p\log p)$ and
   the storage of one iteration is $O(nrp+p^2)$; a typo $\{x_k\}$ was corrected to

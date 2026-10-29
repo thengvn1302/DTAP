@@ -59,7 +59,7 @@ DIFF_PREAMBLE = r"""
 \newcommand{\DIFoldfootnote}[1]{\ [Chú thích cũ: #1]}
 \newcommand{\DIFmovedfrom}[2]{\par\smallskip\noindent{\color{DIFdelcolor}\small\itshape
   [\,Đoạn này của bản cũ#2 đã được chuyển sang vị trí mới --- xem C#1, tr.~\pageref{chg:#1}\,]}%
-  \DIFtagagain{#1}{chuyển đi}\par\smallskip}
+  \par\smallskip}
 \makeatother
 \providecommand{\doi}[1]{doi: #1}
 """
@@ -104,7 +104,8 @@ def convert_longtable(text):
     caption = cap.group(1) if cap else ""
     head = content[cap.end():content.index("\\endfirsthead")] if cap else ""
     rows = content[content.index("\\endlastfoot") + len("\\endlastfoot"):]
-    new = "%s\n\\begin{tabular}%s\n%s\n%s\n\\bottomrule\n\\end{tabular}\n" % (
+    # a deleted longtable becomes a float, so that LaTeX can move it to a page where it fits
+    new = "\\begin{table}[htbp]\\footnotesize\n%s\n\\begin{tabular}%s\n%s\n%s\n\\bottomrule\n\\end{tabular}\n\\end{table}\n" % (
         caption, spec, head.strip(), rows.strip())
     return text[:m.start()] + new + text[m.end():]
 
@@ -238,11 +239,25 @@ class Renderer:
         return "\\cbstart\n%s\n\\cbend" % body
 
     def inject_tag(self, rendered, tag, float_block):
-        """Place the margin tag inside floats, after headings, or at the start."""
-        if float_block:
-            m = re.search(r"\\begin\{(table|figure)\}(\[[^\]]*\])?", rendered)
-            if m:
-                return rendered[:m.end()] + tag + rendered[m.end():]
+        """Place the margin tag inside floats, after headings, or at the start.
+
+        A tag placed before a float or a heading would end up on the previous line or
+        page, so it goes inside the float or right after the heading instead.
+        """
+        m = re.search(r"\\begin\{(table|figure|algorithm)\}(\[[^\]]*\])?", rendered)
+        if m and (float_block or m.group(1) == "algorithm"):
+            return rendered[:m.end()] + tag + rendered[m.end():]
+        h = re.match(r"\s*(?:\\DIF(?:add|del)blockbegin\s*)?\\(section|subsection|subsubsection|DIFoldheading)\*?\{",
+                     rendered)
+        if h:
+            end = matching_brace(rendered, h.end() - 1)
+            if h.group(1) == "DIFoldheading":      # three arguments
+                for _ in range(2):
+                    end = matching_brace(rendered, end + 1)
+            lab = re.match(r"\s*\\label\{[^}]*\}", rendered[end + 1:])
+            if lab:
+                end += lab.end()
+            return rendered[:end + 1] + tag + "%\n" + rendered[end + 1:]
         return tag + "%\n" + rendered
 
     # ---- one segment
