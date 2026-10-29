@@ -1,0 +1,18 @@
+{
+ "dataset": "Pendigits",
+ "n": 10992,
+ "p": 16,
+ "percentiles": {
+  "f1_percentile": 34,
+  "f2_percentile": 18,
+  "f3_percentile": 45
+ },
+ "sampling": {
+  "n_samples": 3000,
+  "seed": 42,
+  "plus_vertices": true
+ },
+ "b1": 10991.975593003435,
+ "b2": 9844.158487835162,
+ "b3": 0.014282302641220922
+}

@@ -1,0 +1,18 @@
+{
+ "dataset": "Spambase",
+ "n": 4601,
+ "p": 57,
+ "percentiles": {
+  "f1_percentile": 5,
+  "f2_percentile": 15,
+  "f3_percentile": 55
+ },
+ "sampling": {
+  "n_samples": 3000,
+  "seed": 42,
+  "plus_vertices": true
+ },
+ "b1": 4529.434010734788,
+ "b2": 1459.710649155481,
+ "b3": 0.07465678192365441
+}

@@ -1,0 +1,13 @@
+Table 8 (47): DTAP, one-at-a-time changes; start_rng=default_rng
+gamma_k = a / (k + 0.5)^s; baseline rho_cvx = 1.98, delta = 1e-3, a = 1, s = 0.55.
+Each cell: successes/12 (median evaluated points, capped runs counted as 1000).
+
+setting                kappa = 0.3       kappa = 1   total
+baseline                  0 (1000)         12 (70)   12/24
+S1 rho_cvx = 1            4 (1000)      12 (223.5)   16/24
+S2 delta = 1e-1           0 (1000)         12 (70)   12/24
+S3 a = 10                  12 (77)          12 (6)   24/24
+S4 a = 100                  12 (6)         12 (48)   24/24
+S5 s = 0.75               0 (1000)        12 (374)   12/24
+S6 s = 1                  0 (1000)        0 (1000)    0/24
+Wall time 3.8 s

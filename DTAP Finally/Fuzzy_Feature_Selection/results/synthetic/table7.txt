@@ -1,0 +1,22 @@
+Table 7 (47): start_rng=default_rng, SG-const nu=0.001, L_hat seed=42
+Each cell: successes/12 (median evaluated points, capped runs counted as 1000).
+
+kappa             DTAP         Balanced         SG-const   Tuned SG-const   Sampled SG-dyn     Tuned SG-dyn
+0.3           0 (1000)         0 (1000)         0 (1000)          12 (15)        8 (725.5)       12 (142.5)
+1              12 (70)       12 (395.5)         0 (1000)          12 (15)       12 (301.5)          12 (44)
+3               12 (4)           12 (4)         0 (1000)          12 (16)         12 (167)          12 (11)
+
+DTAP             successes 24/36
+Balanced         successes 24/36
+SG-const         successes 0/36
+Tuned SG-const   successes 36/36
+Sampled SG-dyn   successes 32/36
+Tuned SG-dyn     successes 36/36
+DTAP runs with an F3 violation: 36/36; pooled F3 activity 12835/12877; failures at kappa = [0.3]
+Balanced runs with an F3 violation: 36/36; pooled F3 activity 15446/15494; failures at kappa = [0.3]
+Tuning SG-dyn: 188295 evaluated points, 10.98 s solver time (L_hat sampling excluded)
+Tuning SG-const: 147331 evaluated points, 8.27 s solver time
+Chosen c per (d, kappa): (2, 0.3): 1, (10, 0.3): 0.3162, (50, 0.3): 0.3162, (2, 1): 0.3162, (10, 1): 0.3162, (50, 1): 0.3162, (2, 3): 0.3162, (10, 3): 0.3162, (50, 3): 0.3162
+Chosen nu per (d, kappa): (2, 0.3): 0.3162, (10, 0.3): 0.3162, (50, 0.3): 0.3162, (2, 1): 0.3162, (10, 1): 0.3162, (50, 1): 0.3162, (2, 3): 0.3162, (10, 3): 0.3162, (50, 3): 0.3162
+SG-const (nu=0.001): max ||x_best - x0|| = 0.9990 (bound 0.9990); min distance from a start to {||x + e1|| <= 1} = 1.1145
+Wall time 26.0 s

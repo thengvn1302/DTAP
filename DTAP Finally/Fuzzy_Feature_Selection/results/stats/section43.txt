@@ -1,0 +1,10 @@
+Section 4.3 numbers
+dtap_mean_retained_pct: 84.22031641604009
+dtap_mean_stability: 0.7863580859990023
+nfscore_mean_stability: 0.8221121888929872
+full_minus_dtap_svm: 0.4353638388879091
+full_minus_dtap_knn: 0.07496701896080538
+dtap_minus_nfscore_svm: 3.1156563073876953
+dtap_minus_afrsfcv_svm: 4.826745141282075
+sg_mask_equal_datasets: ['Glass', 'Diabetes', 'Segmentation', 'Abalone', 'Satimage', 'Yeast', 'Pendigits']
+svm_base_adjusted_p: [0.09375, 0.0625, 0.0625, 0.09375]

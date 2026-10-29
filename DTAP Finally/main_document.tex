@@ -1,0 +1,1403 @@
+% Optimization Methods and Software submission
+% Taylor & Francis Interact layout (reference style S)
+% Ported from the Elsevier cas-sc manuscript (optimization_ready.tex).
+\documentclass[]{interact}
+
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage[caption=false]{subfig}% Support for small, `sub' figures and tables
+
+\usepackage[numbers,sort&compress]{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}% Bibliography support using natbib.sty
+
+% --- Packages carried over from the source manuscript ---
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xcolor,url}\graphicspath{{figures/}}
+\restylefloat{figure}
+
+% --- Theorem-like environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{assumption}{Assumption}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{notation}{Notation}
+
+% --- Author macros carried over from the source manuscript ---
+\newcommand{\algstep}[1]{\smallskip\noindent\textbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\vecop}{vec}
+\newcommand{\cvx}{\mathrm{cvx}}
+\newcommand{\ps}{\mathrm{ps}}
+\newcommand{\dtap}{\textsc{DTAP}}
+
+\begin{document}
+
+\title{A Dual-Track Adaptive Projection Algorithm for a Nonlinear Split Feasibility Problem with Mixed Convex--Pseudoconvex Constraints}
+
+\author{
+\name{Nguyen Van The\textsuperscript{a}\thanks{Email: the.nv227153@sis.hust.edu.vn}, Tran Ngoc Thang\textsuperscript{a}\thanks{Email: thang.tranngoc@hust.edu.vn} and Nguyen Hong Son\textsuperscript{a}\thanks{CONTACT Nguyen Hong Son. Email: Son.NH240066D@sis.hust.edu.vn}}
+\affil{\textsuperscript{a}Faculty of Mathematics and Informatics, Hanoi University of Science and Technology, No.~1 Dai Co Viet Street, Bach Mai Ward, Hanoi 100000, Vietnam}
+}
+
+\maketitle
+
+\begin{abstract}
+We study a nonlinear split feasibility problem with a normal-box output set and differentiable convex and pseudoconvex component functions. A max-type violation measure identifies nearly active constraints in two blocks. The Dual-Track Adaptive Projection (\dtap) algorithm combines a residual-scaled step for the convex block with a safeguarded diminishing step for the pseudoconvex block, followed by projection onto the base convex set. Its step sizes require no prescribed operator norm, Lipschitz constant, or H\"older modulus. Under consistency and continuous differentiability, we prove convergence of the whole sequence to a feasible point in finite-dimensional Euclidean space. The proof uses local bounds on the bounded iterate region. The proportional mixing weight is a residual-responsive choice, without a claim of optimality. A feature-selection formulation combines criteria from fractional and fuzzy-rough models and belongs to the convex subclass. Experiments report constraint activity, classification comparisons, and subgradient comparisons with empirically tuned moduli. Controlled examples with a nonconvex pseudoconvex constraint test the pseudoconvex track. On these examples, DTAP is sensitive to the scale of its diminishing step. The results also show initialization sensitivity and do not establish uniform computational superiority.
+\end{abstract}
+
+\begin{keywords}
+Split feasibility problem; Pseudoconvex optimization; Tchebyshev scalarization; Adaptive step size; Strong convergence; Feature selection
+\end{keywords}
+\begin{amscode}
+47J25; 90C25; 90C26; 65K05; 68T05
+\end{amscode}
+
+\section{Introduction}\label{sec:intro}
+
+The split feasibility problem (SFP) models constrained reconstruction~\citep{censor1994}. For closed convex sets $C\subseteq\R^n$, $Q\subseteq\R^m$, and a matrix $\mathcal A$, it seeks
+\begin{equation}\label{eq:sfp-intro}
+\text{find }x^\star\in C\quad\text{such that}\quad\mathcal A x^\star\in Q.
+\end{equation}
+Byrne's $CQ$ algorithm~\citep{byrne2002} uses
+\begin{equation}\label{eq:cq-intro}
+x^{k+1}=P_C\bigl(x^k-\tau\mathcal A^\top(I-P_Q)\mathcal A x^k\bigr),
+\qquad 0<\tau<2/\norm{\mathcal A}^2.
+\end{equation}
+Supporting half-spaces simplify projections~\citep{yang2004}, while self-adaptive steps reduce parameter dependence~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}. Operator splitting~\citep{zhang2012simultaneous} and modified alternating directions~\citep{yang2014alternating} provide decomposition strategies. Adaptive steps and decomposition are therefore established principles.
+
+We study the nonlinear SFP
+\begin{equation}\label{eq:nsfp-intro}
+\text{find }x^\star\in K\quad\text{such that}\quad F(x^\star)\in Q,
+\end{equation}
+where $K\subseteq\R^n$ is closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$, and each differentiable component of $F=(F_1,\ldots,F_m)$ is convex or pseudoconvex on $K$. Pseudoconvex functions have convex sublevel sets, so the feasible set is convex even when some components are nonconvex. We seek feasibility, rather than minimization of every component.
+
+Nonlinear SFP and generalized convex feasibility have several relevant antecedents. Li et al.~\citep{li2013nsfp} use a convex aggregate proximity function, a property not ensured by componentwise pseudoconvexity. Yen et al.~\citep{yen2019} combine equilibrium and nonlinear image constraints. Hu et al.~\citep{hu2022quasi} treat quasiconvex inequalities, which include our component class. Our method exploits the additional derivative information of convex components within this established feasibility setting.
+
+The box gives the explicit violation measure
+\[
+J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+.
+\]
+The Dual-Track Adaptive Projection algorithm (\dtap) forms violation-weighted gradient sums from nearly maximal violations in each block. Convex gradient inequalities justify a residual-scaled Polyak-type step~\citep{polyak1969,lopez2012}, whereas pseudoconvexity supports a safeguarded diminishing step. A weighted combination is projected onto $K$. The proportional weight responds to block violations and is not claimed to be unique or optimal. Its role in preventing neglect is used in the convergence proof. A one-step bound valid for all weights in $[0,1]$ does not by itself establish convergence for every weight sequence. No prescribed operator norm, Lipschitz constant, or H\"older modulus is required, although the proof uses continuity and local bounds on the bounded iterate region. The analysis uses a quasi-Fej\'er estimate to establish boundedness before invoking these local bounds. Continuous gradients need not be Lipschitz.
+
+Feature-selection criteria from fractional and fuzzy-rough models~\citep{wang2021fractional,wang2026afrsfcv} define separate threshold constraints. This construction expresses simultaneous acceptance, not equivalence to the source optimization models. The positive-semidefinite quadratic-over-positive-affine criterion is convex, so this application belongs to the convex subclass. Controlled examples with a nonconvex pseudoconvex constraint test the pseudoconvex track. Classification scores feature selections that are computed once and then reused, on the same holdout split that was fixed when they were computed, and tuned subgradient methods can match or outperform DTAP.
+
+The contributions are as follows.
+\begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=2.4em,itemsep=3pt]
+\item A dual-track method combines convex decrease estimates and pseudoconvex sign information through an adaptive weight.
+\item Under consistency, smoothness, and the stated step conditions, the whole sequence converges to a feasible point in finite-dimensional Euclidean space. Convergence of distances and one feasible cluster point suffice.
+\item Experiments distinguish prediction from feasibility cost and report constraint activity, tuned subgradient comparisons, and initialization and scaling sensitivity. They do not establish uniform superiority.
+\end{enumerate}
+
+Section~\ref{sec:prelim} gives preliminaries. Section~\ref{sec:convergence} presents \dtap{} and its convergence analysis. Section~\ref{sec:experiments} reports experiments, and Section~\ref{sec:conclusion} concludes.
+
+
+\section{Preliminaries}\label{sec:prelim}
+Throughout, $H=\R^n$ is Euclidean space with inner product $\inner{\cdot}{\cdot}$ and induced norm $\norm{\cdot}$. All convergence statements concern the norm topology. Bounded sequences have convergent subsequences. The standard projection and generalized convexity facts below can be found in~\citep{bauschke2011,mangasarian1994}.
+
+For a nonempty closed convex set $K\subseteq H$, the metric projection $P_K(x)$ is the unique minimizer of $\norm{y-x}$ over $y\in K$.
+\begin{proposition}\label{prop:proj-char}
+For $x\in H$ and $p\in K$, $p=P_K(x)$ if and only if
+\begin{equation}\label{eq:proj-char}
+\inner{x-p}{y-p}\le0\qquad\text{for every }y\in K.
+\end{equation}
+\end{proposition}
+This characterization gives the projection inequality used in Lemma~\ref{lem:proj-nonexp}. The sort-based projection onto a $p$-dimensional simplex takes $O(p\log p)$ operations~\citep{condat2016simplex}.
+
+A function $f:K\to\R$ is convex if
+$f((1-t)x+ty)\le(1-t)f(x)+tf(y)$ for $x,y\in K$ and $t\in[0,1]$.
+The following weaker derivative condition was introduced by Mangasarian~\citep{mangasarian1965}.
+\begin{definition}\label{def:pseudoconvex}
+A function differentiable on an open neighbourhood of $K$ is pseudoconvex on $K$ if, for every $x,y\in K$,
+\begin{equation}\label{eq:contrapositive}
+f(y)<f(x)\quad\Longrightarrow\quad\inner{\nabla f(x)}{y-x}<0.
+\end{equation}
+\end{definition}
+Every differentiable convex function is pseudoconvex. Pseudoconvex functions have convex sublevel sets, although the functions themselves need not be convex. This distinction is relevant to the mixed constraint functions studied below.
+
+\section{The DTAP algorithm and its convergence analysis}\label{sec:convergence}
+We formulate the normal-box NSFP, state DTAP, and prove convergence of the whole sequence
+to a feasible point.
+
+\subsection{Problem statement and Tchebyshev scalarization}\label{ssec:model-stmt}
+Let $K\subseteq H$ be nonempty closed convex, and let $U\subseteq H$ be an open
+neighbourhood of $K$. Fix an integer $m\ge1$, let $F=(F_1,\dots,F_m):U\to\R^m$,
+let $b=(b_1,\dots,b_m)\in\R^m$, and set the normal box
+$Q:=(-\infty,b_1]\times\cdots\times(-\infty,b_m]$. We study the instance
+of~\eqref{eq:nsfp-intro}
+\begin{equation}\label{eq:nsfp-box}
+\text{find } x^\star\in\Omega,\qquad
+\Omega:=\bigl\{x\in K: F_i(x)\le b_i,\ i=1,\dots,m\bigr\},
+\end{equation}
+and call $\Omega$ the \emph{feasible set}. To turn $F(x)\in Q$ into a tractable merit
+function, we measure the residual in the sup-norm. For $z=F(x)$,
+$d_\infty(z,Q)=\inf_{q\le b}\max_{1\le i\le m}\abs{z_i-q_i}$. By the box structure the
+infimum separates over coordinates: if $z_i\le b_i$ then
+$\inf_{q_i\le b_i}\abs{z_i-q_i}=0$ (at $q_i=z_i$), and if $z_i>b_i$ then it equals
+$z_i-b_i$ (at $q_i=b_i$). Hence $\inf_{q_i\le b_i}\abs{z_i-q_i}=(z_i-b_i)^+$ with
+$(t)^+:=\max\{t,0\}$, so
+\begin{equation}\label{eq:dinfty}
+d_\infty(z,Q)=\max_{1\le i\le m}(z_i-b_i)^+ .
+\end{equation}
+Define the \emph{error function}
+\begin{equation}\label{eq:Jdef}
+J(x):=d_\infty\bigl(F(x),Q\bigr)=\max_{1\le i\le m}\bigl(F_i(x)-b_i\bigr)^+ .
+\end{equation}
+Then $F(x)\in Q$ iff $J(x)=0$, so finding a feasible point amounts to minimizing $J$
+over $K$. Formula~\eqref{eq:Jdef} gives a closed-form feasibility residual whose
+maximizers identify the most violated constraints. Section~\ref{ssec:dual-track}
+introduces an approximate active set to handle the nonsmooth maximum.
+
+\subsection{Decomposition and dual-track scalarization}\label{ssec:dual-track}
+We split the constraint index set into a \emph{convex track} and a
+\emph{pseudoconvex track}. The convex track uses a Polyak step~\citep{polyak1969};
+the pseudoconvex track uses a safeguarded diminishing step.
+A proportional weight combines the two updates.
+
+Fix a parameter $\delta>0$. For $x\in U$ define the componentwise violations and the
+maximal violation
+\begin{equation}\label{eq:vi}
+v_i(x):=\bigl(F_i(x)-b_i\bigr)^+,\qquad J(x)=\max_{1\le i\le m}v_i(x).
+\end{equation}
+Thus $x\in\Omega$ iff $x\in K$ and $J(x)=0$. Partition $I:=\{1,\dots,m\}$ into disjoint
+groups $I=I^{\cvx}\cup I^{\ps}$, where $I^{\cvx}$ indexes the convex constraints and
+$I^{\ps}$ the pseudoconvex ones (made precise in Assumption~\ref{ass:standing}). The
+\emph{per-track maximal violations} are
+\begin{align}
+J^{\cvx}(x)&:=\max_{i\in I^{\cvx}}v_i(x)\quad(\,{=}\,0\text{ if }I^{\cvx}=\emptyset),\label{eq:Jcvx}\\
+J^{\ps}(x)&:=\max_{j\in I^{\ps}}v_j(x)\quad(\,{=}\,0\text{ if }I^{\ps}=\emptyset),\label{eq:Jps}
+\end{align}
+so $J(x)=\max\{J^{\cvx}(x),J^{\ps}(x)\}$. To cope with the nonsmoothness of the maximum,
+we replace the exact maximizers by a $\delta$-enlarged \emph{approximate active
+set} on each track:
+\begin{align}
+K^{\cvx}(x)&:=\begin{cases}\{i\in I^{\cvx}:v_i(x)\ge J^{\cvx}(x)-\delta\} & \text{if }J^{\cvx}(x)>0,\\ \emptyset & \text{if }J^{\cvx}(x)=0,\end{cases}\label{eq:Kcvx}\\[2pt]
+K^{\ps}(x)&:=\begin{cases}\{j\in I^{\ps}:v_j(x)\ge J^{\ps}(x)-\delta\} & \text{if }J^{\ps}(x)>0,\\ \emptyset & \text{if }J^{\ps}(x)=0.\end{cases}\label{eq:Kps}
+\end{align}
+On these sets we form the \emph{per-track local functions and directions}
+\begin{align}
+\Phi^{\cvx}(x)&:=\tfrac12\!\!\sum_{i\in K^{\cvx}(x)}\!\! v_i(x)^2, & g^{\cvx}(x)&:=\!\!\sum_{i\in K^{\cvx}(x)}\!\! v_i(x)\nabla F_i(x),\label{eq:phi-g-cvx}\\
+\Phi^{\ps}(x)&:=\tfrac12\!\!\sum_{j\in K^{\ps}(x)}\!\! v_j(x)^2, & g^{\ps}(x)&:=\!\!\sum_{j\in K^{\ps}(x)}\!\! v_j(x)\nabla F_j(x).\label{eq:phi-g-ps}
+\end{align}
+The vectors $g^{\cvx}(x),g^{\ps}(x)$ are the two search directions, and $\Phi^{\cvx}(x)$
+supplies the Polyak numerator on the convex track. Along the iterates we abbreviate
+$J^{\cvx}_k:=J^{\cvx}(x^k)$, $g^{\cvx}_k:=g^{\cvx}(x^k)$, $\Phi^{\cvx}_k:=\Phi^{\cvx}(x^k)$,
+and likewise on the pseudoconvex track.
+
+\subsection{Assumptions}\label{ssec:assumptions}
+\begin{assumption}\label{ass:standing}
+We assume \textup{(A1)--(A3)}:
+\begin{itemize}[leftmargin=2.4em,itemsep=2pt]
+\item[\textup{(A1)}] \textup{(a)} $\Omega\ne\emptyset$. \textup{(b)} $I=\{1,\dots,m\}$
+is partitioned as $I=I^{\cvx}\cup I^{\ps}$; for each $i$, $F_i:U\to\R$, and the
+restriction $F_i|_K$ is convex if $i\in I^{\cvx}$ and pseudoconvex if $i\in I^{\ps}$.
+\item[\textup{(A2)}] Each $F_i:U\to\R$ is continuously differentiable on $U$.
+\item[\textup{(A3)}] \textup{(i)} $\delta>0$ fixed. \textup{(ii)}
+$\rho_{\cvx}\in(0,2)$. \textup{(iii)} $\{\gamma_k\}\subset(0,\infty)$ with
+$\sum_{k=0}^\infty\gamma_k^2<\infty$ and $\sum_{k=0}^\infty\gamma_k=\infty$.
+\end{itemize}
+\end{assumption}
+The open-neighbourhood formulation permits fractional functions whose denominators are
+positive on $K$; the algorithm evaluates the functions and gradients only at points of $K$.
+Although some component functions may be nonconvex, $\Omega$ is convex: differentiable
+pseudoconvex functions are quasiconvex on $K$, so all constraint sublevel sets in $K$ are convex.
+\begin{example}\label{ex:gamma}
+The sequence $\gamma_k:=1/(k+1)$ satisfies (A3)(iii), since $\sum_{k\ge0}(k+1)^{-2}<\infty$
+while $\sum_{k\ge0}(k+1)^{-1}=\infty$. More generally $\gamma_k=(k+c)^{-s}$ with $c>0$
+and $s\in(1/2,1]$ qualifies; the experiments use $s=0.55$.
+\end{example}
+
+\subsection{The DTAP algorithm}\label{ssec:algorithm}
+The Dual-Track Adaptive Projection algorithm combines the two track-specific step sizes
+through the soft weight $\mu_k$ and projects the combined update onto the base convex
+set $K$. It is stated as Algorithm~\ref{alg:dtap}.
+
+\begin{algorithm}[H]
+\caption{Dual-Track Adaptive Projection (DTAP) for the normal-box NSFP
+\eqref{eq:nsfp-box}.}
+\label{alg:dtap}
+\small
+\noindent\textbf{Input:} map $F=(F_1,\dots,F_m)$, thresholds $b$, base set $K$, index
+split $I^{\cvx}\cup I^{\ps}$.\\
+\textbf{Parameters:} $\delta>0$, tolerance $\varepsilon>0$, $\rho_{\cvx}\in(0,2)$,
+sequence $\{\gamma_k\}$ satisfying (A3)(iii).\\
+\textbf{Initialization:} choose $x^0\in K$; set $k\leftarrow 0$.
+
+\algstep{Step 1 (per-track quantities).}
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt,topsep=2pt]
+\item[(1a)] Compute $v_i(x^k)$ for all $i$, and $J^{\cvx}_k=\max_{i\in I^{\cvx}}v_i(x^k)$,
+$J^{\ps}_k=\max_{j\in I^{\ps}}v_j(x^k)$ (each $0$ if its track is empty).
+\item[(1b)] Form the approximate active sets $K^{\cvx}_k,K^{\ps}_k$ via
+\eqref{eq:Kcvx}--\eqref{eq:Kps}.
+\item[(1c)] Form $\Phi^{\cvx}_k$, $g^{\cvx}_k$, $g^{\ps}_k$ via
+\eqref{eq:phi-g-cvx}--\eqref{eq:phi-g-ps}.
+\item[(1d)] Per-track step sizes (Polyak on the convex track, safeguarded on the
+pseudoconvex track):
+\[
+\eta^{\cvx}_k=\begin{cases}\rho_{\cvx}\,\dfrac{2\Phi^{\cvx}_k}{\norm{g^{\cvx}_k}^2} & \text{if }\norm{g^{\cvx}_k}>0,\\ 0 & \text{otherwise,}\end{cases}
+\qquad
+\eta^{\ps}_k=\frac{\gamma_k}{\max\{1,\norm{g^{\ps}_k}\}} .
+\]
+\item[(1e)] Soft proportional weight:
+$\displaystyle \mu_k=\frac{J^{\cvx}_k}{J^{\cvx}_k+J^{\ps}_k}$ if
+$J^{\cvx}_k+J^{\ps}_k>0$, and $\mu_k=1/2$ otherwise.
+\item[(1f)] Combine the two directions:
+$\displaystyle y^k=x^k-\bigl[\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k\bigr].$
+\end{itemize}
+\algstep{Step 2 (projection).}\quad $x^{k+1}=P_K(y^k)$.
+
+\algstep{Step 3 (stopping).}\quad If $J(x^k)\le\varepsilon$, stop and return $x^k$;
+otherwise set $k\leftarrow k+1$ and go to Step~1.
+\end{algorithm}
+
+\begin{remark}\label{rem:weight-scope}
+The proportional weight is an adaptive allocation based on the two maximal violations;
+we do not claim that it is the only convergent choice or that it is optimal.
+Its specific form is used in~\eqref{eq:p10} to control the convex-track residual and in
+Claim~2 of Stage~2 of Theorem~\ref{thm:strong} to ensure that a persistently violated
+pseudoconvex track retains positive weight. Although the one-step inequality holds for
+any $\mu_k\in[0,1]$, this alone does not establish convergence for every such sequence.
+\end{remark}
+
+\begin{remark}\label{rem:regularity-scope}
+The iteration does not require prescribed operator norms, Lipschitz constants, or
+H\"older moduli. The proof nevertheless uses finite bounds on function values and
+gradients on a compact set containing the iterates, after boundedness has been proved.
+Bounded gradients imply Lipschitz continuity of the functions on that convex compact set,
+but these bounds are not algorithm inputs. Assumption (A2) does not
+imply Lipschitz continuity of the gradients, and the theorem does not require it.
+The parameters $\rho_{\cvx}$, $\delta$, and $\{\gamma_k\}$ remain part of the algorithm.
+\end{remark}
+
+For the analysis we write the combined increment as
+\begin{equation}\label{eq:dk}
+d_k:=\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k,
+\end{equation}
+so $y^k=x^k-d_k$ and $x^{k+1}=P_K(x^k-d_k)$.
+\subsection{Per-iteration cost}\label{ssec:complexity}
+Each \dtap{} iteration evaluates the
+componentwise violations $v_i(x^k)$ and the active-set gradients $\{\nabla F_i(x^k):i\in
+K^{\cvx}_k\cup K^{\ps}_k\}$, forms the two search directions $g^{\cvx}_k,g^{\ps}_k$ as weighted
+sums of these gradients, computes the step sizes, and performs one projection onto $K$.
+It uses neither an operator-norm estimate nor a line search. The cost is dominated by
+the constraint evaluations and the projection. The cost for the feature-selection instance
+is given in Section~\ref{sec:fs}
+(Remark~\ref{rem:fs-cost}).
+
+The convergence analysis of \dtap{} is more involved than
+for classical $CQ$ schemes because the two constraint tracks are asymmetric: on the
+convex track the gradient inequality gives a quantitative lower bound of order
+$v_i(x)^2$, hence a strict decrease, whereas on the pseudoconvex track the
+contrapositive of pseudoconvexity gives only sign information. The two are reconciled in
+a single one-step quasi-Fej\'er inequality with a carefully chosen Young parameter, and a
+contradiction argument rules out cluster points outside the feasible set. We then obtain
+the main result, strong convergence to a feasible point (Theorem~\ref{thm:strong}), and
+deduce the two degenerate structural regimes as corollaries.
+
+Throughout, $\{x^k\}$ is the infinite sequence generated by Algorithm~\ref{alg:dtap} with
+the stopping test removed. As shown below
+(Lemma~\ref{lem:jcvx0} and Theorem~\ref{thm:strong}), $J(x^k)\to 0$; hence for any
+$\varepsilon>0$ there is a finite $k$ with $J(x^k)\le\varepsilon$, so the finite-stopping
+version terminates after finitely many steps with an $\varepsilon$-feasible point.
+
+\subsection{Auxiliary lemmas}\label{ssec:aux}
+We begin with two preparatory results used repeatedly below.
+
+\begin{lemma}\label{lem:proj-nonexp}
+Let $K\subseteq H$ be nonempty closed convex. For every $y\in H$ and $z\in K$,
+\begin{equation}\label{eq:proj-nonexp}
+\norm{P_K(y)-z}^2\le\norm{y-z}^2-\norm{y-P_K(y)}^2\le\norm{y-z}^2 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $p:=P_K(y)$. By Proposition~\ref{prop:proj-char}, $\inner{y-p}{z-p}\le0$, so expanding
+$\norm{y-z}^2=\norm{y-p}^2+2\inner{y-p}{p-z}+\norm{p-z}^2$ and using $\inner{y-p}{p-z}\ge0$
+gives $\norm{y-z}^2\ge\norm{y-p}^2+\norm{p-z}^2$, which is~\eqref{eq:proj-nonexp}.
+\end{proof}
+
+\begin{lemma}\label{lem:seq}
+Let $\{a_k\}\subset[0,\infty)$ and $\{\varepsilon_k\}\subset[0,\infty)$ satisfy
+$a_{k+1}\le a_k+\varepsilon_k$ for all $k$ and $\sum_{k=0}^\infty\varepsilon_k<\infty$.
+Then $\{a_k\}$ converges to a finite limit.
+\end{lemma}
+\begin{proof}
+$b_k:=a_k-\sum_{l<k}\varepsilon_l$ is nonincreasing (from $a_{k+1}\le a_k+\varepsilon_k$) and
+bounded below by $-\sum_l\varepsilon_l>-\infty$, hence converges; since
+$\sum_{l<k}\varepsilon_l\to S<\infty$, $a_k=b_k+\sum_{l<k}\varepsilon_l$ converges.
+\end{proof}
+
+On the convex track, convexity gives a quantitative link between the gradient and the
+violation.
+
+\begin{lemma}\label{lem:grad-cvx}
+For $x^\star\in\Omega$, $i\in I^{\cvx}$, and $x\in K$,
+\[
+v_i(x)\,\inner{\nabla F_i(x)}{x-x^\star}\ge v_i(x)^2 .
+\]
+\end{lemma}
+\begin{proof}
+If $v_i(x)=0$ both sides vanish. Let $v_i(x)>0$, i.e.\ $F_i(x)>b_i$. Define
+$\varphi:[0,1]\to\R$ by $\varphi(t):=F_i((1-t)x+tx^\star)$; since $K$ is convex,
+$[x,x^\star]\subset K$, so $\varphi$ is well defined, and by (A1)(b) it is convex, while
+by (A2) it is differentiable with $\varphi'(0^+)=\inner{\nabla F_i(x)}{x^\star-x}$. The
+one-dimensional gradient inequality gives $\varphi(1)\ge\varphi(0)+\varphi'(0^+)$, i.e.
+$F_i(x^\star)\ge F_i(x)+\inner{\nabla F_i(x)}{x^\star-x}$. As $x^\star\in\Omega$ we have
+$F_i(x^\star)\le b_i<F_i(x)$, whence
+$\inner{\nabla F_i(x)}{x-x^\star}\ge F_i(x)-b_i=v_i(x)$. Multiplying by $v_i(x)>0$ gives
+the claim.
+\end{proof}
+
+\begin{remark}\label{rem:grad-cvx-sum}
+Summing Lemma~\ref{lem:grad-cvx} over the approximate active set $K^{\cvx}_k$ yields
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge\sum_{i\in K^{\cvx}_k}v_i(x^k)^2=2\Phi^{\cvx}_k$, a bound
+used in the proofs of Lemmas~\ref{lem:fejer} and~\ref{lem:jcvx0}.
+\end{remark}
+
+On the pseudoconvex track, only a sign is available.
+
+\begin{lemma}\label{lem:sign-ps}
+For $x^\star\in\Omega$, $j\in I^{\ps}$, and $x\in K$,
+$v_j(x)\,\inner{\nabla F_j(x)}{x-x^\star}\ge 0$, with strict inequality when $v_j(x)>0$.
+\end{lemma}
+\begin{proof}
+If $v_j(x)=0$ both sides vanish. If $v_j(x)>0$ then $F_j(x)>b_j\ge F_j(x^\star)$. By
+(A1)(b), $F_j|_K$ is pseudoconvex; applying the contrapositive~\eqref{eq:contrapositive}
+with $y=x^\star$ gives $\inner{\nabla F_j(x)}{x^\star-x}<0$, i.e.
+$\inner{\nabla F_j(x)}{x-x^\star}>0$. Multiplying by $v_j(x)>0$ yields the strict
+inequality.
+\end{proof}
+
+Finally, two compactness-based norm bounds on the search directions.
+
+\begin{lemma}\label{lem:bound-cvx}
+Assume $I^{\cvx}\ne\emptyset$ and let $B\subset U$ be compact. With
+$L_B:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}$ (finite by (A2)), for every
+$x\in B$,
+\[
+\norm{g^{\cvx}(x)}^2\le 2\,\abs{I^{\cvx}}\,L_B^2\,\Phi^{\cvx}(x).
+\]
+\end{lemma}
+\begin{proof}
+Put $K'=K^{\cvx}(x)$, $m'=\abs{K'}\le\abs{I^{\cvx}}$. By the triangle and Cauchy--Schwarz
+inequalities,
+\[
+\norm{g^{\cvx}(x)}=\Bigl\|\sum_{i\in K'}v_i(x)\nabla F_i(x)\Bigr\|
+\le\Bigl(\sum_{i\in K'}v_i(x)^2\Bigr)^{1/2}\Bigl(\sum_{i\in K'}\norm{\nabla F_i(x)}^2\Bigr)^{1/2}.
+\]
+Since $\sum_{i\in K'}v_i(x)^2=2\Phi^{\cvx}(x)$ and
+$\sum_{i\in K'}\norm{\nabla F_i(x)}^2\le m'L_B^2\le\abs{I^{\cvx}}L_B^2$, squaring gives the
+claim.
+\end{proof}
+
+\begin{lemma}\label{lem:bound-ps}
+Assume $I^{\ps}\ne\emptyset$ and let $B\subset U$ be compact. With
+$L'_B:=\max_{j\in I^{\ps}}\sup_{x\in B}\norm{\nabla F_j(x)}$ and
+$V_B:=\max_{j\in I^{\ps}}\sup_{x\in B}v_j(x)$ (both finite by (A2)), for every $x\in B$,
+\[
+\norm{g^{\ps}(x)}\le\abs{I^{\ps}}\,V_B\,L'_B .
+\]
+\end{lemma}
+\begin{proof}
+By the triangle inequality,
+$\norm{g^{\ps}(x)}=\bigl\|\sum_{j\in K^{\ps}(x)}v_j(x)\nabla F_j(x)\bigr\|
+\le\sum_{j\in K^{\ps}(x)}v_j(x)\norm{\nabla F_j(x)}\le\abs{K^{\ps}(x)}V_BL'_B
+\le\abs{I^{\ps}}V_BL'_B$.
+\end{proof}
+
+\subsection{Boundedness and decay of the iteration error}\label{ssec:bounded}
+The following quasi-Fej\'er inequality, within the framework of~\citet{combettes2001quasifejer}, yields boundedness of $\{x^k\}$ and decay of the convex-track violation. Set
+\begin{equation}\label{eq:c0C0}
+c_0:=\frac{\rho_{\cvx}(2-\rho_{\cvx})}{2}\in\Bigl(0,\tfrac12\Bigr],\qquad
+C_0:=\frac{2+\rho_{\cvx}}{2-\rho_{\cvx}}\in(1,\infty),
+\end{equation}
+and
+\begin{equation}\label{eq:Tk}
+T_k:=\begin{cases}\dfrac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2} & \text{if }\norm{g^{\cvx}_k}>0,\\ 0 & \text{if }\norm{g^{\cvx}_k}=0.\end{cases}
+\end{equation}
+For fixed $x^\star\in\Omega$ write $R^{x^\star}_k:=\inner{g^{\ps}_k}{x^k-x^\star}$.
+
+\begin{lemma}\label{lem:fejer}
+For every $x^\star\in\Omega$ and $k\ge 0$,
+\begin{equation}\label{eq:fejer}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-c_0\mu_k T_k-2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k+C_0\gamma_k^2 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Apply Lemma~\ref{lem:proj-nonexp} with $y=y^k$ and $z=x^\star\in K$ and use
+$y^k=x^k-d_k$ from~\eqref{eq:dk}:
+\begin{equation}\label{eq:p1}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\inner{d_k}{x^k-x^\star}+\norm{d_k}^2 .
+\end{equation}
+\emph{Cross term.} Expanding $d_k$,
+\begin{equation}\label{eq:p2}
+\inner{d_k}{x^k-x^\star}=\mu_k\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}+(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k .
+\end{equation}
+If $\norm{g^{\cvx}_k}=0$ then $\eta^{\cvx}_k=0$ and the first term vanishes. If
+$\norm{g^{\cvx}_k}>0$, Remark~\ref{rem:grad-cvx-sum} gives
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge 2\Phi^{\cvx}_k$; multiplying by
+$\mu_k\eta^{\cvx}_k\ge 0$ and substituting
+$\eta^{\cvx}_k=2\rho_{\cvx}\Phi^{\cvx}_k/\norm{g^{\cvx}_k}^2$,
+\begin{equation}\label{eq:p4}
+\mu_k\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}\ge\mu_k\rho_{\cvx}\frac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2}=\mu_k\rho_{\cvx}T_k .
+\end{equation}
+\emph{Quadratic term.} By Young's inequality
+$\norm{u+v}^2\le(1+\epsilon)\norm{u}^2+(1+\epsilon^{-1})\norm{v}^2$ with
+$u=\mu_k\eta^{\cvx}_k g^{\cvx}_k$, $v=(1-\mu_k)\eta^{\ps}_k g^{\ps}_k$,
+\[
+\norm{d_k}^2\le(1+\epsilon)\rho_{\cvx}^2\mu_k^2 T_k+(1+\epsilon^{-1})(1-\mu_k)^2(\eta^{\ps}_k)^2\norm{g^{\ps}_k}^2 .
+\]
+By definition $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}$, so
+$\eta^{\ps}_k\norm{g^{\ps}_k}\le\gamma_k$ and hence
+$(\eta^{\ps}_k)^2\norm{g^{\ps}_k}^2\le\gamma_k^2$; with $(1-\mu_k)^2\le 1$,
+\begin{equation}\label{eq:p6}
+\norm{d_k}^2\le(1+\epsilon)\rho_{\cvx}^2\mu_k^2 T_k+(1+\epsilon^{-1})\gamma_k^2 .
+\end{equation}
+Choose $\epsilon:=(2-\rho_{\cvx})/(2\rho_{\cvx})>0$. Then
+$(1+\epsilon)\rho_{\cvx}=(2+\rho_{\cvx})/2$, so
+$(1+\epsilon)\rho_{\cvx}^2=\rho_{\cvx}(2+\rho_{\cvx})/2$, and
+$1+\epsilon^{-1}=(2+\rho_{\cvx})/(2-\rho_{\cvx})=C_0$. Combining
+\eqref{eq:p1}, \eqref{eq:p2}, \eqref{eq:p4} and~\eqref{eq:p6},
+\[
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2+\bigl[-2\mu_k\rho_{\cvx}+(1+\epsilon)\rho_{\cvx}^2\mu_k^2\bigr]T_k-2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k+C_0\gamma_k^2 .
+\]
+The bracket equals
+$\mu_k\rho_{\cvx}\bigl(-2+\tfrac{2+\rho_{\cvx}}{2}\mu_k\bigr)$. Since $\rho_{\cvx}<2$, for
+all $\mu_k\in[0,1]$ the factor $-2+\tfrac{2+\rho_{\cvx}}{2}\mu_k$ is at most
+$-(2-\rho_{\cvx})/2<0$ (its maximum over $[0,1]$ is at $\mu_k=1$); multiplying by
+$\mu_k\rho_{\cvx}\ge0$ gives the bracket $\le -c_0\mu_k$. This yields~\eqref{eq:fejer}.
+\end{proof}
+
+\begin{lemma}\label{lem:bounded}
+The sequence $\{x^k\}$ is bounded. Moreover, for each fixed $x^\star\in\Omega$:
+\textup{(i)} $\{\norm{x^k-x^\star}^2\}$ converges in $[0,\infty)$;
+\textup{(ii)} $\sum_{k=0}^\infty\mu_k T_k<\infty$;
+\textup{(iii)} $\sum_{k=0}^\infty(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k<\infty$.
+\end{lemma}
+\begin{proof}
+Fix $x^\star\in\Omega$ and set $a_k:=\norm{x^k-x^\star}^2$. By Lemma~\ref{lem:sign-ps},
+$R^{x^\star}_k\ge0$, and $\mu_k,T_k,(1-\mu_k)\eta^{\ps}_k\ge0$, so~\eqref{eq:fejer} gives
+$a_{k+1}\le a_k+C_0\gamma_k^2$. Since $\sum_k C_0\gamma_k^2<\infty$ by (A3)(iii),
+Lemma~\ref{lem:seq} yields (i), and boundedness of $\{x^k\}$ follows. Summing
+\eqref{eq:fejer} from $0$ to $N-1$,
+\[
+a_N+\sum_{k=0}^{N-1}\bigl(c_0\mu_k T_k+2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k\bigr)\le a_0+C_0\sum_{k=0}^{N-1}\gamma_k^2 .
+\]
+The right side is bounded uniformly in $N$; letting $N\to\infty$ and using $c_0>0$ with
+nonnegative terms gives (ii) and (iii).
+\end{proof}
+
+\begin{lemma}\label{lem:jcvx0}
+$\displaystyle\lim_{k\to\infty}J^{\cvx}_k=0$.
+\end{lemma}
+\begin{proof}
+If $I^{\cvx}=\emptyset$ then $J^{\cvx}_k=0$ for all $k$. Assume $I^{\cvx}\ne\emptyset$ and
+put $B:=\overline{\conv}\{x^k:k\ge0\}$, compact by Lemma~\ref{lem:bounded} and contained
+in $K\subset U$. By (A2) and
+compactness,
+\[
+L:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}<\infty,\qquad
+V:=\max_{i\in I}\sup_{x\in B}\abs{F_i(x)-b_i}<\infty.
+\]
+If $V=0$ then all $v_i(x^k)=0$ and
+$J^{\cvx}_k=0$; assume $V>0$. If $L=0$ then each $F_i$, $i\in I^{\cvx}$, is constant on
+$B$, so $g^{\cvx}_k=0$ and, by Remark~\ref{rem:grad-cvx-sum},
+$0=\inner{g^{\cvx}_k}{x^k-x^\star}\ge 2\Phi^{\cvx}_k\ge(J^{\cvx}_k)^2$, giving
+$J^{\cvx}_k=0$; assume $L>0$. Set $m^{\cvx}:=\abs{I^{\cvx}}\ge1$.
+
+Consider a step with $J^{\cvx}_k>0$ and pick $i^\star\in I^{\cvx}$ with
+$v_{i^\star}(x^k)=J^{\cvx}_k$. Since $v_{i^\star}(x^k)\ge J^{\cvx}_k-\delta$, we have
+$i^\star\in K^{\cvx}_k$, whence
+\begin{equation}\label{eq:p8}
+\Phi^{\cvx}_k\ge\tfrac12 v_{i^\star}(x^k)^2=\tfrac12(J^{\cvx}_k)^2>0 .
+\end{equation}
+Fix $x^\star\in\Omega$. Remark~\ref{rem:grad-cvx-sum} gives
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge2\Phi^{\cvx}_k>0$, so $g^{\cvx}_k\ne0$; with
+Lemma~\ref{lem:bound-cvx}, $\norm{g^{\cvx}_k}^2\le2m^{\cvx}L^2\Phi^{\cvx}_k$, and with
+\eqref{eq:p8},
+\begin{equation}\label{eq:p9}
+T_k=\frac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2}\ge\frac{2\Phi^{\cvx}_k}{m^{\cvx}L^2}\ge\frac{(J^{\cvx}_k)^2}{m^{\cvx}L^2}.
+\end{equation}
+For a lower bound on $\mu_k$: for all $i\in I$ and $x^k\in B$,
+$v_i(x^k)\le\abs{F_i(x^k)-b_i}\le V$, so $J^{\cvx}_k\le V$ and $J^{\ps}_k\le V$; when
+$J^{\cvx}_k>0$,
+\begin{equation}\label{eq:p10}
+\mu_k=\frac{J^{\cvx}_k}{J^{\cvx}_k+J^{\ps}_k}\ge\frac{J^{\cvx}_k}{2V}.
+\end{equation}
+Combining~\eqref{eq:p9} and~\eqref{eq:p10}, for $J^{\cvx}_k>0$,
+$\mu_k T_k\ge(J^{\cvx}_k)^3/(2Vm^{\cvx}L^2)$; this also holds (as $0\ge0$) when
+$J^{\cvx}_k=0$. By Lemma~\ref{lem:bounded}(ii),
+\begin{equation}\label{eq:p12}
+\sum_{k=0}^\infty(J^{\cvx}_k)^3\le 2Vm^{\cvx}L^2\sum_{k=0}^\infty\mu_k T_k<\infty,
+\end{equation}
+so $(J^{\cvx}_k)^3\to0$ and thus $J^{\cvx}_k\to0$.
+\end{proof}
+
+\begin{proposition}\label{prop:regularity}
+\[
+\sum_{k=0}^{\infty}\norm{x^{k+1}-x^k}^{2}<\infty;
+\]
+in particular,
+$\norm{x^{k+1}-x^k}\to0$.
+\end{proposition}
+\begin{proof}
+Since $x^k\in K$ and $x^{k+1}=P_K(y^k)$, Lemma~\ref{lem:proj-nonexp} with $y=y^k$, $z=x^k$
+gives $\norm{x^{k+1}-x^k}\le\norm{y^k-x^k}=\norm{d_k}$. By~\eqref{eq:p6} and
+$\mu_k^2\le\mu_k$, $\norm{d_k}^2\le(1+\epsilon)\rho_{\cvx}^2\mu_k T_k+C_0\gamma_k^2$.
+Summing and using Lemma~\ref{lem:bounded}(ii) and (A3)(iii), both series are finite.
+\end{proof}
+
+\subsection{Strong convergence to a feasible point}\label{ssec:strong}
+The goal of the analysis is strong convergence of $\{x^k\}$ to a feasible point. The
+argument has three stages: exploit convex-track feasibility (Lemma~\ref{lem:jcvx0}) to
+confine the cluster set to the convex half; use a contradiction argument with
+pseudoconvexity to produce a cluster point in $\Omega$; and combine with distance
+convergence to upgrade to convergence of the whole sequence.
+
+\begin{theorem}\label{thm:strong}
+Under Assumption~\ref{ass:standing}, the sequence $\{x^k\}$ generated by
+Algorithm~\ref{alg:dtap} converges strongly to a point $x^\infty\in\Omega$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:bounded}, $\{x^k\}$ is bounded; let
+$C:=\{\bar x\in H:\exists\,k_l\to\infty,\ x^{k_l}\to\bar x\}$ be its (nonempty, compact)
+cluster set. Since $K$ is closed and $x^k\in K$, $C\subseteq K$.
+
+\emph{Stage 1 (convex half).} Fix $\bar x\in C$ and $x^{k_l}\to\bar x$. By (A2) each
+$F_i$ is continuous, so $v_i(x^{k_l})\to v_i(\bar x)$; for $i\in I^{\cvx}$,
+$v_i(x^{k_l})\le J^{\cvx}_{k_l}\to0$ by Lemma~\ref{lem:jcvx0}, so by squeezing
+$v_i(\bar x)=0$, i.e.\ $F_i(\bar x)\le b_i$. Hence
+\begin{equation}\label{eq:p13}
+C\subseteq\bigcap_{i\in I^{\cvx}}\{x\in K:F_i(x)\le b_i\}.
+\end{equation}
+If $I^{\ps}=\emptyset$, then~\eqref{eq:p13} gives $C\subseteq\Omega$,
+so $C\cap\Omega=C\ne\emptyset$.
+Assume henceforth $I^{\ps}\ne\emptyset$.
+
+\emph{Stage 2 (pseudoconvex half by contradiction).} Suppose, for contradiction, that
+$C\cap\Omega=\emptyset$. By~\eqref{eq:p13} and the partition $I=I^{\cvx}\cup I^{\ps}$, for
+each $\bar x\in C$ there is $j\in I^{\ps}$ with $F_j(\bar x)>b_j$, i.e.\
+$J^{\ps}(\bar x)>0$. As a maximum of finitely many continuous functions, $J^{\ps}$ is
+continuous and positive on the compact set $C$, so $\alpha:=\min_{x\in C}J^{\ps}(x)>0$.
+
+\smallskip
+\emph{Claim 1 (uniform lower bound for $J^{\ps}_k$).} There exist $\tau_0>0$ and $k_0$
+with $J^{\ps}_k\ge\tau_0$ for all $k\ge k_0$. Indeed, put $\tau_0:=\alpha/2$. If the claim
+failed there would be $k_l\to\infty$ with $J^{\ps}_{k_l}<\tau_0$; extracting (same
+notation) $x^{k_l}\to\tilde x\in C$, continuity gives $J^{\ps}(\tilde x)\le\tau_0<\alpha$,
+contradicting the definition of $\alpha$.
+
+\smallskip
+\emph{Claim 2 ($\mu_k\to0$).} For $k\ge k_0$,
+$\mu_k=J^{\cvx}_k/(J^{\cvx}_k+J^{\ps}_k)\le J^{\cvx}_k/\tau_0\to0$ by
+Lemma~\ref{lem:jcvx0}. Hence there is $k_1\ge k_0$ with $1-\mu_k\ge1/2$ for $k\ge k_1$.
+
+\smallskip
+\emph{Claim 3 (uniform lower bound for $R^{x^\star}_k$).} Fix $x^\star\in\Omega$. There
+exist $\xi_0>0$ and $k_2\ge k_1$ with $R^{x^\star}_k\ge\xi_0$ for all $k\ge k_2$. Suppose
+not: there is $k_l\to\infty$ with $R^{x^\star}_{k_l}\to0$. As $\{x^{k_l}\}$ is bounded,
+extract $x^{k_l}\to\bar x\in C$; since $I^{\ps}$ has finitely many subsets, extract
+further so that $K^{\ps}_{k_l}\equiv K^\star$ is constant. By assumption
+$J^{\ps}(\bar x)>0$; choose $j^\star\in\argmax_{j\in I^{\ps}}v_j(\bar x)$, so
+$v_{j^\star}(\bar x)=J^{\ps}(\bar x)>0$. By continuity $v_{j^\star}(x^{k_l})\to
+v_{j^\star}(\bar x)$ and $J^{\ps}_{k_l}\to J^{\ps}(\bar x)$, so
+$J^{\ps}_{k_l}-v_{j^\star}(x^{k_l})\to0$; with $\delta>0$ from (A3)(i), for large $l$ we
+get $v_{j^\star}(x^{k_l})\ge J^{\ps}_{k_l}-\delta$, hence $j^\star\in K^{\ps}_{k_l}=K^\star$.
+Each summand of
+$R^{x^\star}_{k_l}=\sum_{j\in K^\star}v_j(x^{k_l})\inner{\nabla F_j(x^{k_l})}{x^{k_l}-x^\star}$
+is nonnegative by Lemma~\ref{lem:sign-ps}, so keeping only $j^\star$,
+\[
+R^{x^\star}_{k_l}\ge v_{j^\star}(x^{k_l})\inner{\nabla F_{j^\star}(x^{k_l})}{x^{k_l}-x^\star}.
+\]
+Letting $l\to\infty$ and using continuity of $v_{j^\star}$ and $\nabla F_{j^\star}$,
+\[
+\liminf_{l\to\infty}R^{x^\star}_{k_l}\ge v_{j^\star}(\bar x)\inner{\nabla F_{j^\star}(\bar x)}{\bar x-x^\star}=:\Lambda .
+\]
+Since $j^\star\in I^{\ps}$ and $x^\star\in\Omega$, $F_{j^\star}(x^\star)\le b_{j^\star}<F_{j^\star}(\bar x)$;
+the contrapositive~\eqref{eq:contrapositive} with $x=\bar x$, $y=x^\star$ gives
+$\inner{\nabla F_{j^\star}(\bar x)}{\bar x-x^\star}>0$, and with $v_{j^\star}(\bar x)>0$ we
+get $\Lambda>0$, contradicting $R^{x^\star}_{k_l}\to0$. This proves Claim~3.
+
+\smallskip
+\emph{Reaching the contradiction.} By Lemma~\ref{lem:bound-ps} on
+$B:=\overline{\conv}\{x^k\}$, $\norm{g^{\ps}_k}\le\abs{I^{\ps}}V_B L'$ with
+$L':=\max_{j\in I^{\ps}}\sup_B\norm{\nabla F_j}<\infty$. Put
+$G':=\max\{1,\abs{I^{\ps}}V_B L'\}$; then $\max\{1,\norm{g^{\ps}_k}\}\le G'$ for all $k$,
+so $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}\ge\gamma_k/G'$. For $k\ge k_2$,
+combining with $1-\mu_k\ge1/2$ and $R^{x^\star}_k\ge\xi_0$,
+\[
+\sum_{k=0}^\infty(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k\ge\sum_{k\ge k_2}\frac12\cdot\frac{\gamma_k}{G'}\cdot\xi_0=\frac{\xi_0}{2G'}\sum_{k\ge k_2}\gamma_k=+\infty
+\]
+by (A3)(iii), contradicting Lemma~\ref{lem:bounded}(iii). Hence $C\cap\Omega\ne\emptyset$.
+
+\emph{Stage 3 (whole-sequence convergence).} Fix $\bar x\in C\cap\Omega$.
+Lemma~\ref{lem:bounded}(i), applied to $x^\star=\bar x$, ensures that
+$\lim_{k\to\infty}\norm{x^k-\bar x}^2$ exists. Since $\bar x\in C$, a subsequence
+$x^{k_l}$ converges to $\bar x$. Therefore
+\[
+\lim_{k\to\infty}\norm{x^k-\bar x}^2
+=\lim_{l\to\infty}\norm{x^{k_l}-\bar x}^2=0.
+\]
+Hence the whole sequence converges to $\bar x$, and we set $x^\infty:=\bar x\in\Omega$.
+This argument requires neither uniqueness of the feasible point nor convexity of the
+target set: one feasible cluster point and convergence of its distance suffice.
+\end{proof}
+
+\begin{remark}\label{rem:delta-role}
+The parameter $\delta>0$ is not necessary for convergence. When $\delta=0$ one argues by
+subsequence: along $x^{k_l}\to\bar x\in C$, choose
+$j_l\in\argmax_{j\in I^{\ps}}v_j(x^{k_l})$; since $I^{\ps}$ is finite, extract
+$j_l\equiv j^\star$, and $v_{j^\star}(x^{k_l})=J^{\ps}(x^{k_l})\to J^{\ps}(\bar x)>0$, so
+$j^\star$ attains the maximal violation at $\bar x$ and the pseudoconvexity argument
+goes through. The role of $\delta>0$ is to simplify: a maximizer at $\bar x$ automatically
+lies in $K^{\ps}_{k_l}$ for large $l$, avoiding a `finitely many indices' extraction.
+Larger $\delta$ enlarges $K^{\cvx}_k,K^{\ps}_k$, which may aid numerical stability when several
+$v_i(x^k)$ are nearly equal; on the test problem~\eqref{eq:logball-test}, $\delta=10^{-1}$ and $\delta=10^{-3}$ produce identical iterates
+(Table~\ref{tab:dtap-sweep}): the pseudoconvex track has a single index, at every start either only $F_1$ is violated
+or $v_1-v_2\ge4.79$, and in these runs the convex track is satisfied from the second evaluated point on. The $\delta$ row
+of Table~\ref{tab:dtap-sweep} is therefore a consistency check, not evidence about $\delta$.
+\end{remark}
+
+\begin{remark}\label{rem:rate}
+From~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, whence
+$\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. This bounds the \emph{best} convex-track violation
+over the first $N$ iterates. It is not a last-iterate bound, a rate for the full residual
+$J(x^k)$, or a rate for the distance to a feasible point. For these latter quantities,
+under (A1)--(A3) alone we assert only qualitative convergence.
+\end{remark}
+
+\subsection{Degenerate constraint structures}\label{ssec:degenerate}
+When the constraint structure degenerates (only a convex track or only a pseudoconvex
+track), \dtap{} and its analysis simplify, yielding two corollaries of
+Theorem~\ref{thm:strong}.
+
+\begin{corollary}\label{cor:cvx}
+If $I^{\ps}=\emptyset$, then $J^{\ps}_k\equiv0$, $g^{\ps}_k\equiv0$, and $\mu_k\equiv1$
+whenever $J^{\cvx}_k>0$, so Algorithm~\ref{alg:dtap} reduces to
+$x^{k+1}=P_K(x^k-\eta^{\cvx}_k g^{\cvx}_k)$. The sequence converges strongly to a point
+$x^\infty\in\Omega=\{x\in K:F_i(x)\le b_i\text{ for all }i\in I^{\cvx}\}$.
+\end{corollary}
+\begin{proof}
+Here $d_k=\eta^{\cvx}_k g^{\cvx}_k$, and~\eqref{eq:p1} directly gives
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}+(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2$.
+If $\norm{g^{\cvx}_k}=0$ then $\eta^{\cvx}_k=0$, $T_k=0$, and the bound is
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2$. Otherwise Lemma~\ref{lem:grad-cvx} gives
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge2\Phi^{\cvx}_k$, and substituting
+$\eta^{\cvx}_k=2\rho_{\cvx}\Phi^{\cvx}_k/\norm{g^{\cvx}_k}^2$ together with
+$(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2=\eta^{\cvx}_k\cdot2\rho_{\cvx}\Phi^{\cvx}_k$ yields, after
+simplification,
+$2\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}-(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2\ge\rho_{\cvx}(2-\rho_{\cvx})(2\Phi^{\cvx}_k)^2/\norm{g^{\cvx}_k}^2=2c_0T_k$.
+Hence
+\begin{equation}\label{eq:p15}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2c_0T_k ,
+\end{equation}
+valid for all $k$. Thus $\{\norm{x^k-x^\star}^2\}$ is nonincreasing and convergent, and
+summing gives $\sum_k T_k<\infty$. As in Lemma~\ref{lem:jcvx0}, when $J^{\cvx}_k>0$ one has
+$T_k\ge(J^{\cvx}_k)^2/(m^{\cvx}L^2)$ (note the exponent $2$ here, versus $3$
+in~\eqref{eq:p12}, since no $\mu_k$ factor is present), so $\sum_k(J^{\cvx}_k)^2<\infty$ and
+$J^{\cvx}_k\to0$. Finally, $I^{\ps}=\emptyset$ makes Stage~2 of
+Theorem~\ref{thm:strong} vacuous (indeed $C\subseteq\Omega$ already
+from~\eqref{eq:p13}), and Stage~3 gives $x^k\to x^\infty\in\Omega$.
+\end{proof}
+
+\begin{corollary}\label{cor:ps}
+If $I^{\cvx}=\emptyset$, then $J^{\cvx}_k\equiv0$, $g^{\cvx}_k\equiv0$, and $\mu_k\equiv0$
+whenever $J^{\ps}_k>0$, so Algorithm~\ref{alg:dtap} reduces to
+$x^{k+1}=P_K(x^k-\eta^{\ps}_k g^{\ps}_k)$ with $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}$.
+The sequence converges strongly to a point $x^\infty\in\Omega$.
+\end{corollary}
+\begin{proof}
+Now $d_k=\eta^{\ps}_k g^{\ps}_k$ with $\norm{d_k}^2\le\gamma_k^2$, so~\eqref{eq:p1} gives
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\eta^{\ps}_k R^{x^\star}_k+\gamma_k^2$,
+which is~\eqref{eq:fejer} in this degenerate case ($T_k=0$, $1-\mu_k=1$). Since
+$R^{x^\star}_k\ge0$ (Lemma~\ref{lem:sign-ps}), $a_{k+1}\le a_k+\gamma_k^2$, and
+Lemma~\ref{lem:seq} gives convergence of $\{\norm{x^k-x^\star}^2\}$ and boundedness;
+summation gives $\sum_k\eta^{\ps}_k R^{x^\star}_k<\infty$. Stage~1 of
+Theorem~\ref{thm:strong} gives $C\subseteq K$ (the convex part being vacuous); Stage~2 with
+$\mu_k=0$ (so $1-\mu_k=1$) produces the same contradiction $\sum\eta^{\ps}_k R^{x^\star}_k=+\infty$,
+so $C\cap\Omega\ne\emptyset$; Stage~3 gives $x^k\to x^\infty\in\Omega$.
+\end{proof}
+
+
+\section{Numerical experiments}\label{sec:experiments}
+We separate predictive performance from the numerical solution of the feasibility system. The classification comparison uses eight datasets. The solver diagnostic additionally includes Movement Libras and controlled nonconvex pseudoconvex instances. These two scopes are stated separately below.
+
+\subsection{Feature-selection model}\label{sec:fs}
+We apply the normal-box NSFP to feature selection by combining criteria from the fractional-programming model of Wang et al.~\citep{wang2021fractional} and the fuzzy-rough model AFRSFCV~\citep{wang2026afrsfcv}. Let $\mathcal{X}=\{x_1,\ldots,x_n\}$ be the training samples, $A=\{a_1,\ldots,a_p\}$ the features, $X\in\R^{n\times p}$ the data matrix, and $y\in\{1,\ldots,r\}^n$ the class labels. The feature weights belong to the compact convex simplex $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. All supervised quantities below are estimated from the training data.
+
+\subsubsection{Fractional criterion and N-Fscore}\label{ssec:wang}\label{sssec:wang-inputs}\label{sssec:nfscore}
+The supervised similarity matrix $S\in\R^{p\times p}$ has entries
+\begin{equation}\label{eq:simMI}
+s_{ij}=\max\left\{0,\frac{I(Z_i;Z_j;C)}{H(Z_i)+H(Z_j)}\right\},\qquad i,j=1,\ldots,p,
+\end{equation}
+where $Z_i$ is the discretized feature $a_i$, $C$ is the class variable, and $I(Z_i;Z_j;C)=I(Z_i;C)+I(Z_j;C)-I((Z_i,Z_j);C)$. Entropy and mutual information are estimated from equal-width histograms with ten bins per feature~\citep{brown2012}. We set $s_{ij}=0$ if the denominator is zero. The redundancy matrix is
+\begin{equation}\label{eq:matrixQ}
+Q_R=S+\delta_QI_p,\qquad \delta_Q\ge-\min\{0,\lambda_{\min}(S)\},
+\end{equation}
+so $Q_R\succeq0$. The implementation uses $\delta_Q=\max\{0,-\lambda_{\min}(S)\}+10^{-10}$. Let $n_t$, $\bar a_{kt}$, and $\sigma_{kt}^2$ be the class size, mean, and population variance of feature $a_k$ in class $t$, and let $\bar a_k$ be its overall mean. The Fisher scores are
+\begin{equation}\label{eq:rhoFisher}
+\rho_k=\frac{\sum_{t=1}^r n_t(\bar a_{kt}-\bar a_k)^2}{\sum_{t=1}^r n_t\sigma_{kt}^2+\varepsilon_\rho},\qquad \varepsilon_\rho=10^{-12}.
+\end{equation}
+These scores are nonnegative. The denominator regularization prevents division by zero but does not ensure $\rho_k>0$, since the numerator can vanish.
+
+The fractional program underlying N-Fscore is
+\begin{equation}\label{eq:wangOrig}
+\min_{w\in K}\ \frac{w^{\top}Q_Rw}{\rho^{\top}w},
+\end{equation}
+assuming the denominator is positive on $K$. The numerator measures redundancy and the denominator relevance. Our N-Fscore baseline uses the projection-neural-network stage of~\citep{wang2021fractional}, with the Fisher scores in~\eqref{eq:rhoFisher}. It then applies the common selection rule~\eqref{eq:thetaRule}, instead of the source method's $k$-winners-take-all stage. Its dynamics and explicit-Euler implementation are given in Section~\ref{sssec:baselines}.
+
+\subsubsection{Fuzzy-rough criterion and AFRSFCV}\label{ssec:afrsfcv}\label{sssec:afrsfcv-inputs}\label{sssec:afrsfcv-model}
+For each class, write $D_t=\{x_i:y_i=t\}$ and $D_t(x_j)=\mathbf1_{\{y_j=t\}}$. AFRSFCV incorporates class variance into a fuzzy relation. With $a_k(x_i)=X_{ik}$, the implemented relation is
+\begin{equation}\label{eq:simRel}
+R_k(x_i,x_j)=\exp\!\left(-\frac{[a_k(x_i)-a_k(x_j)]^2}{2\widetilde\sigma_{k,y_i}^2}\right),
+\qquad \widetilde\sigma_{kt}^2=\max\{\sigma_{kt}^2,10^{-10}\}.
+\end{equation}
+The variance floor makes the formula defined when a feature is constant within a class. The fuzzy lower approximation is
+\begin{equation}\label{eq:lower}
+\underline{R_k}(D_t)(x_i)=\min_{x_j\in\mathcal{X}}\max\{1-R_k(x_i,x_j),D_t(x_j)\}.
+\end{equation}
+Its values form the matrix $\underline{R_k}(D)\in[0,1]^{n\times r}$. Let $Y_{it}=\mathbf1_{\{y_i=t\}}$ be the label matrix and define the decision matrix by
+\begin{equation}\label{eq:Pmat}
+P_{ik}=\mathbf1_{\{\argmax_{1\le t\le r}\underline{R_k}(D_t)(x_i)=y_i\}}.
+\end{equation}
+Ties are resolved by the smallest class index. Thus $P_{ik}=1$ precisely when feature $a_k$ predicts sample $x_i$ correctly under this rule.
+
+The AFRSFCV baseline~\citep{wang2026afrsfcv} minimizes
+\begin{equation}\label{eq:afrsfcvLoss}
+\begin{split}
+\min_{\tau\in\R^p}\ L(\tau)
+&=\frac12\left\|Y-\sum_{k=1}^{p}w_k(\tau)\underline{R_k}(D)\right\|_F^2\\
+&\quad+\frac{\lambda_1}{2}\|\mathbf1_n-Pw(\tau)\|^2+\frac{\lambda_2}{2}\|w(\tau)\|^2,
+\end{split}
+\end{equation}
+where $w_k(\tau)=e^{\tau_k}/\sum_{l=1}^{p}e^{\tau_l}$ ensures $w(\tau)\in K$. The three terms measure label-approximation error, incorrect-decision confidence, and Tikhonov regularization, respectively. The baseline uses gradient descent for a fixed iteration budget, followed by~\eqref{eq:thetaRule}. The gradient and update are given in Section~\ref{sssec:baselines}.
+
+\subsubsection{Feasibility and feature selection}\label{ssec:reduction}\label{ssec:selection}
+We impose separate bounds on three criteria,
+\begin{align}
+F_1(w)&=\left\|Y-\sum_{k=1}^{p}w_k\underline{R_k}(D)\right\|_F^2,\label{eq:fsF1}\\
+F_2(w)&=\|\mathbf1_n-Pw\|^2,\label{eq:fsF2}\\
+F_3(w)&=\frac{w^{\top}Q_Rw}{\rho^{\top}w},\qquad D_\rho=\{w:\rho^{\top}w>0\}.\label{eq:fsF3}
+\end{align}
+Here $F_1,F_2$ are the first two components of~\eqref{eq:afrsfcvLoss}, without their coefficients, and $F_3$ is the objective in~\eqref{eq:wangOrig}. For thresholds $b_i>0$, the resulting problem is
+\begin{equation}\label{eq:nsfp-fs}
+\text{find }w^\star\in\Omega,\qquad \Omega=\{w\in K:F_i(w)\le b_i,\ i=1,2,3\}.
+\end{equation}
+This formulation asks for simultaneous acceptability of the three criteria. It omits the Tikhonov term and does not preserve either source optimization problem or its minimizers. A feasible weight need not minimize either baseline objective.
+
+\begin{proposition}\label{prop:fs-reg}
+If $Q_R\succeq0$ and $\min_k\rho_k>0$, all three functions in~\eqref{eq:fsF1}--\eqref{eq:fsF3} are smooth and convex on an open convex neighbourhood of $K$. Consequently,~\eqref{eq:nsfp-fs} is an all-convex normal-box NSFP. It satisfies the function assumptions of Assumption~\ref{ass:standing} whenever $\Omega\ne\varnothing$.
+\end{proposition}
+\begin{proof}
+The first two functions are squared norms of affine maps. For $w\in D_\rho$ and any direction $h$, put $t=\rho^{\top}w$ and $a=\rho^{\top}h$. Direct differentiation gives
+\begin{equation}\label{eq:fsF3-curvature}
+D^2F_3(w)[h,h]=\frac2t\left(h-\frac atw\right)^{\!\top}Q_R\left(h-\frac atw\right)\ge0.
+\end{equation}
+Thus $F_3$ is convex and smooth on the open half-space $D_\rho$. Since $\rho^{\top}w\ge\min_k\rho_k>0$ for $w\in K$, this half-space contains $K$.
+\end{proof}
+
+The assignment $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$ used in the experiments is admissible because convexity implies pseudoconvexity. It treats $F_3$ conservatively and does not test a genuinely nonconvex constraint. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also available. Under the assumptions of Theorem~\ref{thm:strong}, either assignment converges to a feasible weight. Score positivity must be checked on each instance. Replacing a zero score by a positive floor changes the model and must be declared. The implementation also uses $\max\{\rho^{\top}w,10^{-15}\}$ during evaluation. This agrees with~\eqref{eq:fsF3} only where the floor is inactive. Applying the theorem to this implementation therefore requires that the floor remain inactive.
+
+Externally specified thresholds remain fixed. Training-based thresholds instead define the benchmark instance and must be shared by all solvers. Separate empirical percentiles do not ensure $\Omega\ne\varnothing$. A common point must satisfy all constraints, and checks to a numerical tolerance establish only the corresponding approximate feasibility. The threshold protocol and constraint-activity diagnostics are reported with the experiments.
+
+For every method, sort the computed weights as $w^\star_{(1)}\ge\cdots\ge w^\star_{(p)}$ and retain the first $s$ features, where
+\begin{equation}\label{eq:thetaRule}
+s=\min\left\{s'\in\{1,\ldots,p\}:\sum_{j=1}^{s'}w^\star_{(j)}\ge\theta\right\},\qquad 0<\theta<1.
+\end{equation}
+This cumulative-weight rule does not enforce a prescribed feature budget. Truncating the weights does not preserve the feasibility guarantee for the full vector.
+
+\begin{remark}\label{rem:fs-cost}
+With the precomputed matrices, evaluating $F_1,\nabla F_1$ costs $O(nrp)$, evaluating $F_2,\nabla F_2$ costs $O(np)$, and evaluating $F_3,\nabla F_3$ costs $O(p^2)$. Simplex projection costs $O(p\log p)$. A dense iteration therefore costs $O(nrp+p^2)$ operations and requires $O(nrp+p^2)$ storage, including $Q$. Preprocessing and classifier training are separate costs.
+\end{remark}
+
+\subsection{Experimental setup}\label{ssec:setup}
+The main classification study uses the eight UCI datasets~\citep{kelly2023uci} in Table~\ref{tab:datasets}. The DTAP runs reported here start at the uniform weight vector and use $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, tolerance $10^{-6}$, and a budget of $1000$ iterations. SG-const uses step $10^{-3}$. The dynamic subgradient comparison is considered separately with sampled and empirically tuned moduli in the solver diagnostic. N-Fscore uses $\varepsilon_{\mathrm{PNN}}=10^{-3}$ and $1000$ Euler grid points on $[0,0.2]$. AFRSFCV uses learning rate $10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, and $1000$ steps. The shared cumulative threshold is $\theta=0.9$.
+
+\begin{table}[htbp]
+\centering
+\caption{Datasets used for the main classification comparison. The additional Movement Libras instance is used only in the solver diagnostic.}\label{tab:datasets}
+\begin{tabular}{lrrrl}
+\toprule
+Dataset      & Samples $n$ & Features $p$ & Classes $r$ & Balance    \\
+\midrule
+Glass        & $214$       & $9$          & $6$         & Imbalanced \\
+Diabetes     & $768$       & $8$          & $2$         & Imbalanced \\
+Segmentation & $2\,310$    & $18$         & $7$         & Balanced   \\
+Abalone      & $4\,177$    & $8$          & $3$         & Balanced   \\
+Satimage     & $6\,435$    & $36$         & $6$         & Imbalanced \\
+Yeast        & $1\,484$    & $7$          & $10$        & Imbalanced \\
+Spambase     & $4\,601$    & $57$         & $2$         & Imbalanced \\
+Pendigits    & $10\,992$   & $16$         & $10$        & Balanced   \\
+\bottomrule
+\end{tabular}
+\end{table}
+\subsubsection{Baseline solvers}\label{sssec:baselines}
+The following updates specify the two baseline solvers for the models in Sections~\ref{sssec:nfscore} and~\ref{sssec:afrsfcv-model}.
+
+\paragraph*{N-Fscore: the projection neural network}
+To solve the fractional program~\eqref{eq:wangOrig}, Wang et al.~\citep{wang2021fractional} proposed a neurodynamic method coupling a projection neural network (PNN) with a $k$-winners-take-all network. The PNN is the differential system
+\begin{equation}\label{eq:pnn}
+\begin{split}\varepsilon_{\mathrm{PNN}}\frac{du}{dt}={}&-\Pi g(u)+\tfrac1p\mathbf{1}_p\\&-(I-\Pi)\bigl(u-g(u)+\nabla f((I-\Pi)g(u)+\tfrac1p\mathbf{1}_p)\bigr).\end{split}
+\end{equation}
+with output $w=g(u)$, where $g(u)=\max\{0,u\}$ is the componentwise ReLU, $\Pi=\tfrac1p\mathbf{1}_p\mathbf{1}_p^{\top}$, $\nabla f$ is the gradient of the objective in~\eqref{eq:wangOrig}, and $\varepsilon_{\mathrm{PNN}}>0$ is a time constant. We integrate~\eqref{eq:pnn} by explicit Euler on $[0,T]$ with $N_{\mathrm{step}}$ steps under a fixed budget (no stopping rule), with the fixed parameters reported in the experimental protocol, and take as weight vector the projection $P_K\bigl(g(u(T))\bigr)$ of the network output at the final time onto the simplex $K$. For a uniform comparison we use only the PNN part to obtain $w^\star$; the $k$-WTA stage is replaced by the shared cumulative-threshold rule of Section~\ref{ssec:selection}.
+
+\paragraph*{AFRSFCV: gradient and update}
+The softmax loss~\eqref{eq:afrsfcvLoss} is minimized over $\tau\in\R^p$ by gradient descent. Its gradient is
+\begin{equation}\label{eq:gradTau}
+\nabla_\tau L(\tau)=\bigl(\diag(w(\tau))-w(\tau)w(\tau)^{\top}\bigr)\nabla_w L(w(\tau)),
+\end{equation}
+with $\nabla_w L=-\mathbf{M}^{\top}(\vecop(Y)-\mathbf{M}w)+\lambda_1(P^{\top}Pw-P^{\top}\mathbf{1}_n)+\lambda_2 w$, where $\mathbf{M}\in\R^{nr\times p}$ has $k$-th column $\vecop(\underline{R_k}(D))$. The update $\tau^{t+1}=\tau^t-\eta\,\nabla_\tau L(\tau^t)$ runs for a fixed budget of $T$ steps; the final weight $w^\star=w(\tau^T)\in K$ feeds the shared selection rule of Section~\ref{ssec:selection}.
+
+
+
+\subsubsection{Evaluation protocol}\label{sssec:protocol}
+Each dataset uses a single stratified $80/20$ training-pool/test split
+(seed $42$). Min--max scaling is fitted once on the full training pool, not
+separately within its selection folds, and is then applied to the test data.
+Stratified folds (seed $42$) within the pool use $N_f=10$, reduced to $7$ on Glass
+and $4$ on Yeast. The fold masks use $\theta=0.9$ in~\eqref{eq:thetaRule};
+the fixed strict-majority rule retains features selected in at least
+$\lfloor N_f/2\rfloor+1$ folds. The final classifiers use the full pool with these
+voted features: RBF-SVM ($C=1$, \texttt{gamma=scale}) and $5$-NN, with the full
+feature set as a reference. Accuracy and macro one-vs-rest AUC are reported.
+
+The voted masks are computed once and then reused: the evaluation stage trains
+only the downstream classifiers on these fixed masks, with SVM probability-calibration
+seed $42$; identical masks share the same predictions. No classifier parameter or vote threshold
+is chosen from these test outcomes. The same holdouts were used when the selections
+were computed, and the threshold heuristic uses the whole-dataset sample size, dimensions
+and class counts before splitting. Hence this is an exploratory evaluation,
+not an end-to-end or nested-validation study.
+For the fold-selection matrix $Z\in\{0,1\}^{N_f\times p}$, the Nogueira index~\citep{nogueira2018}
+is computed as
+\[
+\Psi=1-\frac{p^{-1}\sum_{j=1}^{p}s_j^2}{\bar q(1-\bar q)},\quad
+s_j^2=\frac{1}{N_f-1}\sum_{b=1}^{N_f}(Z_{bj}-\bar Z_j)^2,\quad
+\bar q=\frac{1}{N_f p}\sum_{b,j}Z_{bj}.
+\]
+Here $\bar Z_j=N_f^{-1}\sum_b Z_{bj}$; the unbiased variance correction is
+$N_f/(N_f-1)$, not $p/(p-1)$.
+Since the training folds overlap, stability is reported descriptively.
+For each classifier metric, we use a two-sided signed-rank test across the
+eight datasets, omitting zero differences, assigning midranks to ties, and
+enumerating all signs of the nonzero differences; all-zero pairs have $p=1$.
+Holm adjustment covers the four DTAP--baseline comparisons separately for
+each metric. The Friedman test compares the five selection methods.
+
+\subsection{Classification results}\label{ssec:results}
+Tables~\ref{tab:nfeat}--\ref{tab:perf-summary} report selected-set size,
+stability, and predictive performance. DTAP retains $84.2\%$ of the features
+on average, including $33/36$ on Satimage and $49/57$ on Spambase.
+Its mean stability is $0.786$, compared with N-Fscore's $0.822$;
+thus the results support moderate reduction rather than uniform sparsity
+or stability superiority. AFRSFCV selects much smaller sets on several datasets,
+with lower mean accuracy under the fixed configuration.
+
+DTAP's mean accuracy is within $0.44$ percentage points of the full-feature
+reference for both classifiers. It exceeds N-Fscore and AFRSFCV by $3.12$
+and $4.83$ points on SVM accuracy, while retaining more features.
+This is a size--prediction tradeoff, not a matched-budget comparison.
+Both SG variants have exactly the same voted masks as DTAP on seven datasets;
+only Spambase differs ($48$ versus $49$ features).
+SG-dyn used the full 1000-iteration budget in 6/7 selection folds on Glass,
+7/10 on Diabetes and 10/10 on Abalone, and SG-const in 1/10 on Abalone
+(DTAP in none); the voted weights of both SG variants are the best iterates
+found within the budget. The per-dataset exceptions
+are included in Table~\ref{tab:acc}, and all five methods appear in the summary.
+Fold-wise stability can differ even when the final voted mask is identical.
+
+Table~\ref{tab:wilcoxon} reports the signed-rank tests. None of the pairwise
+comparisons rejects at $0.05$ after Holm adjustment; the SVM comparisons with
+the two base models have adjusted $p$-values between $0.0625$ and $0.0938$.
+The asymptotic Friedman tests reject equality globally, but this does not establish
+a particular pairwise superiority. All DTAP--SG pairwise $p$-values equal $1$;
+this reflects ties and limited evidence, not a statistical equivalence claim.
+These small-sample comparisons concern eight heterogeneous datasets and do not
+measure variation under repeated train/test splits.
+
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{Selected count $|A^\star|$ / Nogueira stability $\Psi$; $p$ is the original dimension. All five selection methods are shown.}\label{tab:nfeat}
+\begin{tabular}{lrrrrrr}
+\toprule
+Dataset & $p$ & N-Fscore & AFRSFCV & DTAP & SG-const & SG-dyn \\
+\midrule
+Glass & $9$ & $7/0.816$ & $7/0.609$ & $7/0.633$ & $7/0.633$ & $7/0.633$ \\
+Diabetes & $8$ & $7/0.290$ & $3/0.810$ & $7/0.707$ & $7/0.707$ & $7/0.707$ \\
+Segmentation & $18$ & $8/0.885$ & $2/1.000$ & $16/0.800$ & $16/0.888$ & $16/0.888$ \\
+Abalone & $8$ & $4/0.950$ & $2/1.000$ & $5/1.000$ & $5/1.000$ & $5/0.870$ \\
+Satimage & $36$ & $10/0.871$ & $3/0.685$ & $33/0.563$ & $33/0.563$ & $33/0.563$ \\
+Yeast & $7$ & $6/1.000$ & $5/1.000$ & $6/0.757$ & $6/0.757$ & $6/0.757$ \\
+Spambase & $57$ & $26/0.910$ & $4/0.885$ & $49/0.832$ & $48/0.851$ & $48/0.851$ \\
+Pendigits & $16$ & $13/0.854$ & $12/0.063$ & $15/1.000$ & $15/1.000$ & $15/1.000$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{Per-dataset accuracy (\%) / macro one-vs-rest AUC on the single holdout. Equal voted masks reuse the same predictions; the SG exceptions are stated below.}\label{tab:acc}
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & Classifier & Full & N-Fscore & AFRSFCV & DTAP \\
+\midrule
+Glass & SVM & $76.74/0.9222$ & $69.77/0.9073$ & $72.09/0.9174$ & $72.09/0.9174$ \\
+ & $5$-NN & $72.09/0.9097$ & $74.42/0.8933$ & $69.77/0.9371$ & $69.77/0.9371$ \\
+Diabetes & SVM & $74.68/0.8089$ & $71.43/0.7957$ & $65.58/0.6617$ & $74.68/0.8098$ \\
+ & $5$-NN & $71.43/0.7356$ & $70.78/0.7154$ & $67.53/0.7145$ & $73.38/0.7766$ \\
+Segmentation & SVM & $93.29/0.9936$ & $80.52/0.9714$ & $78.79/0.9668$ & $93.29/0.9940$ \\
+ & $5$-NN & $94.37/0.9880$ & $87.01/0.9801$ & $86.58/0.9646$ & $94.59/0.9897$ \\
+Abalone & SVM & $61.60/0.8102$ & $61.36/0.8065$ & $62.56/0.8114$ & $62.68/0.8123$ \\
+ & $5$-NN & $59.81/0.7742$ & $61.00/0.7605$ & $58.73/0.7752$ & $60.29/0.7695$ \\
+Satimage & SVM & $89.12/0.9796$ & $87.10/0.9756$ & $80.42/0.9611$ & $89.12/0.9797$ \\
+ & $5$-NN & $91.14/0.9792$ & $87.80/0.9705$ & $80.96/0.9306$ & $91.22/0.9766$ \\
+Yeast & SVM & $58.25/0.8561$ & $58.92/0.8241$ & $57.91/0.8207$ & $58.59/0.8426$ \\
+ & $5$-NN & $51.52/0.7667$ & $51.52/0.7763$ & $51.52/0.7681$ & $51.52/0.7585$ \\
+Spambase & SVM & $92.07/0.9662$ & $88.38/0.9392$ & $87.62/0.9155$ & $91.97/0.9616$ \\
+ & $5$-NN & $90.34/0.9443$ & $85.78/0.9214$ & $88.49/0.9206$ & $89.25/0.9437$ \\
+Pendigits & SVM & $99.09/0.9995$ & $98.95/0.9996$ & $97.77/0.9996$ & $98.95/0.9995$ \\
+ & $5$-NN & $98.95/0.9982$ & $98.64/0.9982$ & $97.73/0.9965$ & $99.05/0.9987$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.97\textwidth}\footnotesize Both SG variants equal DTAP exactly on the other seven datasets. On Spambase, both give $91.86/0.9628$ (SVM) and $89.14/0.9441$ ($5$-NN). \end{minipage}
+\end{table}
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{Unweighted mean classification performance over the eight classification datasets. All five selection methods and the full-feature reference are included.}\label{tab:perf-summary}
+\begin{tabular}{lrrrr}
+\toprule
+Method & SVM accuracy & $5$-NN accuracy & SVM AUC & $5$-NN AUC \\
+\midrule
+Full & $80.61$ & $78.71$ & $0.9170$ & $0.8870$ \\
+N-Fscore & $77.05$ & $77.12$ & $0.9024$ & $0.8770$ \\
+AFRSFCV & $75.34$ & $75.16$ & $0.8818$ & $0.8759$ \\
+DTAP & $80.17$ & $78.63$ & $0.9146$ & $0.8938$ \\
+SG-const & $80.16$ & $78.62$ & $0.9148$ & $0.8939$ \\
+SG-dyn & $80.16$ & $78.62$ & $0.9148$ & $0.8939$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+\begin{table}[htbp]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{DTAP versus each baseline: raw / Holm-adjusted signed-rank $p$-values. Each metric has four comparisons over eight datasets. The last column gives the tie-corrected Friedman asymptotic $p$-value for all five methods.}\label{tab:wilcoxon}
+\begin{tabular}{lrrrrr}
+\toprule
+Metric & N-Fscore & AFRSFCV & SG-const & SG-dyn & Friedman \\
+\midrule
+Accuracy, SVM & $0.0312/0.0938$ & $0.0156/0.0625$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0005$ \\
+Accuracy, $5$-NN & $0.3750/1.0000$ & $0.0312/0.1250$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0057$ \\
+AUC, SVM & $0.0156/0.0625$ & $0.0312/0.0938$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0055$ \\
+AUC, $5$-NN & $0.0781/0.3125$ & $0.1562/0.4688$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0435$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\subsection{Constraint activity and a tuned subgradient comparison}
+\label{ssec:feasibility-audit}
+
+The percentile calibration defines experimental thresholds; it does not
+guarantee that their sublevel sets intersect. The sampling pool contains
+$3\,000$ Dirichlet points and all simplex vertices. The heuristic chooses
+percentile levels from the sample size, the feature dimension, the number of
+classes and the class-imbalance ratio; the exact
+levels and thresholds are recorded in the supplementary metadata. In an
+application with prescribed thresholds, these values are inputs, and consistency remains an
+assumption. For the full-data instances below, saved numerical witnesses
+satisfy all three inequalities strictly under an independent evaluation;
+the smallest slack is $4.33\times10^{-4}$. This numerical check is distinct
+from an exact feasibility certificate. All Fisher coordinates are positive
+on these instances, with minimum $5.99\times10^{-5}$.
+
+We measure the frequency of $F_3(w^k)-b_3>10^{-6}$ over all evaluated
+points, including the terminating point. This measures violation along the
+trajectory, rather than whether the constraint is binding at its limit.
+Table~\ref{tab:activation-tuning} shows that the third track is inactive
+on seven of the eight standard-start runs for the classification datasets and active at only one
+of the $48$ evaluated points on Abalone. Moreover, the quadratic-over-linear
+function $F_3$ is convex when $Q_R\succeq0$ and $\rho^\top w>0$.
+These feature-selection instances therefore test a convex subclass and do
+not demonstrate a need for the nonconvex extension. We include the valid
+all-convex comparator, which assigns all three constraints to the convex
+track. Movement Libras is an additional solver robustness case, separate
+from the eight-dataset classification study.
+
+\paragraph*{Protocol and tuning cost.}
+These are optimization-only tests on full-data feasibility instances.
+They use $J\le10^{-6}$, at most $1\,000$ evaluated points, and identical
+starting points across methods. SG-const uses $\nu_k=10^{-3}$. For SG-dyn,
+$\widehat L$ is the largest gradient norm at $500$ sampled points.
+The subgradient implementation follows the most-violated-constraint
+strategy of~\citep{hu2022quasi}. For $D_k=\argmax_i v_i(x^k)$ it uses
+\[
+x^{k+1}=P_K(x^k-\nu_k\bar h_k),\qquad
+\bar h_k=\frac1{|D_k|}\sum_{i\in D_k}
+\frac{\nabla F_i(x^k)}{\|\nabla F_i(x^k)\|},
+\]
+where $\nu_k=10^{-3}$ for SG-const and $\nu_k=J(x^k)/L$ for SG-dyn.
+The averaging specifies how ties are handled.
+The tuned variant selects $L=c\widehat L$ from the manually specified grid
+$c\in\{10^{-3},10^{-2.5},\ldots,10^1\}$ using three random starting
+points (seeds $1101$--$1103$). Selection first maximizes the number of
+successful runs, then minimizes total evaluations, then total best residual.
+Evaluation uses the standard start and three different random starts
+(seeds $2101$--$2103$). The feature starts are Dirichlet samples.
+Only starting points are held out: tuning and evaluation use the same
+full-data instance, and no classification score is used. Neither
+$\widehat L$ nor the tuned value is a certified global H\"older modulus.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{Optimization evaluations from the uniform simplex start.
+AC denotes the all-convex comparator; sampled and tuned refer to SG-dyn.
+$\dagger$ means the tolerance was not reached within the budget.
+The last column gives the DTAP third-constraint violation count divided
+by its number of evaluated points.}
+\label{tab:activation-tuning}
+\begin{tabular}{@{}lrrrrrl@{}}
+\toprule
+Dataset & DTAP & AC & SG-const & Sampled & Tuned & $F_3$ activity\\
+\midrule
+Glass        & 89 & 89 & 520 & $1000^\dagger$ & 100 & $0/89$\\
+Diabetes     & 14 & 14 & 350 & $1000^\dagger$ & 51 & $0/14$\\
+Segmentation & 3 & 3 & 124 & 170 & 3 & $0/3$\\
+Abalone      & 48 & 48 & 638 & $1000^\dagger$ & 3 & $1/48$\\
+Satimage     & 2 & 2 & 60 & 102 & 2 & $0/2$\\
+Yeast        & 4 & 4 & 324 & 305 & 3 & $0/4$\\
+Spambase     & 5 & 5 & 93 & 295 & 56 & $0/5$\\
+Pendigits    & 2 & 2 & 49 & 10 & 31 & $0/2$\\
+\midrule
+Movement Libras & 637 & 637 & 62 & $1000^\dagger$ & 144 & $0/637$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Whenever $F_3(w^k)\le b_3$ along a run, the pseudoconvex track is empty,
+$\mu_k=1$ and DTAP coincides step by step with the all-convex comparator;
+on the eight instances with zero $F_3$ activity, the identical DTAP and AC
+columns reflect this identity. On Abalone, $F_3$ is violated only at the uniform
+start ($1/48$), where $J^{\ps}_0\approx1.56\times10^{-3}$ is negligible against
+$J^{\cvx}_0\approx366.3$, so $1-\mu_0\approx4.27\times10^{-6}$; the values of $J$
+along the two trajectories differ by at most $3.18\times10^{-5}$ relative to AC,
+and both runs stop after $48$ evaluated points. The columns
+are therefore not a comparison of the two assignments, whose success counts
+differ only from the random starts ($26/36$ versus $36/36$).
+
+Tuning raises SG-dyn's standard-start success count from $5/9$ to $9/9$.
+It can outperform DTAP, for example on Abalone, and SG-const is faster
+on Movement Libras. Across all four starts on all nine feature instances,
+the success counts are $26/36$ for DTAP, $36/36$ for the all-convex
+comparator, $33/36$ for SG-const, $15/36$ for sampled SG-dyn, and $28/36$
+for tuned SG-dyn. A balanced DTAP variant also obtains $26/36$; it assigns
+equal weights when both tracks are nonzero and full weight to the sole
+nonzero track. Thus these tests do not establish a uniform advantage of
+residual-share weighting or robustness to initialization.
+
+The nine feature-instance searches required $179\,744$ optimization
+evaluations and $10.80$ seconds of tuning solver time in total. These costs
+are additional to Table~\ref{tab:activation-tuning}; DTAP was not tuned.
+Initial modulus sampling, preprocessing and search overhead are excluded
+from this solver-time total. The supplementary records give the cost of
+each search separately.
+
+\paragraph*{A genuinely nonconvex pseudoconvex constraint.}
+To exercise the third track directly, consider $K=[-2,2]^d$ and
+\begin{equation}\label{eq:logball-test}
+\begin{aligned}
+ F_1(x)&=\|x+e_1\|^2\le1,\qquad
+ F_2(x)=\|x-e_2\|^2\le\tfrac94,\\
+ F_3(x)&=\kappa\log(1+\|x-e_1\|^2)\le \kappa\log3.
+\end{aligned}
+\end{equation}
+Here $d\in\{2,10,50\}$ and $\kappa\in\{0.3,1,3\}$ give nine configurations.
+The third function is pseudoconvex: it is an increasing differentiable
+transform, with positive derivative, of a convex quadratic. It is not
+convex, since its radial Hessian eigenvalue is
+$2\kappa(1-r^2)/(1+r^2)^2<0$ for $r=\|x-e_1\|>1$.
+The exact witness $x=-e_1/10$ has positive slacks
+$19/100$, $31/25$, and $\kappa\log(300/221)$.
+The standard start is $1.5\mathbf1$; the three evaluation starts and three
+tuning starts are drawn uniformly from $[0.8,1.8]^d$ with the seeds above
+(NumPy \texttt{default\_rng}).
+For modulus sampling we use $500$ uniform points in $K$ (seed $42$).
+SG-const uses the same step $\nu_k=10^{-3}$ as on the feature instances. Tuned
+SG-const uses a constant step $\nu$ selected from the grid
+$\{10^{-3},10^{-2.5},\ldots,10^1\}$ with the tuning starts and selection rule of
+tuned SG-dyn; it selects $\nu=10^{-0.5}$ in all nine configurations. The balanced
+variant is the one described above.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\caption{Nonconvex pseudoconvex tests, grouped by $\kappa$.
+Each entry is successes out of $12$ runs, followed by the median number
+of evaluated points in parentheses, including capped runs. Each group
+contains all three dimensions and four starts. Tuned SG-const uses the step
+selected as described in the text.}
+\label{tab:synthetic-scale}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+$\kappa$ & DTAP & Balanced & SG-const & Tuned SG-const & Sampled SG-dyn & Tuned SG-dyn\\
+\midrule
+$0.3$ & $0\ (1000)$ & $0\ (1000)$ & $0\ (1000)$ & $12\ (15)$ & $8\ (725.5)$ & $12\ (142.5)$\\
+$1$   & $12\ (70)$ & $12\ (395.5)$ & $0\ (1000)$ & $12\ (15)$ & $12\ (301.5)$ & $12\ (44)$\\
+$3$   & $12\ (4)$ & $12\ (4)$ & $0\ (1000)$ & $12\ (16)$ & $12\ (167)$ & $12\ (11)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+DTAP encounters a third-constraint violation in every one of these $36$
+runs. Its pooled activity is $12\,835/12\,877$ evaluated points.
+Nevertheless, it reaches the tolerance in only $24/36$ runs, compared
+with $32/36$ for sampled SG-dyn, $36/36$ for tuned SG-dyn and $36/36$ for tuned
+SG-const (Table~\ref{tab:synthetic-scale}).
+Tuned SG-const reaches the tolerance in every run with a median of $15$--$16$
+evaluated points, fewer than any other method at $\kappa=0.3$ and $\kappa=1$; at
+$\kappa=3$, DTAP and the balanced variant need a median of $4$. These counts
+exclude the $147\,331$ evaluations of its tuning search.
+With $\nu_k=10^{-3}$, SG-const moves at most $999\times10^{-3}=0.999$ from its start
+within the budget, whereas every start lies at distance at least $1.11$ from
+$\Omega$; its zero counts are therefore fixed by the step size and the budget.
+For $\kappa\le1$ the convex track is satisfied from the second evaluated point on,
+so DTAP then follows the single-track iteration of Corollary~\ref{cor:ps}; both tracks are
+violated simultaneously at only $32$ of these $12\,877$ evaluated points.
+All DTAP failures occur at $\kappa=0.3$. Changing $\kappa$ leaves the feasible set
+unchanged, but $v_3$ and $\nabla F_3$ both scale with $\kappa$, so when
+$\|g^{\ps}_k\|\le1$ the pseudoconvex step $(1-\mu_k)\gamma_k g^{\ps}_k$ scales with
+$\gamma_k\kappa^2$. Table~\ref{tab:dtap-sweep} changes one DTAP parameter at a time
+for $\kappa\in\{0.3,1\}$. With $\gamma_k=a(k+0.5)^{-0.55}$, $a=10$ and $a=100$ give
+$12/12$ successes at $\kappa=0.3$; $\rho_{\cvx}=1$ gives $4/12$, all with $d=2$;
+$\delta=10^{-1}$ reproduces the baseline iterates exactly (Remark~\ref{rem:delta-role}); the
+faster-decaying steps $s=0.75$ and $s=1$ give no success at $\kappa=0.3$, and
+$s=1$ also fails in all $12$ runs at $\kappa=1$. The failures at $\kappa=0.3$ are
+therefore consistent with a diminishing step that is too small for this
+constraint scale, rather than with a change in feasibility. These tests vary
+one parameter at a time on one problem family and do not identify a setting
+that is best in general.
+The synthetic tuning searches consumed $188\,295$ optimization evaluations and
+$10.98$ seconds of solver time for SG-dyn, and $147\,331$ evaluations and $8.27$
+seconds for SG-const, with the same exclusions as above, in the environment
+stated below. The experiments support neither
+universal speed superiority nor a finite-budget robustness claim.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\caption{DTAP on~\eqref{eq:logball-test} with one parameter changed at a time,
+$\gamma_k=a(k+0.5)^{-s}$. The baseline $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $a=1$,
+$s=0.55$ is the DTAP column of Table~\ref{tab:synthetic-scale}. Each entry is
+successes out of $12$ runs (three dimensions, four starts), followed by the
+median number of evaluated points in parentheses, including capped runs.}
+\label{tab:dtap-sweep}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Setting & $\kappa=0.3$ & $\kappa=1$\\
+\midrule
+Baseline & $0\ (1000)$ & $12\ (70)$\\
+$\rho_{\cvx}=1$ & $4\ (1000)$ & $12\ (223.5)$\\
+$\delta=10^{-1}$ & $0\ (1000)$ & $12\ (70)$\\
+$a=10$ & $12\ (77)$ & $12\ (6)$\\
+$a=100$ & $12\ (6)$ & $12\ (48)$\\
+$s=0.75$ & $0\ (1000)$ & $12\ (374)$\\
+$s=1$ & $0\ (1000)$ & $0\ (1000)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph*{Reproducibility.}
+The feature-selection results were saved with Python~3.11.7 and NumPy~1.26.4
+on Windows, with one BLAS/OpenMP thread requested. The feature oracles use algebraically
+compressed quadratic forms; checked differences from the original
+values and gradients are at most $1.82\times10^{-12}$ and
+$1.10\times10^{-11}$, respectively. The solver times reported for the feature instances refer
+to this compressed implementation. The accompanying package contains only the uncompressed
+oracles; it reproduces the evaluation counts, while the reported solver times are those of
+the original compressed implementation. Tables~\ref{tab:synthetic-scale}
+and~\ref{tab:dtap-sweep} and the synthetic tuning costs were produced with
+Python~3.13.4 and NumPy~2.1.3 on Windows with the default number of BLAS
+threads; their counts are deterministic, and their solver times are single
+measurements on that machine. In this environment the package also
+reproduces exactly every numerical entry of Tables~\ref{tab:datasets}--\ref{tab:wilcoxon}
+(Tables~\ref{tab:perf-summary} and~\ref{tab:wilcoxon} from unrounded scores) and of
+Table~\ref{tab:activation-tuning}, and the counts quoted in Sections~\ref{ssec:results}
+and~\ref{ssec:feasibility-audit}.
+The supplementary scripts, raw trajectories, tuning records, witnesses,
+source hashes and validation instructions accompany the results.
+
+\section{Conclusion}\label{sec:conclusion}
+We studied normal-box nonlinear split feasibility with convex and pseudoconvex component functions. DTAP combines a residual-scaled convex step with a safeguarded pseudoconvex step and projects onto the base set. Its whole-sequence convergence follows from quasi-Fej\'er descent and the existence of one feasible cluster point. No prescribed regularity modulus is needed to execute the method, but continuity, consistency, and local bounds remain essential to the analysis. The proportional weight is an admissible residual-responsive choice, not an optimality result. The feature-selection criterion with a positive-semidefinite quadratic numerator and positive affine denominator is convex, so that application illustrates a convex special case. The activity measurements and controlled nonconvex tests distinguish these settings. Tuned subgradient methods can match or outperform DTAP, and initialization and scaling affect performance within a finite budget. The best-iterate bound in Remark~\ref{rem:rate} concerns only the convex-track residual. Rates for the full residual and performance guarantees under additional geometric assumptions remain open.
+
+\section*{Declaration of competing interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+\section*{Funding}
+The authors received no specific funding for this work.
+\section*{Declaration of generative AI use}
+OpenAI Codex was used during revision for language editing.
+\section*{Data availability}
+The datasets are available from the UCI Machine Learning Repository~\citep{kelly2023uci}. The accompanying reproducibility package contains the scripts, recorded numerical outputs, and instructions for regenerating the reported tables.
+
+\section*{ORCID}
+\noindent Nguyen Van The~\raisebox{-0.1ex}{\textit{https://orcid.org/0009-0004-6548-420X}}\\
+Tran Ngoc Thang~\raisebox{-0.1ex}{\textit{https://orcid.org/0009-0000-9549-5736}}\\
+Nguyen Hong Son~\raisebox{-0.1ex}{\textit{https://orcid.org/0009-0006-3106-8296}}
+
+
+\begin{thebibliography}{99}
+\newcommand{\bibdoi}[1]{doi: {\urlstyle{rm}\url{#1}}}
+
+\bibitem[Bauschke and Combettes(2011)]{bauschke2011}
+H.~H. Bauschke and P.~L. Combettes.
+\newblock \emph{Convex Analysis and Monotone Operator Theory in {H}ilbert Spaces}.
+\newblock CMS Books in Mathematics. Springer, New York, 2011.
+\newblock \bibdoi{10.1007/978-1-4419-9467-7}.
+
+\bibitem[Brown et~al.(2012)Brown, Pocock, Zhao, and Luj{\'a}n]{brown2012}
+G.~Brown, A.~Pocock, M.-J.~Zhao, and M.~Luj{\'a}n.
+\newblock Conditional likelihood maximization: a unifying framework for information theoretic feature selection.
+\newblock \emph{Journal of Machine Learning Research}, 13:\penalty0 27--66, 2012.
+
+\bibitem[Byrne(2002)]{byrne2002}
+C.~Byrne.
+\newblock Iterative oblique projection onto convex sets and the split feasibility problem.
+\newblock \emph{Inverse Problems}, 18\penalty0 (2):\penalty0 441--453, 2002.
+\newblock \bibdoi{10.1088/0266-5611/18/2/310}.
+
+\bibitem[Censor and Elfving(1994)]{censor1994}
+Y.~Censor and T.~Elfving.
+\newblock A multiprojection algorithm using {B}regman projections in a product space.
+\newblock \emph{Numerical Algorithms}, 8:\penalty0 221--239, 1994.
+\newblock \bibdoi{10.1007/BF02142692}.
+
+\bibitem[Combettes(2001)]{combettes2001quasifejer}
+P.~L. Combettes.
+\newblock Quasi-Fej{\'e}rian analysis of some optimization algorithms.
+\newblock In D.~Butnariu, Y.~Censor, and S.~Reich, editors, \emph{Inherently Parallel Algorithms in Feasibility and Optimization and Their Applications}, volume~8 of \emph{Studies in Computational Mathematics}, pages 115--152. Elsevier, Amsterdam, 2001.
+\newblock \bibdoi{10.1016/S1570-579X(01)80010-0}.
+
+\bibitem[Condat(2016)]{condat2016simplex}
+L.~Condat.
+\newblock Fast projection onto the simplex and the $\ell_1$ ball.
+\newblock \emph{Mathematical Programming}, 158\penalty0 (1):\penalty0 575--585, 2016.
+\newblock \bibdoi{10.1007/s10107-015-0946-6}.
+
+\bibitem[Hu et~al.(2022)Hu, Li, Yu, and Yip]{hu2022quasi}
+Y.~Hu, G.~Li, C.~K.~W. Yu, and T.~L. Yip.
+\newblock Quasi-convex feasibility problems: Subgradient methods and convergence rates.
+\newblock \emph{European Journal of Operational Research}, 298\penalty0 (1):\penalty0 45--58, 2022.
+\newblock \bibdoi{10.1016/j.ejor.2021.09.029}.
+
+\bibitem[Kelly et~al.(2023)Kelly, Longjohn, and Nottingham]{kelly2023uci}
+M.~Kelly, R.~Longjohn, and K.~Nottingham.
+\newblock The {UCI} machine learning repository.
+\newblock \url{https://archive.ics.uci.edu}, 2023.
+\newblock Accessed 2026.
+
+\bibitem[Li et~al.(2013)Li, Han, and Zhang]{li2013nsfp}
+Z.~Li, D.~Han, and W.~Zhang.
+\newblock A self-adaptive projection-type method for nonlinear multiple-sets split feasibility problem.
+\newblock \emph{Inverse Problems in Science and Engineering}, 21\penalty0 (1):\penalty0 155--170, 2013.
+\newblock \bibdoi{10.1080/17415977.2012.677445}.
+
+\bibitem[L{\'o}pez et~al.(2012)L{\'o}pez, Mart{\'\i}n-M{\'a}rquez, Wang, and Xu]{lopez2012}
+G.~L{\'o}pez, V.~Mart{\'\i}n-M{\'a}rquez, F.~Wang, and H.-K. Xu.
+\newblock Solving the split feasibility problem without prior knowledge of matrix norms.
+\newblock \emph{Inverse Problems}, 28\penalty0 (8):\penalty0 085004, 2012.
+\newblock \bibdoi{10.1088/0266-5611/28/8/085004}.
+
+\bibitem[Mangasarian(1965)]{mangasarian1965}
+O.~L. Mangasarian.
+\newblock Pseudo-convex functions.
+\newblock \emph{SIAM Journal on Control}, 3\penalty0 (2):\penalty0 281--290, 1965.
+\newblock \bibdoi{10.1137/0303020}.
+
+\bibitem[Mangasarian(1994)]{mangasarian1994}
+O.~L. Mangasarian.
+\newblock \emph{Nonlinear Programming}.
+\newblock Classics in Applied Mathematics. SIAM, Philadelphia, 1994.
+\newblock \bibdoi{10.1137/1.9781611971255}.
+
+\bibitem[Nogueira et~al.(2018)Nogueira, Sechidis, and Brown]{nogueira2018}
+S.~Nogueira, K.~Sechidis, and G.~Brown.
+\newblock On the stability of feature selection algorithms.
+\newblock \emph{Journal of Machine Learning Research}, 18\penalty0 (174):\penalty0 1--54, 2018.
+
+\bibitem[Polyak(1969)]{polyak1969}
+B.~T. Polyak.
+\newblock Minimization of unsmooth functionals.
+\newblock \emph{USSR Computational Mathematics and Mathematical Physics}, 9\penalty0 (3):\penalty0 14--29, 1969.
+\newblock \bibdoi{10.1016/0041-5553(69)90061-5}.
+
+\bibitem[Wang et~al.(2021)Wang, Li, and Wang]{wang2021fractional}
+Y.~Wang, X.~Li, and J.~Wang.
+\newblock A neurodynamic optimization approach to supervised feature selection via fractional programming.
+\newblock \emph{Neural Networks}, 136:\penalty0 194--206, 2021.
+\newblock \bibdoi{10.1016/j.neunet.2021.01.004}.
+
+\bibitem[Wang et~al.(2026)Wang, Zhang, An, and Deng]{wang2026afrsfcv}
+C.~Wang, Y.~Zhang, S.~An, and T.~Deng.
+\newblock Adaptive feature selection based on fuzzy rough set fusion model with class variance.
+\newblock \emph{Pattern Recognition}, 170:\penalty0 112014, 2026.
+\newblock \bibdoi{10.1016/j.patcog.2025.112014}.
+
+\bibitem[Yang(2004)]{yang2004}
+Q.~Yang.
+\newblock The relaxed {CQ} algorithm solving the split feasibility problem.
+\newblock \emph{Inverse Problems}, 20\penalty0 (4):\penalty0 1261--1266, 2004.
+\newblock \bibdoi{10.1088/0266-5611/20/4/014}.
+
+\bibitem[Yang et~al.(2014)Yang, Yang, and Zhang]{yang2014alternating}
+Y.~Yang, Q.~Yang, and S.~Zhang.
+\newblock Modified alternating direction methods for the modified multiple-sets split feasibility problems.
+\newblock \emph{Journal of Optimization Theory and Applications}, 163\penalty0 (1):\penalty0 130--147, 2014.
+\newblock \bibdoi{10.1007/s10957-013-0502-6}.
+
+\bibitem[Yen et~al.(2019)Yen, Huyen, and Muu]{yen2019}
+L.~H. Yen, N.~T.~T. Huyen, and L.~D. Muu.
+\newblock A subgradient algorithm for a class of nonlinear split feasibility problems: application to jointly constrained Nash equilibrium models.
+\newblock \emph{Journal of Global Optimization}, 73:\penalty0 849--868, 2019.
+\newblock \bibdoi{10.1007/s10898-018-00735-0}.
+
+\bibitem[Zhang et~al.(2009)Zhang, Han, and Li]{zhang2009adaptive}
+W.~Zhang, D.~Han, and Z.~Li.
+\newblock A self-adaptive projection method for solving the multiple-sets split feasibility problem.
+\newblock \emph{Inverse Problems}, 25\penalty0 (11):\penalty0 115001, 2009.
+\newblock \bibdoi{10.1088/0266-5611/25/11/115001}.
+
+\bibitem[Zhang et~al.(2012)Zhang, Han, and Yuan]{zhang2012simultaneous}
+W.~Zhang, D.~Han, and X.~Yuan.
+\newblock An efficient simultaneous method for the constrained multiple-sets split feasibility problem.
+\newblock \emph{Computational Optimization and Applications}, 52\penalty0 (3):\penalty0 825--843, 2012.
+\newblock \bibdoi{10.1007/s10589-011-9429-8}.
+
+\bibitem[Zhao and Yang(2011)]{zhao2011adaptive}
+J.~Zhao and Q.~Yang.
+\newblock Self-adaptive projection methods for the multiple-sets split feasibility problem.
+\newblock \emph{Inverse Problems}, 27\penalty0 (3):\penalty0 035009, 2011.
+\newblock \bibdoi{10.1088/0266-5611/27/3/035009}.
+
+\end{thebibliography}
+
+\end{document}
