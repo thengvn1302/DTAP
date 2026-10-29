@@ -5,14 +5,23 @@ probability simplex and solved by **DTAP** (Dual-Track Adaptive Projection).
 Three box constraints are taken directly from two published models:
 
 ```
-F1(w) = ||I - sum_k w_k R_k(D)||^2   (convex,        Model II — AFRSFCV)
-F2(w) = ||1 - P w||^2                (convex,        Model II — AFRSFCV)
-F3(w) = (w^T G w) / (rho^T w)        (pseudoconvex,  Model I  — fractional)
+F1(w) = ||I - sum_k w_k R_k(D)||^2   (convex,  Model II — AFRSFCV)
+F2(w) = ||1 - P w||^2                (convex,  Model II — AFRSFCV)
+F3(w) = (w^T G w) / (rho^T w)        (convex,  Model I  — fractional)
 ```
 
-DTAP runs a Polyak step on the convex track {F1, F2}, a safe diminishing step on
-the pseudoconvex track {F3}, mixes them by their violation share, and projects
-onto the simplex — needing no Lipschitz constant and no projection onto Omega.
+All three functions are convex on the simplex when G is positive semidefinite and
+every Fisher score is positive (Proposition 4.1 of the paper), so the feature-selection
+instance is an all-convex normal-box NSFP. The experiments still place F3 on the
+pseudoconvex track (I_cvx = {1, 2}, I_ps = {3}); this assignment is admissible because
+convex functions are pseudoconvex, and the all-convex assignment {1, 2, 3} is run as the
+comparator AC. A genuinely nonconvex pseudoconvex constraint is exercised only by the
+test problem (47).
+
+DTAP runs a Polyak step on the convex track, a safeguarded diminishing step on the
+pseudoconvex track, mixes them by their violation share, and projects onto the
+simplex. It needs no prescribed Lipschitz constant or Holder modulus and no
+projection onto Omega.
 
 ## Layout
 

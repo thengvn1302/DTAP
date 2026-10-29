@@ -1,0 +1,434 @@
+% Draft response to the referee (OMS submission, DTAP manuscript).
+% Build: ./build_response.sh  (compiles the revised manuscript first, so that every
+% section, table, equation and page number below is read from its .aux file).
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,xcolor,enumitem,xr}
+\usepackage[hidelinks]{hyperref}
+\externaldocument[ms-]{newref/new}
+
+% Internal cross-references to the change inventory of DTAP_changes_marked.pdf.
+% Remove them before sending:  \renewcommand{\internal}[1]{}
+\newcommand{\internal}[1]{{\color{gray}\footnotesize\,[#1]}}
+% Notes for the co-authors (Vietnamese); remove before sending.
+\newcommand{\confirm}[1]{{\color{red!70!black}\footnotesize\,[CẦN XÁC NHẬN: #1]}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cvx}{\mathrm{cvx}}
+\newcommand{\secref}[1]{Section~\ref{ms-#1}}
+\newcommand{\pg}[1]{p.~\pageref{ms-#1}}
+\newenvironment{comment}[1]{\par\medskip\noindent\textbf{#1}\par\nopagebreak\begin{quote}\itshape}{\end{quote}}
+\newenvironment{response}{\par\noindent\textbf{Response.}\ }{\par}
+\newcommand{\changes}{\par\noindent\textbf{Changes.}\ }
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Response to the Referee}\\[4pt]
+\emph{A Dual-Track Adaptive Projection Algorithm for a Nonlinear Split Feasibility Problem\\ with Mixed Convex--Pseudoconvex Constraints}\\[2pt]
+Nguyen Van The, Tran Ngoc Thang and Nguyen Hong Son
+\end{center}
+
+\noindent Dear Editor, dear Referee,
+
+\medskip
+\noindent We thank the referee for the careful reading of our manuscript and for the
+constructive comments. We have revised the paper substantially. Below, the referee's
+comments are reproduced in italics, followed by our response and the corresponding
+changes. Section, equation, table and page numbers refer to the revised manuscript.
+A version of the manuscript with all changes marked (additions highlighted, deletions
+struck through) is provided separately.
+
+\subsection*{Summary of the main changes}
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
+\item The Introduction and the Related work section were merged into a single, shorter
+  Introduction (\secref{sec:intro}). The manuscript was shortened from 39 to 25 pages.
+\item The paper was rewritten throughout in shorter sentences. Redundant motivation,
+  research questions, lists of difficulties and several subsections were removed.
+\item The format of the references was unified, and four works on self-adaptive and
+  decomposition methods for the SFP were added. References that are no longer needed
+  after shortening were removed.
+\item The appendix was removed. The per-dataset results are now in the main text
+  (Table~\ref{ms-tab:acc}), and the baseline solvers are described in
+  \secref{sssec:baselines}.
+\item In addition to the referee's comments, we corrected and sharpened several
+  statements, revised the experimental section and added a new solver diagnostic
+  (\secref{ssec:feasibility-audit}). These changes are listed in the final section of this
+  letter.
+\end{enumerate}
+
+% =====================================================================
+\section*{Major issues}
+
+\begin{comment}{Comment M1.}
+Section 1 ``Introduction'' and Section 2 ``Related work'' are suggested to be
+reorganized. Both sections are suggested to be merged as Section 1. Furthermore, the
+Related work is unnecessary to be revisited in detail. After merging the Introduction
+and Related work, it is suggested to limit them to 4 pages. [\dots] Please shorten the
+paper as much as possible. [\dots] Maybe 25 pages is enough for this paper by removing
+redundant content and shortening long sentences.
+\end{comment}
+\begin{response}
+We agree and have followed this suggestion. The Related work section has been removed
+and its essential content condensed into the Introduction. The revised Introduction
+(\secref{sec:intro}, pp.~\pageref{ms-sec:intro}--\pageref{ms-sec:prelim}) recalls the
+$CQ$ method, self-adaptive and decomposition strategies, and the closest nonlinear
+antecedents (Li et al., Yen et al., Hu et al.) in a few short paragraphs, and it states
+three contributions. The whole paper was shortened from 39 to 25 pages.
+\end{response}
+\changes
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item Introduction rewritten and shortened; the former Section~2 (Related work,
+  including its Table~1) removed.\internal{C3--C19}
+\item Preliminaries reduced to the facts used later, without subsections
+  (\secref{sec:prelim}).\internal{C20--C28}
+\item The former Section~5 (feature-selection framework) condensed into
+  \secref{sec:fs} of the experiments.\internal{C61--C80}
+\item Removed: the sparse variant DTAP-S and its experiments, the runtime comparison,
+  the section ``Further analyses of robustness, fidelity, and ablation'' and the
+  ``Summary of findings''.\internal{C70, C107--C110}
+  \confirm{lý do bỏ DTAP-S và so sánh thời gian chạy --- chỉ do rút gọn, hay còn lý do khác cần nêu?}
+\item Conclusion reduced to one paragraph (\secref{sec:conclusion}).\internal{C111--C115}
+\end{itemize}
+
+\begin{comment}{Comment M2.}
+In order to make the paper more readable, the writing of the current version of the
+paper should be substantially improved. Many sentences are ambiguous. [\dots] Please
+describe the problem, algorithms, etc.\ in short sentences as much as possible. [\dots]
+\end{comment}
+\begin{response}
+We have rewritten the manuscript with this request in mind. Long sentences were split,
+ambiguous phrases were replaced or removed, and descriptive passages that did not
+support the results were deleted. In particular, the abstract, the Introduction, the
+Preliminaries, the opening paragraphs of \secref{sec:convergence} and the experimental
+section were rewritten. The names in parentheses of lemmas, propositions, remarks and
+corollaries were removed to shorten the text.
+\end{response}
+\changes Abstract;\internal{C1} \secref{sec:intro};\internal{C3--C14}
+\secref{sec:prelim};\internal{C20--C28} \secref{ssec:model-stmt}--\secref{ssec:complexity};\internal{C30--C43}
+\secref{sec:experiments};\internal{C71--C110} \secref{sec:conclusion}.\internal{C111}
+
+\begin{comment}{Comment M3.}
+The format of the references is inconsistent. Many important references are omitted for
+SFP methods. E.g., I remember the authors of [23], [35] also have some work on SFP with
+self-adaptive or decomposition methods.
+\end{comment}
+\begin{response}
+Thank you for pointing this out. We now cite the following works of the authors of
+[23] (Z.~Li, D.~Han, W.~Zhang) and [35] (Q.~Yang) on self-adaptive and decomposition
+methods for the (multiple-sets) SFP:
+\begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+\item W.~Zhang, D.~Han, Z.~Li, A self-adaptive projection method for solving the
+  multiple-sets split feasibility problem, \emph{Inverse Problems} 25 (2009) 115001;
+\item W.~Zhang, D.~Han, X.~Yuan, An efficient simultaneous method for the constrained
+  multiple-sets split feasibility problem, \emph{Comput.\ Optim.\ Appl.} 52 (2012) 825--843;
+\item J.~Zhao, Q.~Yang, Self-adaptive projection methods for the multiple-sets split
+  feasibility problem, \emph{Inverse Problems} 27 (2011) 035009;
+\item Y.~Yang, Q.~Yang, S.~Zhang, Modified alternating direction methods for the modified
+  multiple-sets split feasibility problems, \emph{J.\ Optim.\ Theory Appl.} 163 (2014) 130--147.
+\end{itemize}
+They are discussed in the first paragraph of the Introduction (\pg{sec:intro}). The
+reference list now uses one format: initials for given names, journal names in italics,
+volume, issue, pages, year and, where available, the DOI. References that were only needed for the removed
+material were deleted.
+\end{response}
+\changes First paragraph of \secref{sec:intro};\internal{C3} reference list.\internal{C121--C123}
+
+\begin{comment}{Comment M4.}
+Why do the authors present some numerical results in the Appendix?
+\end{comment}
+\begin{response}
+We agree that the numerical results belong in the main text. The appendix has been
+removed. The per-dataset accuracy and AUC values are now reported in
+Table~\ref{ms-tab:acc} (\pg{tab:acc}), and the implementation of the two baseline solvers
+is described in \secref{sssec:baselines}. The table of calibrated thresholds and the
+per-dataset runtime table were removed; the thresholds of every instance are recorded
+in the supplementary metadata of the reproducibility package.
+\end{response}
+\changes \secref{sssec:baselines};\internal{C85--C88} Table~\ref{ms-tab:acc};\internal{C100}
+appendix removed.\internal{C118--C120}
+
+% =====================================================================
+\section*{Minor issues}
+
+\begin{comment}{Comment m1.}
+page 2, line 18, what is the ``reference point''? It seems to be ambiguous.
+\end{comment}
+\begin{response}
+We meant that the self-adaptive rule of L\'opez et al.\ was the starting point of our
+step-size design. The sentence has been removed. The rule is now cited, together with
+other self-adaptive methods, in the first paragraph of the Introduction.
+\end{response}
+\changes \secref{sec:intro}, first paragraph.\internal{C3}
+
+\begin{comment}{Comment m2.}
+page 2, line 27, ``differing densities'' or ``different densities''
+\end{comment}
+\begin{response}
+``Different densities'' is the intended meaning. The sentence (the radiotherapy example)
+has been removed in the shortened Introduction.
+\end{response}
+\changes Paragraph removed.\internal{C9}
+
+\begin{comment}{Comment m3.}
+page 2, line 35, please polish the sentence ``The NSFP is not itself new''
+\end{comment}
+\begin{response}
+The sentence has been replaced by ``Nonlinear SFP and generalized convex feasibility have
+several relevant antecedents.''
+\end{response}
+\changes \secref{sec:intro}, third paragraph (\pg{sec:intro}).\internal{C5, C9}
+
+\begin{comment}{Comment m4.}
+page 2, line 39, ``active index set'' or ``active set''?
+\end{comment}
+\begin{response}
+``Active set'' is meant. The sentence has been removed. In the algorithm we use the term
+``approximate active set'' (\secref{ssec:dual-track}).
+\end{response}
+\changes Paragraph removed.\internal{C9}
+
+\begin{comment}{Comment m5.}
+page 2, lines 47-49, ``We ask instead \dots\ make precise'' the sentence is difficult for
+me to understand.
+\end{comment}
+\begin{response}
+The sentence has been removed. The relation between our function class and those of
+the closest works is now stated in short sentences in the third paragraph of the
+Introduction: Li et al.\ use a convex aggregate proximity function, which componentwise
+pseudoconvexity does not ensure, and Hu et al.\ treat quasiconvex inequalities, which
+include our class.
+\end{response}
+\changes \secref{sec:intro}.\internal{C5, C9}
+
+\begin{comment}{Comment m6.}
+page 3, lines 48-53, the sentences are too long; please use short sentences.
+\end{comment}
+\begin{response}
+This paragraph has been removed. Its main point is now stated in one short sentence:
+``We seek feasibility, rather than minimization of every component.''
+\end{response}
+\changes \secref{sec:intro}, second paragraph.\internal{C4, C11, C12}
+
+\begin{comment}{Comment m7.}
+page 3, the authors present 5 contributions of this paper. Please summarize those main
+contributions instead of describing too many details.
+\end{comment}
+\begin{response}
+The five detailed contributions have been replaced by three short items C1--C3.
+\end{response}
+\changes \secref{sec:intro}.\internal{C8, C13}
+
+\begin{comment}{Comment m8.}
+page 5, ``Rule (3) has since been extended'', please check if it is grammatically correct.
+\end{comment}
+\begin{response}
+The sentence belonged to the former Related work section, which has been removed
+(see M1).
+\end{response}
+\changes Removed.\internal{C16}
+
+\begin{comment}{Comment m9.}
+page 5, line 33, what is the meaning of ``drives their proof is for free''? ``the
+nonconvexity sits in the sets''?
+\end{comment}
+\begin{response}
+We meant that in the work of Chen et al.\ the operator is a matrix, so the subgradient
+inequality used in their proof holds without additional assumptions, and the
+nonconvexity is only in the constraint sets, not in the map. The passage was unclear and
+has been removed together with the Related work section.
+\end{response}
+\changes Removed.\internal{C16}
+
+\begin{comment}{Comment m10.}
+page 5, line 35, what is ``plain gradient inequality''?
+\end{comment}
+\begin{response}
+We meant the usual gradient inequality of a convex function,
+$f(y)\ge f(x)+\langle\nabla f(x),y-x\rangle$, as opposed to co-coercivity of the
+gradient. The passage has been removed.
+\end{response}
+\changes Removed.\internal{C16}
+
+\begin{comment}{Comment m11.}
+page 5, line 44, what is ``the closest predecessor''? Do you mean the seminal work?
+\end{comment}
+\begin{response}
+We meant the most closely related earlier work (Li et al.), not the seminal work. The
+passage has been removed. The Introduction now refers to these works as ``relevant
+antecedents''.
+\end{response}
+\changes Removed; \secref{sec:intro}.\internal{C5, C17}
+
+\begin{comment}{Comment m12.}
+page 5, line 48, ``step'' or ``step size''?
+\end{comment}
+\begin{response}
+``Step size'' was meant. The sentence has been removed with the Related work section.
+\confirm{trong bản mới vẫn còn ``residual-scaled step'', ``safeguarded diminishing step''; nếu muốn có thể thống nhất cách dùng ``step''/``step size'' trong toàn bài}
+\end{response}
+\changes Removed.\internal{C17}
+
+\begin{comment}{Comment m13.}
+page 7, line 31, dtap should be DTAP
+\end{comment}
+\begin{response}
+Corrected throughout. The acronym is now always written ``DTAP''.
+\end{response}
+\changes All occurrences.\internal{C29, C38, C39}
+
+\begin{comment}{Comment m14.}
+page 7, line 39, ``following the general framework of Combettes 10'' should be
+``following the general framework of Combettes [10]''
+\end{comment}
+\begin{response}
+Corrected. The original sentence was removed with the Related work section; the
+remaining citation now reads ``within the framework of Combettes~[\dots]''
+(\secref{ssec:bounded}).
+\end{response}
+\changes \secref{ssec:bounded}, first sentence.\internal{C19, C51}
+
+\begin{comment}{Comment m15.}
+page 9, the subtitles 3.1, 3.2 seem unnecessary. Subsection 3.3 is feature selection,
+which is suggested to be merged into the Numerical experiments section.
+\end{comment}
+\begin{response}
+We agree. The Preliminaries (now \secref{sec:prelim}) no longer have subsections. The
+preliminary subsection on feature selection has been removed, and the feature-selection
+model (formerly Section~5) is now \secref{sec:fs} of the Numerical experiments.
+\end{response}
+\changes \secref{sec:prelim};\internal{C23, C25, C27} \secref{sec:fs}.\internal{C61--C80}
+
+\begin{comment}{Comment m16.}
+page 12, $H:=\R^n$ has been stated in the Preliminaries section; why do we repeat
+$H:=\R^n$ once again? Please write the paper as concisely as possible.
+\end{comment}
+\begin{response}
+The repetition has been removed from \secref{ssec:model-stmt}.
+\end{response}
+\changes \secref{ssec:model-stmt}.\internal{C32}
+
+\begin{comment}{Comment m17.}
+page 13, the subtitle of 4.3, what is the meaning of ``standing assumption''?
+\end{comment}
+\begin{response}
+We meant assumptions that are in force throughout the analysis. To avoid ambiguity, the
+subsection and the assumption are now simply titled ``Assumptions''
+(\secref{ssec:assumptions}).
+\end{response}
+\changes \secref{ssec:assumptions}.\internal{C36, C37}
+
+\begin{comment}{Comment m18.}
+page 18 line 40, [the series] should be $\sum_{k=0}^{\infty}\|x^{k+1}-x^k\|^2<\infty$.
+Please follow the advice of the AMS Math formula style as much as possible when
+presenting the formula.
+\end{comment}
+\begin{response}
+Corrected. The series in Proposition~\ref{ms-prop:regularity} is now displayed with
+the limits above and below the summation sign. We also checked the other displayed
+formulas.
+\confirm{đã rà soát các công thức khác theo kiểu AMS chưa? Nếu chưa, bỏ câu cuối}
+\end{response}
+\changes Proposition~\ref{ms-prop:regularity} (\pg{prop:regularity}).\internal{C55}
+
+\begin{comment}{Comment m19.}
+page 20, line 36, ``so no Young splitting is needed''. Please polish the writing as much
+as possible.
+\end{comment}
+\begin{response}
+The phrase has been removed from the proof of Corollary~\ref{ms-cor:cvx}.
+\end{response}
+\changes Proof of Corollary~\ref{ms-cor:cvx}.\internal{C59}
+
+\begin{comment}{Comment m20.}
+page 20, line 35, $K\cap\bigcap_{i\in I}\cvx$. I don't think this expression is good.
+\end{comment}
+\begin{response}
+We now write $\Omega=\{x\in K:F_i(x)\le b_i\text{ for all }i\in I^{\cvx}\}$ in
+Corollary~\ref{ms-cor:cvx}, and the analogous inclusion in Stage~1 of the proof of
+Theorem~\ref{ms-thm:strong} is written in the same way.
+\end{response}
+\changes Corollary~\ref{ms-cor:cvx}; proof of Theorem~\ref{ms-thm:strong}.\internal{C56, C59}
+
+\begin{comment}{General comment.}
+I suggest the authors consider the above comments in their revision. Furthermore, it
+would be recommended if the authors could make the paper concise.
+\end{comment}
+\begin{response}
+We have followed all comments and shortened the paper from 39 to 25 pages (see M1 and M2).
+\end{response}
+
+% =====================================================================
+\section*{Additional changes made by the authors}
+While revising the paper we also made the following changes, which were not requested by
+the referee. We list them for completeness.
+\begin{enumerate}[leftmargin=1.8em,itemsep=3pt]
+\item \textbf{Convexity of the fractional criterion.} The submitted version stated that the
+  ratio $F_3(w)=w^{\top}Qw/\rho^{\top}w$ is pseudoconvex. We now prove that it is in fact
+  convex on an open neighbourhood of the simplex when $Q\succeq0$ and $\min_k\rho_k>0$
+  (Proposition~\ref{ms-prop:fs-reg}). Hence the feature-selection instance belongs to the
+  convex subclass. The assignment of $F_3$ to the pseudoconvex track used in the
+  experiments remains admissible, and the all-convex assignment is reported as a
+  comparator. This is stated in the abstract, the Introduction, \secref{ssec:reduction} and
+  the Conclusion.\internal{C1, C7, C64, C68, C78, C111}
+\item \textbf{Domain of the component functions.} The functions are now defined on an open
+  neighbourhood $U$ of $K$, and (A2) requires continuous differentiability on $U$. This
+  covers fractional functions whose denominators are positive only near $K$. A short
+  paragraph after Assumption~\ref{ms-ass:standing} explains this and why $\Omega$ is
+  convex.\internal{C32, C35, C37, C49, C50, C54}
+\item \textbf{Scope of the method and of the analysis.} New Remarks~\ref{ms-rem:weight-scope}
+  and~\ref{ms-rem:regularity-scope} state that the proportional weight is not claimed to be
+  unique or optimal, and that the proof uses local bounds on a compact set although no
+  constant is an input of the algorithm. Remark~\ref{ms-rem:rate} now states precisely
+  that the $O(N^{-1/3})$ bound concerns only the best convex-track violation, and the
+  last stage of the proof of Theorem~\ref{ms-thm:strong} was rewritten more
+  explicitly.\internal{C40, C41, C56, C58}
+\item \textbf{Experimental protocol.} \secref{sssec:protocol} now describes the protocol
+  exactly: min--max scaling is fitted once on the training pool (not within each
+  selection fold, as stated in the appendix of the submitted version), the voted masks are
+  computed once and reused, the SVM probability calibration uses a fixed seed, and the
+  evaluation is exploratory rather than nested. The formula of the Nogueira stability
+  index and the statistical procedure (exact signed-rank test, Holm adjustment, Friedman
+  test) are given explicitly.\internal{C91--C94}
+  \confirm{mô tả cũ ``fit on each fold's training portion'' là sai sót mô tả hay code đã đổi? Response cần nói đúng}
+\item \textbf{Recomputed values.} The stability values in Table~\ref{ms-tab:nfeat}, the SVM
+  AUC values in Tables~\ref{ms-tab:acc} and~\ref{ms-tab:perf-summary}, and the $p$-values
+  in Table~\ref{ms-tab:wilcoxon} were recomputed with the protocol above; Table~\ref{ms-tab:wilcoxon}
+  now reports raw and Holm-adjusted $p$-values. Accuracies and all $5$-NN results are
+  unchanged. Columns for SG-const and SG-dyn were added.\internal{C99, C100, C102, C104}
+  \confirm{nêu nguyên nhân chính xác của việc AUC/ổn định thay đổi (seed hiệu chỉnh SVM? hiệu chỉnh $N_f/(N_f-1)$ của chỉ số Nogueira?)}
+\item \textbf{Revised claims.} Statements of superiority (accuracy, speed, robustness) were
+  removed or qualified. The revised text states that no pairwise comparison is significant
+  after Holm adjustment, that the results show a size--prediction trade-off, and that tuned
+  subgradient methods can match or outperform DTAP.\internal{C1, C95--C98, C101, C103, C106, C111}
+\item \textbf{New solver diagnostic.} \secref{ssec:feasibility-audit} is new. It reports
+  numerical feasibility witnesses, the activity of the third constraint along the
+  trajectories, a comparison with subgradient methods whose moduli were tuned (including
+  the tuning cost), Movement Libras as an additional instance, and controlled examples
+  with a genuinely nonconvex pseudoconvex constraint~\eqref{ms-eq:logball-test}
+  (Tables~\ref{ms-tab:activation-tuning}--\ref{ms-tab:dtap-sweep}), together with a
+  reproducibility paragraph.\internal{C57, C71, C105}
+\item \textbf{Model details.} Implementation details of the feature-selection model are now
+  stated: the regularization constants $\delta_Q$ and $\varepsilon_\rho$, the variance
+  floor in the fuzzy relation, the tie-breaking rule in the decision matrix, the
+  correction of the projection-neural-network equation (notation $\Pi$ and output
+  projection), and the fact that the cumulative selection rule neither enforces a feature
+  budget nor preserves feasibility.\internal{C74, C76, C79, C87}
+\item \textbf{Smaller corrections.} The cost of the simplex projection is $O(p\log p)$ and
+  the storage of one iteration is $O(nrp+p^2)$; a typo $\{x_k\}$ was corrected to
+  $\{x^k\}$.\internal{C24, C51, C80}
+\item \textbf{Declarations.} The declaration of generative AI use and the data-availability
+  statement were updated; a reproducibility package now accompanies the
+  paper.\internal{C116, C117}
+\end{enumerate}
+
+\bigskip
+\noindent We hope that the revised manuscript is now suitable for publication, and we thank the
+referee again for the helpful comments.
+
+\medskip
+\noindent Sincerely,\\
+Nguyen Van The, Tran Ngoc Thang and Nguyen Hong Son
+
+\end{document}
