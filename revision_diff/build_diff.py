@@ -35,9 +35,6 @@ NOTES = ROOT / "change_notes.json"
 REVIEW = ROOT / "review_comments.json"
 BUILD = ROOT / "build"
 OUT_PDF = ROOT / "DTAP_changes_marked.pdf"
-# --journal: English version for the journal, without the Vietnamese inventory and tags
-JOURNAL = False
-JOURNAL_PDF = ROOT / "DTAP_OMS_revised_changes_marked.pdf"
 
 # Word-level comparison is used when two aligned blocks are at least this similar;
 # below it the old block is shown deleted and the new block added in full.
@@ -393,14 +390,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--json", action="store_true")
-    ap.add_argument("--journal", action="store_true",
-                    help="English version for the journal (no inventory, no margin tags)")
     args = ap.parse_args()
-    if args.journal:
-        # assemble.py imports this file as the module build_diff, which is not the
-        # running __main__, so the switch is set on that module
-        import build_diff as mod
-        mod.JOURNAL, mod.BUILD, mod.OUT_PDF = True, ROOT / "build_journal", JOURNAL_PDF
 
     old_text = OLD_TEX.read_text(encoding="utf-8")
     new_text = NEW_TEX.read_text(encoding="utf-8")

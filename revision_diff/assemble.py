@@ -65,34 +65,6 @@ DIFF_PREAMBLE = r"""
 """
 
 
-JOURNAL_PREAMBLE = r"""
-% ---------------------------------------------------------------- journal version
-\renewcommand{\DIFtag}[3]{\label{chg:#1}}
-\renewcommand{\DIFtagagain}[2]{}
-\renewcommand{\DIFoldheading}[3]{\par\medskip\noindent{\bfseries[\,Former Section\ifx\relax#2\relax\else\ #2\fi\,]\ #3}\par\smallskip}
-\renewcommand{\DIFoldcaption}[3]{\par\noindent{\small\bfseries Former #1\ifx\relax#2\relax\else\ #2\fi.}\ {\small #3}\par\smallskip}
-\renewcommand{\DIFoldfootnote}[1]{\ [Former footnote: #1]}
-\makeatletter
-\renewcommand{\DIFmovedfrom}[2]{\par\smallskip\noindent{\color{DIFdelcolor}\small\itshape
-  [\,This paragraph of the submitted version#2 was moved; see p.~\pageref{chg:#1}\,]}\par\smallskip}
-\makeatother
-"""
-
-JOURNAL_NOTE = r"""\noindent\fbox{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}\small
-\textbf{Revised manuscript with changes marked.} This version compares the revised manuscript
-with the originally submitted one. \DIFadd{Added text is highlighted in yellow}; \DIFdel{deleted text is
-struck through in red}. New tables and figures are shown on a yellow background, and deleted or
-replaced tables and figures are framed in red and labelled ``Former Table/Figure'' with their
-original numbers. Paragraphs that were moved are shown once, at their new place, compared with
-their original wording. Section, equation, theorem and table numbers are those of the revised
-manuscript; numbers in deleted text refer to the submitted version. Because the reference list
-below also contains the deleted references, citation numbers differ from those of the clean
-revised manuscript. A bar in the left margin marks every changed passage.
-\end{minipage}}
-\bigskip
-"""
-
-
 def old_label_table(build):
     """Compile the old manuscript once and read its label numbers and pages."""
     work = build / "oldref"
@@ -230,10 +202,7 @@ class Renderer:
             return "\\DIFoldcaption{%s}{%s}{" % (env, num)
         fl = re.search(r"\\begin\{(table|figure|longtable)\}", block)
         if fl:
-            if bd.JOURNAL:
-                env = "Figure" if fl.group(1) == "figure" else "Table"
-            else:
-                env = "Hình" if fl.group(1) == "figure" else "Bảng"
+            env = "Hình" if fl.group(1) == "figure" else "Bảng"
             labs = bd.LABEL_RE.findall(block)
             num = next((self.old_numbers[l] for l in labs if l in self.old_numbers), "")
             block = block.replace("\\caption{", "\\DIFoldcaption{%s}{%s}{" % (env, num))
@@ -301,7 +270,7 @@ class Renderer:
         if k == "movedfrom":
             where = s.get("sec_old", "")
             sec = self.old_section_number(ob, s)
-            return "\\DIFmovedfrom{%d}{%s}" % (cid, ((" (former Section %s)" if bd.JOURNAL else " (mục cũ %s)") % sec) if sec else "")
+            return "\\DIFmovedfrom{%d}{%s}" % (cid, (" (mục cũ %s)" % sec) if sec else "")
         flt = is_float(ob or "") or is_float(nb or "")
         extra = ""
         if k == "movedto":
@@ -533,16 +502,8 @@ def assemble(old_text, new_text, old, new, segs, ncid, oldparts, newparts):
             rows.append({"cid": ncid + 1 + off, "kind_vi": vi, "where": "Tài liệu tham khảo"})
 
     missing = [row["cid"] for row in rows if str(row["cid"]) not in notes]
-    preamble = new_pre + DIFF_PREAMBLE + (JOURNAL_PREAMBLE if bd.JOURNAL else "") + \
-        "\\AtBeginDocument{\\input{oldlabels.tex}}\n"
-    if bd.JOURNAL:
-        # the note goes under the title, so that page numbers match the clean manuscript
-        front = ""
-        i = next(k for k, b in enumerate(body) if "\\maketitle" in b)
-        body[i] = body[i].replace("\\maketitle", "\\maketitle\n" + JOURNAL_NOTE, 1)
-    else:
-        front = front_matter(rows, review, notes, 0)
-    doc = (preamble + "\\begin{document}\n" + front + "\n" +
+    preamble = new_pre + DIFF_PREAMBLE + "\\AtBeginDocument{\\input{oldlabels.tex}}\n"
+    doc = (preamble + "\\begin{document}\n" + front_matter(rows, review, notes, 0) + "\n" +
            "\n\n".join(body) + "\n\n" + bib + "\n\\end{document}\n")
     (build / "diff.tex").write_text(doc, encoding="utf-8")
     for _ in range(3):

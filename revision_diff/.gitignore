@@ -4,4 +4,4 @@ __pycache__/
 *.aux
 *.log
 *.out
-build_journal/
+build_colored/
