@@ -32,8 +32,9 @@ Split Feasibility Problem with Mixed Convex--Pseudoconvex Constraints}\\[0.2em]
 reading. The comments have materially strengthened the paper, and in several places led
 us to remove overstated claims and to add new, more honest evidence. Below we respond to
 each point individually and indicate the corresponding change in the revised manuscript.
-\textbf{All added or modified text in the revised manuscript is typeset in
-\textcolor{red}{colored text}} so the changes are easy to locate. Section, equation,
+\textbf{A version of the revised manuscript with all changes marked is provided as a
+separate file} (added text highlighted, deleted text struck through), so the changes are
+easy to locate. Section, equation,
 theorem, and table numbers below refer to the revised manuscript. In summary, the
 revision:
 \begin{itemize}[nosep]
@@ -63,7 +64,8 @@ revision:
 \begin{point}{The Associate Editor recorded no specific comments; the decision was major
 revision.}
 \response{We have revised the manuscript in full accordance with both Reviewers' reports,
-as detailed below, and have highlighted all changes in colored text. The two most
+as detailed below. All changes are marked in the separately provided version of the
+revised manuscript. The two most
 substantial structural changes --- merging and shortening the front matter (Reviewer~2)
 and adding the solver diagnostic with constraint-activation and tuned-baseline evidence
 (Reviewer~1) --- are summarized in the list above.}
@@ -77,36 +79,39 @@ comments that led directly to a more careful statement of the theory and a more 
 experimental section.
 
 \begin{point}{R1.1 The soft weight $\mu_k=J_k^{\mathrm{cvx}}/(J_k^{\mathrm{cvx}}+J_k^{\mathrm{ps}})$
-is central to the algorithm's novelty, yet the proof only requires $\mu_k$ to satisfy
-certain summability conditions --- any sequence in $[0,1]$ would suffice. The chosen form
-is therefore not structurally necessary. The authors should either justify this specific
-weighting or reframe the contribution accordingly.}
+is central to the algorithm's novelty, yet the convergence proof only requires $\mu_k$ to
+satisfy certain summability conditions -- any sequence in $[0,1]$ would suffice. The chosen
+form is therefore not structurally necessary. The authors should either justify this
+specific weighting or reframe the contribution accordingly.}
 \response{We have adopted the Reviewer's second suggestion and reframed the contribution.
 We agree that the proportional form is not structurally necessary: the one-step
 quasi-Fej\'er inequality (Lemma~3.8) holds for every $\mu_k\in[0,1]$, and the convergence
-proof needs only that the weight keep each track active --- a constant weight such as
-$\mu_k\equiv\tfrac12$, for instance, also yields $J^{\mathrm{cvx}}_k\to0$ and the Stage~2
-contradiction. We therefore no longer present the specific weight as a theoretical
-necessity or an optimum. The abstract, the Introduction (contribution~C1), and the
-Conclusion now describe $\mu_k$ as a ``residual-responsive choice, without a claim of
-optimality.'' New Remark~1 \loc{Remark~1, Sec.~3.4} states this explicitly: it records
-where the proportional form enters the present proof, notes that the one-step inequality
-alone does not by itself select a weight, and clarifies that the degenerate regimes
-(Corollaries~3.13--3.14) correspond to $\mu_k\equiv1$ and $\mu_k\equiv0$. The dual-track
+proof needs only that the weight keep each track active --- with the constant weight
+$\mu_k\equiv\tfrac12$, for instance, the proofs of Lemma~3.10 and of Stage~2 go through with
+only minor changes. The experiments point the same way: a balanced variant, which assigns
+equal weights when both tracks are violated, succeeds in $26/36$ runs on the feature
+instances and $24/36$ on the nonconvex family, the same counts as DTAP \loc{Sec.~4.4,
+Table~7}. We therefore no longer present the specific weight as a theoretical necessity or
+an optimum. The abstract now calls it ``a residual-responsive choice, without a claim of
+optimality''; the Introduction states that it ``is not claimed to be unique or optimal'';
+and the Conclusion calls it ``an admissible residual-responsive choice, not an optimality
+result.'' New Remark~1 \loc{Remark~1, Sec.~3.4} states this explicitly: it records where
+the proportional form enters the present proof and notes that the one-step inequality,
+although valid for every $\mu_k\in[0,1]$, does not by itself establish convergence for every
+weight sequence. The degenerate regimes of Corollaries~3.13--3.14 correspond to
+$\mu_k\equiv1$ and $\mu_k\equiv0$. The dual-track
 construction --- a residual-scaled step where a quantitative gradient inequality is
 available and a safeguarded step where only sign information is --- remains the
 contribution; the particular weight that blends them does not.}
 \end{point}
 
-\begin{point}{R1.2 The algorithm does not explicitly require Lipschitz constants, but
-Assumption~1(A2) and Lemma~4.9 ensure the iterates lie in a compact set where a Lipschitz
-constant necessarily exists. Thus the method implicitly depends on such constants --- a
-property shared by any algorithm with bounded iterates and continuous gradients. The claim
+\begin{point}{R1.2 The ``constant-free'' claim is overstated. The algorithm does not
+explicitly require Lipschitz constants, but Assumption~1(A2) and Lemma~4.9 ensure the
+iterates lie in a compact set where a Lipschitz constant necessarily exists. The claim
 should be qualified.}
-\response{We agree, including with the Reviewer's observation that this implicit
-dependence is shared by any method with bounded iterates and continuous gradients ---
-which is precisely why we now frame the point as being about algorithm \emph{inputs}
-rather than about the existence of a constant. The precise statement is now that no
+\response{We agree. Such an implicit dependence is shared by any method with bounded
+iterates and continuous gradients, which is why we now frame the point as being about
+algorithm \emph{inputs} rather than about the existence of a constant. The precise statement is now that no
 operator norm, Lipschitz constant, or H\"older modulus is an \emph{input} of the
 iteration, while the \emph{analysis} does use finite bounds on function values and
 gradients over the compact set that contains the (provably bounded) iterates. New
@@ -120,10 +125,10 @@ iterate region.'' We no longer use the unqualified phrase ``constant-free.''}
 \end{point}
 
 \begin{point}{R1.3 Theorem~4.12 claims convergence of the whole sequence to a feasible
-point. However, Stage~2 only proves that at least one limit point is feasible. Since the
-problem is nonconvex, multiple limit points may exist. The proof does not exclude this
-possibility. The authors should either strengthen the argument or revise the theorem to
-subsequential convergence.}
+point. However, Stage~2 of the proof only establishes that at least one limit point is
+feasible. Since the problem is nonconvex, multiple limit points may exist. The authors
+should either strengthen the argument or revise the theorem to subsequential
+convergence.}
 \response{We have kept the whole-sequence statement, because it is correct, and rewritten
 Stage~3 so that the step the Reviewer flagged is now explicit. The argument does not
 require a unique limit point. For \emph{every} fixed $x^\star\in\Omega$, Lemma~3.9(i)
@@ -139,12 +144,11 @@ cluster point and convergence of its distance suffice'' \loc{proof of Theorem~3.
 Sec.~3.8}. We have also aligned the Introduction (contribution~C2) with this wording.}
 \end{point}
 
-\begin{point}{R1.4 The thresholds are set as percentiles of sampled $F_i(w)$ to guarantee
-$\Omega\neq\emptyset$. In real applications, thresholds are given by the problem, not
-adjustable. More critically, if the chosen $b_3$ is so large that $F_3(w)\ll b_3$
-throughout, the pseudoconvex constraint is never binding and the dual-track mechanism is
-unnecessary. The authors should report constraint activation frequencies and confirm the
-mixed setting is genuinely engaged.}
+\begin{point}{R1.4 The thresholds $b_i$ are set as percentiles of sampled $F_i(w)$ to
+guarantee $\Omega\neq\emptyset$. In real applications, thresholds are given by the problem,
+not adjustable. More critically, if $b_3$ is so large that $F_3(w)\ll b_3$ throughout, the
+pseudoconvex constraint is never binding. The authors should report constraint activation
+frequencies and confirm the mixed setting is genuinely engaged.}
 \response{We now address both halves of this comment directly, in the new subsection
 \emph{Constraint activity and a tuned subgradient comparison} \loc{Sec.~4.4}. On
 thresholds: we clarify that externally specified thresholds remain fixed inputs, and that
@@ -154,7 +158,7 @@ assumption, and the exact levels are recorded in the supplementary metadata
 \loc{Sec.~4.1.3 and Sec.~4.4}. On activation: we report the frequency of
 $F_3(w^k)-b_3>10^{-6}$ along every trajectory. The third constraint is in fact
 \emph{inactive} on seven of the eight datasets and active at only $1$ of $48$ evaluated
-points on Abalone (Table~7). We state the consequence plainly, agreeing with the
+points on Abalone (Table~6). We state the consequence plainly, agreeing with the
 Reviewer: on these instances the pseudoconvex track is essentially never binding, so the
 dual-track mechanism is not needed there --- these feature-selection instances exercise a
 convex subclass. Indeed, new Proposition~4.1 proves that the
@@ -162,7 +166,7 @@ fractional criterion $F_3=w^{\top}Q_Rw/\rho^{\top}w$ is \emph{convex} on a neigh
 of the simplex when $Q_R\succeq0$ and $\min_k\rho_k>0$, so the feature model is an
 all-convex normal-box NSFP. To engage the mixed setting genuinely, we added controlled
 instances with a provably nonconvex pseudoconvex constraint,
-$F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Eq.~(45), Sec.~4.4}; there the
+$F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Eq.~(47), Sec.~4.4}; there the
 pseudoconvex track is active in all $36$ runs (pooled activity $12\,835/12\,877$ evaluated
 points), so the third track is exercised directly rather than vacuously.}
 \end{point}
@@ -171,7 +175,7 @@ points), so the third track is exercised directly rather than vacuously.}
 of four metrics (Table~5). SG-dyn's failure on $3$ datasets is attributed to poor
 H\"older modulus estimation --- but with a tuned modulus it might perform comparably. An
 additional experiment with manually tuned moduli would strengthen the comparison.}
-\response{We added exactly this experiment \loc{Sec.~4.4, Tables~7--9}. For SG-dyn we now
+\response{We added exactly this experiment \loc{Sec.~4.4, Tables~6--8}. For SG-dyn we now
 report, alongside the sampled-modulus variant, a \emph{tuned} variant whose modulus is
 selected from a manual grid $c\in\{10^{-3},\dots,10^{1}\}$ on held-out starts, and we
 account for its tuning cost separately ($179\,744$ optimization evaluations and
@@ -179,12 +183,12 @@ $10.80$\,s on the feature instances; comparable figures for the synthetic family
 raises SG-dyn's standard-start success from $5/9$ to $9/9$ and, as the Reviewer
 anticipated, a tuned subgradient method can match or outperform DTAP --- e.g.\ on Abalone,
 and on the nonconvex family tuned SG-const and tuned SG-dyn reach the tolerance in all
-$36$ runs versus $24/36$ for DTAP (Table~8). We have accordingly revised every comparative
+$36$ runs versus $24/36$ for DTAP (Table~7). We have accordingly revised every comparative
 claim: the text now states that no pairwise comparison is significant after Holm
 adjustment, that the classification results reflect a size--prediction trade-off rather
 than superiority, and that ``tuned subgradient methods can match or outperform DTAP.'' The
-reported advantage of DTAP is narrowed to its being constant-free, i.e.\ requiring no such
-tuning in the first place.}
+reported advantage of DTAP is narrowed to the fact that no modulus has to be estimated or
+tuned as an input of the iteration.}
 \end{point}
 
 % =====================================================================
@@ -235,7 +239,7 @@ removed material were deleted.}
 
 \begin{point}{M4. Why are some numerical results presented in the Appendix?}
 \response{We agree, and the appendix has been removed. The per-dataset accuracy and AUC
-values are now in the main text \loc{Table~6, Sec.~4.3}, and the two baseline solvers are
+values are now in the main text \loc{Table~3, Sec.~4.3}, and the two baseline solvers are
 described in the main text \loc{Sec.~4.2.1}. The threshold and runtime tables were removed;
 the thresholds of every instance are recorded in the supplementary reproducibility
 package.}
@@ -246,7 +250,7 @@ package.}
 \noindent{\color{blue!60!black}\textbf{Response.}}\ We agree with all twenty minor
 comments and have adopted every one of them without exception. For conciseness we list
 them, with the corresponding change and its location, in the table below; in each case the
-change is marked in colored text in the revised manuscript.
+change is marked in the separately provided marked version of the manuscript.
 
 \medskip
 {\footnotesize
