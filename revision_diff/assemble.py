@@ -397,7 +397,7 @@ def front_matter(rows, review, notes, n_pages_hint):
 \item Bảng/hình \textbf{mới} nằm trong \colorbox{yellow!30}{khung nền vàng}; bảng/hình \textbf{cũ đã bị xóa hoặc thay} nằm trong \fcolorbox{DIFdelcolor}{white}{\color{DIFdelcolor}khung viền đỏ, chữ đỏ} (không gạch ngang để dễ đọc số liệu), có nhãn ``Bảng cũ $n$'' theo số của bản cũ.
 \item Đoạn sửa ít được đánh dấu \emph{từng từ}. Đoạn viết lại gần như toàn bộ được hiển thị \emph{nguyên đoạn cũ} (đỏ gạch) rồi \emph{nguyên đoạn mới} (vàng) để dễ đọc.
 \item Đoạn \textbf{di chuyển} chỉ hiện một lần, tại vị trí mới, và được so với bản cũ của chính nó; ở vị trí cũ chỉ còn một dòng đỏ nghiêng chỉ sang mã mới.
-\item Ký hiệu ý kiến: \textbf{M1--M4} = ý kiến chính (Major), \textbf{m1--m20} = ý kiến phụ (Minor) trong \texttt{referee\_report.pdf}; \textbf{G} = nhận xét chung ở cuối báo cáo (viết gọn); \textbf{TG} = tác giả tự sửa, không do phản biện yêu cầu (vẫn phải nêu trong response letter).
+\item Ký hiệu ý kiến: \textbf{R1.1--R1.5} = 5 ý kiến chính của \textbf{Reviewer 1} (nằm trong email của Editor, xem \texttt{reviewer1\_comments.txt}); \textbf{M1--M4} = ý kiến chính (Major), \textbf{m1--m20} = ý kiến phụ (Minor) và \textbf{G} = nhận xét chung của \textbf{Reviewer 2} (file đính kèm \texttt{referee\_report.pdf}); \textbf{TG} = tác giả tự sửa, không do phản biện yêu cầu (vẫn phải nêu trong response letter).
 \item Số mục, số công thức, số bảng trong phần thân theo \textbf{bản mới}. Trong phần bị xóa, số trong ngoặc như ``Mục cũ 2.2'', ``Bảng cũ 5'' là số của \textbf{bản cũ}. Số trích dẫn [n] trong file này được đánh lại vì danh mục tài liệu gộp cả tài liệu cũ đã xóa.
 \end{itemize}""")
     # Table A: inventory

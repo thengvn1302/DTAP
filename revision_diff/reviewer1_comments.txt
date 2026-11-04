@@ -1,0 +1,12 @@
+Reviewer 1 (comments included in the decision e-mail of Optimization Methods and Software;
+Reviewer 2's comments are the attachment referee_report.pdf in the repository root).
+
+Comments to the Author
+This paper studies a nonlinear split feasibility problem with mixed convex-pseudoconvex constraints. The authors propose a dual-track adaptive projection algorithm (DTAP) with strong convergence guarantees, and apply it to feature selection by unifying two existing models into a single NSFP. The dual-track idea is appealing and the theoretical analysis is substantial. However, several issues need to be addressed. I recommend major revision.
+
+Major Comments:
+1. The soft weight μ_k = J_k^cvx/(J_k^cvx+J_k^ps) is central to the algorithm's novelty, yet the convergence proof only requires μ_k to satisfy certain summability conditions – any sequence in [0,1] would suffice. The chosen form is therefore not structurally necessary. The authors should either justify this specific weighting or reframe the contribution accordingly.
+2. The "constant-free" claim is overstated. The algorithm does not explicitly require Lipschitz constants, but Assumption 1(A2) and Lemma 4.9 ensure the iterates lie in a compact set where a Lipschitz constant necessarily exists. The claim should be qualified.
+3. Theorem 4.12 claims convergence of the whole sequence to a feasible point. However, Stage 2 of the proof only establishes that at least one limit point is feasible. Since the problem is nonconvex, multiple limit points may exist. The authors should either strengthen the argument or revise the theorem to subsequential convergence.
+4. The thresholds b_i are set as percentiles of sampled F_i(w) to guarantee Ω ≠ ∅. In real applications, thresholds are given by the problem, not adjustable. More critically, if b_3 is so large that F_3(w) ≪ b_3 throughout, the pseudoconvex constraint is never binding. The authors should report constraint activation frequencies and confirm the mixed setting is genuinely engaged.
+5. DTAP and SG-const/SG-dyn are statistically indistinguishable on three of four metrics (Table 5). SG-dyn's failure on 3 datasets is attributed to poor Hölder modulus estimation – but with a tuned modulus it might perform comparably. An additional experiment with manually tuned moduli would strengthen the comparison.
