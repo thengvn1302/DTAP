@@ -12,51 +12,25 @@
 
 ## A. Tóm tắt và từ khóa
 
-### 1. Abstract — viết lại toàn bộ
+### 1. Abstract — giữ câu chữ của bản cũ, chỉ đổi thuật ngữ ("block" → "track", bỏ "mixing")
 
 **Trước**
-1. We study a nonlinear split feasibility problem with a normal-box output set and differentiable convex and pseudoconvex component functions.
-   → Ta nghiên cứu một bài toán chấp nhận tách phi tuyến có tập đầu ra là hộp chuẩn và các hàm thành phần khả vi, lồi và giả lồi.
-2. A max-type violation measure identifies nearly active constraints in two blocks.
+1. A max-type violation measure identifies nearly active constraints in two blocks.
    → Một độ đo vi phạm kiểu max xác định các ràng buộc gần hoạt động trong hai khối.
-3. The Dual-Track Adaptive Projection (DTAP) algorithm combines a residual-scaled step for the convex block with a safeguarded diminishing step for the pseudoconvex block, followed by projection onto the base convex set.
+2. The Dual-Track Adaptive Projection (DTAP) algorithm combines a residual-scaled step for the convex block with a safeguarded diminishing step for the pseudoconvex block, followed by projection onto the base convex set.
    → Thuật toán Chiếu Thích nghi Hai Track (DTAP) kết hợp một bước co theo phần dư cho khối lồi với một bước giảm dần có chặn an toàn cho khối giả lồi, rồi chiếu lên tập lồi cơ sở.
-4. Its step sizes require no prescribed operator norm, Lipschitz constant, or Hölder modulus.
-   → Độ dài bước của nó không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder.
-5. Under consistency and continuous differentiability, we prove convergence of the whole sequence to a feasible point in finite-dimensional Euclidean space.
-   → Dưới giả thiết nhất quán và khả vi liên tục, ta chứng minh toàn bộ dãy hội tụ tới một điểm khả thi trong không gian Euclid hữu hạn chiều.
-6. The proof uses local bounds on the bounded iterate region.
-   → Chứng minh dùng các cận địa phương trên miền bị chặn chứa dãy lặp.
-7. The proportional mixing weight is a residual-responsive choice, without a claim of optimality.
+3. The proportional mixing weight is a residual-responsive choice, without a claim of optimality.
    → Trọng số pha trộn tỉ lệ là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu.
-8. A feature-selection formulation combines criteria from fractional and fuzzy-rough models and belongs to the convex subclass.
-   → Một mô hình chọn đặc trưng kết hợp các tiêu chí từ mô hình phân thức và mô hình tập thô mờ, và thuộc lớp con lồi.
-9. Experiments report constraint activity, classification comparisons, and subgradient comparisons with empirically tuned moduli.
-   → Các thực nghiệm báo cáo mức hoạt động của ràng buộc, các so sánh phân loại, và các so sánh với phương pháp dưới gradient có mô-đun được tinh chỉnh thực nghiệm.
-10. Controlled examples with a nonconvex pseudoconvex constraint test the pseudoconvex track.
-    → Các ví dụ có kiểm soát với một ràng buộc giả lồi không lồi kiểm tra track giả lồi.
-11. On these examples, DTAP is sensitive to the scale of its diminishing step.
-    → Trên các ví dụ này, DTAP nhạy với thang của bước giảm dần.
-12. The results also show initialization sensitivity and do not establish uniform computational superiority.
-    → Kết quả cũng cho thấy sự nhạy với điểm khởi đầu và không chứng tỏ được ưu thế tính toán đồng đều.
 
 **Sau**
-1. We study a nonlinear split feasibility problem in $\mathbb{R}^n$ whose output set is a normal box and whose components are differentiable and either convex or pseudoconvex.
-   → Ta nghiên cứu một bài toán chấp nhận tách phi tuyến trong $\mathbb{R}^n$, có tập đầu ra là hộp chuẩn và các thành phần khả vi, mỗi thành phần lồi hoặc giả lồi.
-2. The Dual-Track Adaptive Projection (DTAP) algorithm splits the constraints into a convex and a pseudoconvex track.
-   → Thuật toán Chiếu Thích nghi Hai Track (DTAP) chia các ràng buộc thành một track lồi và một track giả lồi.
-3. It takes a residual-scaled Polyak-type step on the nearly most violated convex constraints and a safeguarded diminishing step on the nearly most violated pseudoconvex ones, combines the two steps by a proportional weight, and projects onto the base set.
-   → Thuật toán lấy một bước kiểu Polyak co theo phần dư trên các ràng buộc lồi gần bị vi phạm nhiều nhất và một bước giảm dần có chặn an toàn trên các ràng buộc giả lồi gần bị vi phạm nhiều nhất, kết hợp hai bước bằng một trọng số tỉ lệ, rồi chiếu lên tập cơ sở.
-4. The weight is a residual-responsive choice, without a claim of optimality.
-   → Trọng số này là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu.
-5. The step sizes require no prescribed operator norm, Lipschitz constant, or Hölder modulus; the proof uses bounds over a bounded set containing the iterates.
-   → Độ dài bước không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder; chứng minh dùng các cận trên một tập bị chặn chứa dãy lặp.
-6. If the problem is consistent and the components are continuously differentiable, the whole sequence converges to a feasible point.
-   → Nếu bài toán nhất quán và các thành phần khả vi liên tục thì toàn bộ dãy hội tụ tới một điểm khả thi.
-7. In a feature-selection application all three constraints are convex.
-   → Trong một ứng dụng chọn đặc trưng, cả ba ràng buộc đều lồi.
-8. Experiments with constraint-activity counts, tuned subgradient methods and nonconvex pseudoconvex test problems show that tuned subgradient methods can match or outperform DTAP, and that DTAP is sensitive to its starting point and step scale.
-   → Các thực nghiệm (đếm mức hoạt động của ràng buộc, so với các phương pháp dưới gradient đã tinh chỉnh, và thử trên bài toán có ràng buộc giả lồi không lồi) cho thấy các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, và DTAP nhạy với điểm xuất phát và thang bước.
+1. A max-type violation measure identifies nearly active constraints in two tracks.
+   → Một độ đo vi phạm kiểu max xác định các ràng buộc gần hoạt động trong hai track.
+2. The Dual-Track Adaptive Projection (DTAP) algorithm combines a residual-scaled step for the convex track with a safeguarded diminishing step for the pseudoconvex track, followed by projection onto the base convex set.
+   → Thuật toán Chiếu Thích nghi Hai Track (DTAP) kết hợp một bước co theo phần dư cho track lồi với một bước giảm dần có chặn an toàn cho track giả lồi, rồi chiếu lên tập lồi cơ sở.
+3. The proportional weight is a residual-responsive choice, without a claim of optimality.
+   → Trọng số tỉ lệ là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu.
+
+*(Các câu còn lại của Abstract giữ nguyên như bản cũ.)*
 
 ### 2. Từ khóa
 

@@ -28,23 +28,12 @@ def rep(old, new, tag):
 rep("Adaptive step size; Strong convergence; Feature selection",
     "Adaptive step size; Global convergence; Feature selection", "G4 keyword")
 
-a = s.index("\\begin{abstract}\n") + len("\\begin{abstract}\n")
-b = s.index("\n\\end{abstract}")
-s = s[:a] + (
-    r"We study a nonlinear split feasibility problem in $\R^n$ whose output set is a normal box "
-    r"and whose components are differentiable and either convex or pseudoconvex. The Dual-Track "
-    r"Adaptive Projection (DTAP) algorithm splits the constraints into a convex and a pseudoconvex "
-    r"track. It takes a residual-scaled Polyak-type step on the nearly most violated convex "
-    r"constraints and a safeguarded diminishing step on the nearly most violated pseudoconvex ones, "
-    r"combines the two steps by a proportional weight, and projects onto the base set. The weight "
-    r"is a residual-responsive choice, without a claim of optimality. The step sizes require no "
-    r"prescribed operator norm, Lipschitz constant, or H\"older modulus; the proof uses bounds over "
-    r"a bounded set containing the iterates. If the problem is consistent and the components are "
-    r"continuously differentiable, the whole sequence converges to a feasible point. In a "
-    r"feature-selection application all three constraints are convex. Experiments with "
-    r"constraint-activity counts, tuned subgradient methods and nonconvex pseudoconvex test "
-    r"problems show that tuned subgradient methods can match or outperform DTAP, and that DTAP is "
-    r"sensitive to its starting point and step scale.") + s[b:]
+# Abstract: the v1 wording is kept; only the terminology follows the body ("track",
+# "proportional weight").
+rep("nearly active constraints in two blocks.", "nearly active constraints in two tracks.", "A0a")
+rep("a residual-scaled step for the convex block with a safeguarded diminishing step for the pseudoconvex block,",
+    "a residual-scaled step for the convex track with a safeguarded diminishing step for the pseudoconvex track,", "A0b")
+rep("The proportional mixing weight is a residual-responsive choice,", "The proportional weight is a residual-responsive choice,", "A0c")
 
 # ---------------------------------------------------------------- Introduction
 rep(r"The split feasibility problem (SFP) models constrained reconstruction~\citep{censor1994}. For closed convex sets $C\subseteq\R^n$, $Q\subseteq\R^m$, and a matrix $\mathcal A$, it seeks",
