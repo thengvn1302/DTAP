@@ -2,7 +2,7 @@
 
 - **Trước** = `DTAP Finally/main_document.tex` (bản DTAP_OMS.pdf cũ).
 - **Sau** = `DTAP Finally v2/main_document.tex` (bản v2).
-- Danh sách lấy tự động từ phép so sánh từng câu giữa hai file; mọi câu khác nhau đều có mặt dưới đây (68 chỗ khác nhau, gom thành 58 mục).
+- Danh sách lấy tự động từ phép so sánh từng câu giữa hai file; mọi câu khác nhau đều có mặt dưới đây (67 chỗ khác nhau, gom thành 57 mục).
 - Không liệt kê chi tiết các thay đổi **chỉ về ký hiệu**; chúng được ghi gọn ở **Phụ lục** cuối file.
 - Số mục, số công thức, số tài liệu tham khảo ghi theo bản PDF tương ứng (hai bản có cùng cách đánh số).
 - Công thức hiển thị không đổi được ghi tắt là "(số công thức)".
@@ -10,7 +10,7 @@
 
 ---
 
-## A. Tóm tắt và từ khóa
+## A. Tóm tắt
 
 ### 1. Abstract — giữ câu chữ của bản cũ, chỉ đổi thuật ngữ ("block" → "track", bỏ "mixing")
 
@@ -32,16 +32,11 @@
 
 *(Các câu còn lại của Abstract giữ nguyên như bản cũ.)*
 
-### 2. Từ khóa
-
-- **Trước:** Strong convergence → *Hội tụ mạnh*
-- **Sau:** Global convergence → *Hội tụ toàn cục*
-
 ---
 
 ## B. Mục 1. Introduction
 
-### 3. Đoạn mở đầu (SFP, thuật toán CQ, các hướng mở rộng)
+### 2. Đoạn mở đầu (SFP, thuật toán CQ, các hướng mở rộng)
 
 **Trước**
 1. The split feasibility problem (SFP) models constrained reconstruction [4].
@@ -71,7 +66,7 @@
 6. These ideas are standard; DTAP adapts them to the nonlinear case.
    → Các ý tưởng này đã là chuẩn mực; DTAP vận dụng chúng cho trường hợp phi tuyến.
 
-### 4. Bài toán SFP phi tuyến và tập khả thi
+### 3. Bài toán SFP phi tuyến và tập khả thi
 
 **Trước**
 1. We study the nonlinear SFP (3), where $K\subseteq\mathbb{R}^n$ is closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$, and each differentiable component of $F=(F_1,\ldots,F_m)$ is convex or pseudoconvex on $K$.
@@ -89,7 +84,7 @@
 3. We seek a point of $\Omega$, not a minimizer of any $F_i$.
    → Ta tìm một điểm thuộc $\Omega$, không tìm điểm cực tiểu của $F_i$ nào.
 
-### 5. Các công trình liên quan (Li, Yen, Hu)
+### 4. Các công trình liên quan (Li, Yen, Hu)
 
 **Trước**
 1. Nonlinear SFP and generalized convex feasibility have several relevant antecedents.
@@ -111,14 +106,14 @@
 3. Hu et al. [7] treat quasiconvex inequalities, which contain our class, without using the gradient inequality of convex components.
    → Hu và cộng sự [7] xét bất đẳng thức tựa lồi, một lớp chứa lớp của ta, nhưng không dùng bất đẳng thức gradient của các thành phần lồi.
 
-### 6. Câu dẫn tới độ đo vi phạm $J$
+### 5. Câu dẫn tới độ đo vi phạm $J$
 
 - **Trước:** The box gives the explicit violation measure $J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+$.
   → Hộp cho ta độ đo vi phạm tường minh $J(x)=\ldots$
 - **Sau:** Because $Q$ is a box, the $\ell_\infty$-distance from $F(x)$ to $Q$ has the closed form $J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+$.
   → Vì $Q$ là một hộp, khoảng cách $\ell_\infty$ từ $F(x)$ tới $Q$ có dạng tường minh $J(x)=\ldots$
 
-### 7. Đoạn mô tả DTAP
+### 6. Đoạn mô tả DTAP
 
 **Trước**
 1. The Dual-Track Adaptive Projection algorithm (DTAP) forms violation-weighted gradient sums from nearly maximal violations in each block.
@@ -152,7 +147,7 @@
 5. No prescribed operator norm, Lipschitz constant, or Hölder modulus is needed: a quasi-Fejér inequality shows that the iterates are bounded, and the proof then uses local bounds, without Lipschitz gradients.
    → Không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder: một bất đẳng thức tựa Fejér cho thấy dãy lặp bị chặn, sau đó chứng minh dùng các cận địa phương, không cần gradient Lipschitz.
 
-### 8. Đoạn về ứng dụng chọn đặc trưng
+### 7. Đoạn về ứng dụng chọn đặc trưng
 
 **Trước**
 1. Feature-selection criteria from fractional and fuzzy-rough models [15, 16] define separate threshold constraints.
@@ -172,7 +167,7 @@
 2. These constraints are convex (Proposition 4.1), so we also use test problems with a nonconvex pseudoconvex constraint to exercise the pseudoconvex track.
    → Các ràng buộc này lồi (Mệnh đề 4.1), nên ta còn dùng các bài toán thử có ràng buộc giả lồi không lồi để kiểm tra track giả lồi.
 
-### 9. Các đóng góp C1–C3
+### 8. Các đóng góp C1–C3
 
 **Trước**
 1. C1. A dual-track method combines convex decrease estimates and pseudoconvex sign information through an adaptive weight.
@@ -198,14 +193,14 @@
 
 ## C. Mục 2. Preliminaries
 
-### 10. Câu mở đầu
+### 9. Câu mở đầu
 
 - **Trước:** Throughout, $H=\mathbb{R}^n$ is Euclidean space with inner product $\langle\cdot,\cdot\rangle$ and induced norm $\|\cdot\|$.
   → Trong toàn bài, $H=\mathbb{R}^n$ là không gian Euclid với tích vô hướng $\langle\cdot,\cdot\rangle$ và chuẩn cảm sinh $\|\cdot\|$.
 - **Sau:** Throughout, $H=\mathbb{R}^n$ is the Euclidean space with inner product $\langle\cdot,\cdot\rangle$ and induced norm $\|\cdot\|$.
   → (như trên; chỉ thêm mạo từ "the")
 
-### 11. Sau Mệnh đề 2.1
+### 10. Sau Mệnh đề 2.1
 
 **Trước**
 1. This characterization gives the projection inequality used in Lemma 3.2.
@@ -217,16 +212,16 @@
 1. This characterization yields Lemma 3.2 below.
    → Đặc trưng này cho ta Bổ đề 3.2 dưới đây.
 
-*(Câu 2 cũ được chuyển xuống Nhận xét 6, xem mục 40.)*
+*(Câu 2 cũ được chuyển xuống Nhận xét 6, xem mục 39.)*
 
-### 12. Định nghĩa 2.2 (giả lồi)
+### 11. Định nghĩa 2.2 (giả lồi)
 
 - **Trước:** A function differentiable on an open neighbourhood of $K$ is pseudoconvex on $K$ if, for every $x,y\in K$, (5).
   → Một hàm khả vi trên một lân cận mở của $K$ là giả lồi trên $K$ nếu, với mọi $x,y\in K$, (5).
 - **Sau:** A function $f$ that is differentiable on an open neighbourhood of $K$ is pseudoconvex on $K$ if, for all $x,y\in K$, (5).
   → Một hàm $f$ khả vi trên một lân cận mở của $K$ là giả lồi trên $K$ nếu, với mọi $x,y\in K$, (5).
 
-### 13. Câu bị xóa cuối Mục 2
+### 12. Câu bị xóa cuối Mục 2
 
 - **Trước:** This distinction is relevant to the mixed constraint functions studied below.
   → Sự phân biệt này có liên quan tới các hàm ràng buộc hỗn hợp được nghiên cứu dưới đây.
@@ -236,21 +231,21 @@
 
 ## D. Mục 3. Thuật toán DTAP và sự hội tụ
 
-### 14. Sau công thức (8)
+### 13. Sau công thức (8)
 
 - **Trước:** Then $F(x)\in Q$ iff $J(x)=0$, so finding a feasible point amounts to minimizing $J$ over $K$.
   → Khi đó $F(x)\in Q$ khi và chỉ khi $J(x)=0$, nên tìm một điểm khả thi quy về cực tiểu hóa $J$ trên $K$.
 - **Sau:** Then $x\in K$ is feasible if and only if $J(x)=0$; when $\Omega\ne\emptyset$, the feasible points are the minimizers of $J$ over $K$.
   → Khi đó $x\in K$ khả thi khi và chỉ khi $J(x)=0$; khi $\Omega\ne\emptyset$, các điểm khả thi chính là các điểm cực tiểu của $J$ trên $K$.
 
-### 15. Tiêu đề và câu đầu Mục 3.2
+### 14. Tiêu đề và câu đầu Mục 3.2
 
 - **Trước:** [Tiêu đề] 3.2. Decomposition and dual-track scalarization. — We split the constraint index set into a *convex track* and a *pseudoconvex track*.
   → [Tiêu đề] 3.2. Phân rã và vô hướng hóa hai track. — Ta chia tập chỉ số ràng buộc thành một *track lồi* và một *track giả lồi*.
 - **Sau:** [Tiêu đề] 3.2. Decomposition into two tracks. — We split $I:=\{1,\dots,m\}$ into a *convex track* $I^{\rm cvx}$ and a *pseudoconvex track* $I^{\rm ps}$, each with its own step rule.
   → [Tiêu đề] 3.2. Phân rã thành hai track. — Ta chia $I:=\{1,\dots,m\}$ thành *track lồi* $I^{\rm cvx}$ và *track giả lồi* $I^{\rm ps}$, mỗi track có quy tắc bước riêng.
 
-### 16. Công thức (9) và câu về phép chia
+### 15. Công thức (9) và câu về phép chia
 
 **Trước**
 1. For $x\in U$ define the componentwise violations and the maximal violation $v_i(x):=(F_i(x)-b_i)^+,\ J(x)=\max_{1\le i\le m}v_i(x)$. (9)
@@ -266,14 +261,14 @@
 2. Assumption 1 makes the partition precise.
    → Giả thiết 1 phát biểu chính xác phép chia này.
 
-### 17. Tập hoạt động xấp xỉ
+### 16. Tập hoạt động xấp xỉ
 
 - **Trước:** To cope with the nonsmoothness of the maximum, we replace the exact maximizers by a $\delta$-enlarged *approximate active set* on each track:
   → Để xử lý tính không trơn của hàm max, ta thay các chỉ số đạt max chính xác bằng một *tập hoạt động xấp xỉ* được nới rộng $\delta$ trên mỗi track:
 - **Sau:** To cope with the nonsmoothness of the maximum, we replace the set of indices at which the maximum is attained by a $\delta$-enlarged *approximate active set* on each track ('active' meaning within $\delta$ of the largest violation):
   → Để xử lý tính không trơn của hàm max, ta thay tập các chỉ số tại đó đạt giá trị lớn nhất bằng một *tập hoạt động xấp xỉ* được nới rộng $\delta$ trên mỗi track ("hoạt động" nghĩa là cách độ vi phạm lớn nhất không quá $\delta$):
 
-### 18. Giả thiết 1, (A1)
+### 17. Giả thiết 1, (A1)
 
 **Trước**
 1. (A1) (a) $\Omega\ne\emptyset$.
@@ -287,14 +282,14 @@
 2. (b) $I=\{1,\dots,m\}$ is partitioned as $I=I^{\rm cvx}\cup I^{\rm ps}$; each $F_i:U\to\mathbb{R}$ is convex on $K$ if $i\in I^{\rm cvx}$ and pseudoconvex on $K$ if $i\in I^{\rm ps}$.
    → (b) $I$ được chia thành $I=I^{\rm cvx}\cup I^{\rm ps}$; mỗi $F_i:U\to\mathbb{R}$ là lồi trên $K$ nếu $i\in I^{\rm cvx}$ và giả lồi trên $K$ nếu $i\in I^{\rm ps}$.
 
-### 19. Tên trọng số $\mu_k$ (Mục 3.4 và bước (1e))
+### 18. Tên trọng số $\mu_k$ (Mục 3.4 và bước (1e))
 
 - **Trước:** The Dual-Track Adaptive Projection algorithm combines the two track-specific step sizes through the soft weight $\mu_k$ and projects the combined update onto the base convex set $K$. — (1e) Soft proportional weight:
   → Thuật toán DTAP kết hợp hai độ dài bước riêng của từng track qua trọng số mềm $\mu_k$ và chiếu bước cập nhật kết hợp lên tập lồi cơ sở $K$. — (1e) Trọng số tỉ lệ mềm:
 - **Sau:** The Dual-Track Adaptive Projection algorithm combines the two track-specific step sizes through the proportional weight $\mu_k$ and projects the combined update onto the base convex set $K$. — (1e) Proportional weight:
   → Thuật toán DTAP kết hợp hai độ dài bước riêng của từng track qua trọng số tỉ lệ $\mu_k$ và chiếu bước cập nhật kết hợp lên tập lồi cơ sở $K$. — (1e) Trọng số tỉ lệ:
 
-### 20. Thuật toán 1: kiểm tra dừng
+### 19. Thuật toán 1: kiểm tra dừng
 
 **Trước**
 1. **Step 1 (per-track quantities).** (1a) Compute …
@@ -310,7 +305,7 @@
 2. **Step 2 (projection).** $x^{k+1}=P_K(y^k)$; set $k\leftarrow k+1$ and go to Step 1.
    → **Bước 2 (chiếu).** $x^{k+1}=P_K(y^k)$; đặt $k\leftarrow k+1$ và quay lại Bước 1.
 
-### 21. Nhận xét 1
+### 20. Nhận xét 1
 
 **Trước**
 1. The proportional weight is an adaptive allocation based on the two maximal violations; we do not claim that it is the only convergent choice or that it is optimal.
@@ -324,14 +319,14 @@
 2. Although the one-step inequality of Lemma 3.8 holds for every $\mu_k\in[0,1]$, it does not by itself imply convergence for every weight sequence.
    → Mặc dù bất đẳng thức một bước của Bổ đề 3.8 đúng với mọi $\mu_k\in[0,1]$, tự nó không suy ra hội tụ với mọi dãy trọng số.
 
-### 22. Nhận xét 2, câu cuối
+### 21. Nhận xét 2, câu cuối
 
 - **Trước:** The parameters $\rho_{\rm cvx}$, $\delta$, and $\{\gamma_k\}$ remain part of the algorithm.
   → Các tham số $\rho_{\rm cvx}$, $\delta$ và $\{\gamma_k\}$ vẫn là một phần của thuật toán.
 - **Sau:** The user still chooses $\rho_{\rm cvx}$, $\delta$, and $\{\gamma_k\}$; these parameters do not depend on any constant of the problem.
   → Người dùng vẫn phải chọn $\rho_{\rm cvx}$, $\delta$ và $\{\gamma_k\}$; các tham số này không phụ thuộc vào hằng số nào của bài toán.
 
-### 23. Đoạn tổng quan về chứng minh (chuyển xuống đầu Mục 3.6 và viết lại)
+### 22. Đoạn tổng quan về chứng minh (chuyển xuống đầu Mục 3.6 và viết lại)
 
 *Trước: đoạn nằm cuối Mục 3.5, trước tiêu đề 3.6. Sau: đoạn nằm ngay dưới tiêu đề 3.6 "Auxiliary lemmas".*
 
@@ -357,21 +352,21 @@
 6. The two degenerate cases follow as corollaries.
    → Hai trường hợp suy biến được suy ra như các hệ quả.
 
-### 24. Chứng minh Bổ đề 3.5
+### 23. Chứng minh Bổ đề 3.5
 
 - **Trước:** By (A1)(b), $F_j|_K$ is pseudoconvex; applying the contrapositive (5) with $y=x^\star$ gives $\langle\nabla F_j(x),x^\star-x\rangle<0$, i.e. …
   → Theo (A1)(b), $F_j|_K$ giả lồi; áp dụng mệnh đề phản đảo (5) với $y=x^\star$ ta được $\langle\nabla F_j(x),x^\star-x\rangle<0$, tức là …
 - **Sau:** By (A1)(b), $F_j|_K$ is pseudoconvex; applying (5) with $y=x^\star$ gives $\langle\nabla F_j(x),x^\star-x\rangle<0$, i.e. …
   → Theo (A1)(b), $F_j|_K$ giả lồi; áp dụng (5) với $y=x^\star$ ta được $\langle\nabla F_j(x),x^\star-x\rangle<0$, tức là …
 
-### 25. Câu đầu Mục 3.7
+### 24. Câu đầu Mục 3.7
 
 - **Trước:** The following quasi-Fejér inequality, within the framework of Combettes [5], yields boundedness of $\{x^k\}$ and decay of the convex-track violation.
   → Bất đẳng thức tựa Fejér sau đây, trong khuôn khổ của Combettes [5], cho tính bị chặn của $\{x^k\}$ và sự giảm của độ vi phạm trên track lồi.
 - **Sau:** The following inequality is of quasi-Fejér type in the sense of Combettes [5]. It yields boundedness of $\{x^k\}$ and decay of the convex-track violation.
   → Bất đẳng thức sau đây thuộc loại tựa Fejér theo nghĩa của Combettes [5]. Nó cho tính bị chặn của $\{x^k\}$ và sự giảm của độ vi phạm trên track lồi.
 
-### 26. Chứng minh Bổ đề 3.10: cố định $x^\star$ sớm hơn
+### 25. Chứng minh Bổ đề 3.10: cố định $x^\star$ sớm hơn
 
 **Trước**
 1. Assume $I^{\rm cvx}\ne\emptyset$ and put $B:=\overline{\mathrm{conv}}\{x^k:k\ge0\}$, compact by Lemma 3.9 and contained in $K\subset U$.
@@ -385,7 +380,7 @@
 2. (sau (25)) Remark 3 gives …
    → (sau (25)) Nhận xét 3 cho …
 
-### 27. Mục 3.8: tiêu đề, đoạn dẫn và phát biểu Định lý 3.12
+### 26. Mục 3.8: tiêu đề, đoạn dẫn và phát biểu Định lý 3.12
 
 **Trước**
 1. [Tiêu đề] 3.8. Strong convergence to a feasible point
@@ -413,28 +408,28 @@
 7. Theorem 3.12. Under Assumption 1, the sequence $\{x^k\}$ generated by Algorithm 1 converges to a point $x^\infty\in\Omega$.
    → Định lý 3.12. Dưới Giả thiết 1, dãy $\{x^k\}$ sinh bởi Thuật toán 1 hội tụ tới một điểm $x^\infty\in\Omega$.
 
-### 28. Tên các giai đoạn trong chứng minh Định lý 3.12
+### 27. Tên các giai đoạn trong chứng minh Định lý 3.12
 
 - **Trước:** *Stage 1 (convex half).* … *Stage 2 (pseudoconvex half by contradiction).*
   → *Giai đoạn 1 (nửa lồi).* … *Giai đoạn 2 (nửa giả lồi, bằng phản chứng).*
 - **Sau:** *Stage 1 (convex constraints).* … *Stage 2 (a feasible cluster point).*
   → *Giai đoạn 1 (các ràng buộc lồi).* … *Giai đoạn 2 (một điểm tụ khả thi).*
 
-### 29. Chứng minh Định lý 3.12, Claim 3
+### 28. Chứng minh Định lý 3.12, Claim 3
 
 - **Trước:** … $F_{j^\star}(x^\star)\le b_{j^\star}<F_{j^\star}(\bar x)$; the contrapositive (5) with $x=\bar x$, $y=x^\star$ gives $\langle\nabla F_{j^\star}(\bar x),\bar x-x^\star\rangle>0$, …
   → … ; mệnh đề phản đảo (5) với $x=\bar x$, $y=x^\star$ cho $\langle\nabla F_{j^\star}(\bar x),\bar x-x^\star\rangle>0$, …
 - **Sau:** … $F_{j^\star}(x^\star)\le b_{j^\star}<F_{j^\star}(\bar x)$; definition (5) with $x=\bar x$, $y=x^\star$ gives $\langle\nabla F_{j^\star}(\bar x),\bar x-x^\star\rangle>0$, …
   → … ; định nghĩa (5) với $x=\bar x$, $y=x^\star$ cho $\langle\nabla F_{j^\star}(\bar x),\bar x-x^\star\rangle>0$, …
 
-### 30. Câu cuối Giai đoạn 3
+### 29. Câu cuối Giai đoạn 3
 
 - **Trước:** This argument requires neither uniqueness of the feasible point nor convexity of the target set: one feasible cluster point and convergence of its distance suffice.
   → Lập luận này không cần tính duy nhất của điểm khả thi, cũng không cần tính lồi của tập đích: một điểm tụ khả thi và sự hội tụ của khoảng cách tới nó là đủ.
 - **Sau:** The argument does not require $\Omega$ to be a singleton: one feasible cluster point and the convergence of its distance suffice.
   → Lập luận không cần $\Omega$ chỉ có một điểm: một điểm tụ khả thi và sự hội tụ của khoảng cách tới nó là đủ.
 
-### 31. Nhận xét 4 (vai trò của $\delta$)
+### 30. Nhận xét 4 (vai trò của $\delta$)
 
 **Trước**
 1. Larger $\delta$ enlarges $K^{\rm cvx}_k,K^{\rm ps}_k$, which may aid numerical stability when several $v_i(x^k)$ are nearly equal; on the test problem (47), $\delta=10^{-1}$ and $\delta=10^{-3}$ produce identical iterates (Table 8): the pseudoconvex track has a single index, at every start either only $F_1$ is violated or $v_1-v_2\ge4.79$, and in these runs the convex track is satisfied from the second evaluated point on.
@@ -446,9 +441,9 @@
 1. Larger $\delta$ enlarges $K^{\rm cvx}_k$ and $K^{\rm ps}_k$, which may improve numerical stability when several $v_i(x^k)$ are nearly equal.
    → $\delta$ lớn hơn làm rộng $K^{\rm cvx}_k$ và $K^{\rm ps}_k$, điều này có thể cải thiện độ ổn định số khi nhiều $v_i(x^k)$ gần bằng nhau.
 
-*(Phần giải thích về bài toán (47) được chuyển xuống Mục 4.4, xem mục 55.)*
+*(Phần giải thích về bài toán (47) được chuyển xuống Mục 4.4, xem mục 54.)*
 
-### 32. Hệ quả 3.13 và 3.14
+### 31. Hệ quả 3.13 và 3.14
 
 - **Trước:** The sequence converges strongly to a point $x^\infty\in\Omega$ … (cả hai hệ quả)
   → Dãy hội tụ mạnh tới một điểm $x^\infty\in\Omega$ …
@@ -459,47 +454,47 @@
 
 ## E. Mục 4. Thực nghiệm số
 
-### 33. Câu bị xóa ở đầu Mục 4
+### 32. Câu bị xóa ở đầu Mục 4
 
 - **Trước:** These two scopes are stated separately below.
   → Hai phạm vi này được nêu riêng dưới đây.
 - **Sau:** *(xóa)*
 
-### 34. Mục 4.1.1: thông tin tương tác
+### 33. Mục 4.1.1: thông tin tương tác
 
 - **Trước:** … and $I(Z_i;Z_j;C)=I(Z_i;C)+I(Z_j;C)-I((Z_i,Z_j);C)$.
   → … và $I(Z_i;Z_j;C)=\ldots$.
 - **Sau:** … and $I(Z_i;Z_j;C)=I(Z_i;C)+I(Z_j;C)-I((Z_i,Z_j);C)$ is their interaction information.
   → … và $I(Z_i;Z_j;C)=\ldots$ là thông tin tương tác của chúng.
 
-### 35. Mục 4.1.2: ba số hạng của hàm mất mát AFRSFCV
+### 34. Mục 4.1.2: ba số hạng của hàm mất mát AFRSFCV
 
 - **Trước:** The three terms measure label-approximation error, incorrect-decision confidence, and Tikhonov regularization, respectively.
   → Ba số hạng lần lượt đo sai số xấp xỉ nhãn, độ tin cậy của quyết định sai, và hiệu chỉnh Tikhonov.
 - **Sau:** The three terms are the label-approximation error, the weight of misclassifying features per sample, and a Tikhonov term.
   → Ba số hạng là sai số xấp xỉ nhãn, trọng số của các đặc trưng phân loại sai trên mỗi mẫu, và một số hạng Tikhonov.
 
-### 36. Mục 4.1.3: $F_1,F_2$ là số hạng của (38)
+### 35. Mục 4.1.3: $F_1,F_2$ là số hạng của (38)
 
 - **Trước:** Here $F_1,F_2$ are the first two components of (38), without their coefficients, and $F_3$ is the objective in (34).
   → Ở đây $F_1,F_2$ là hai thành phần đầu của (38), bỏ hệ số, và $F_3$ là hàm mục tiêu trong (34).
 - **Sau:** Here $F_1,F_2$ are the first two terms of (38), without their coefficients, and $F_3$ is the objective in (34).
   → Ở đây $F_1,F_2$ là hai số hạng đầu của (38), bỏ hệ số, và $F_3$ là hàm mục tiêu trong (34).
 
-### 37. Câu bị xóa sau (42)
+### 36. Câu bị xóa sau (42)
 
 - **Trước:** A feasible weight need not minimize either baseline objective.
   → Một trọng số khả thi không nhất thiết cực tiểu hóa hàm mục tiêu nào của các phương pháp cơ sở.
 - **Sau:** *(xóa; ý này đã có ở câu ngay trước)*
 
-### 38. Mệnh đề 4.1, câu cuối
+### 37. Mệnh đề 4.1, câu cuối
 
 - **Trước:** It satisfies the function assumptions of Assumption 1 whenever $\Omega\ne\varnothing$.
   → Nó thỏa các giả thiết về hàm của Giả thiết 1 bất cứ khi nào $\Omega\ne\varnothing$.
 - **Sau:** Hence (42) satisfies (A1) and (A2) of Assumption 1, with $U=U_\rho$, whenever $\Omega\ne\varnothing$.
   → Do đó (42) thỏa (A1) và (A2) của Giả thiết 1, với $U=U_\rho$, bất cứ khi nào $\Omega\ne\varnothing$.
 
-### 39. Đoạn sau chứng minh Mệnh đề 4.1 (cách gán track, chặn an toàn, ngưỡng)
+### 38. Đoạn sau chứng minh Mệnh đề 4.1 (cách gán track, chặn an toàn, ngưỡng)
 
 **Trước**
 1. The assignment $I^{\rm cvx}=\{1,2\}$, $I^{\rm ps}=\{3\}$ used in the experiments is admissible because convexity implies pseudoconvexity.
@@ -531,7 +526,7 @@
 14. The threshold protocol and constraint-activity diagnostics are reported with the experiments.
     → Quy trình chọn ngưỡng và các chẩn đoán về mức hoạt động của ràng buộc được báo cáo cùng với thực nghiệm.
 
-*(Thêm vào đây, Trước, ở đầu Mục 4.4 — được gộp vào đoạn này ở bản Sau, xem mục 49):*
+*(Thêm vào đây, Trước, ở đầu Mục 4.4 — được gộp vào đoạn này ở bản Sau, xem mục 48):*
 
 15. The sampling pool contains $3\,000$ Dirichlet points and all simplex vertices.
     → Tập mẫu gồm $3\,000$ điểm Dirichlet và mọi đỉnh của đơn hình.
@@ -562,16 +557,16 @@
 
 *(Ghi chú: $4.77\times10^{-5}$ là giá trị nhỏ nhất trên mọi fold huấn luyện và mọi bộ dữ liệu đầy đủ; $5.99\times10^{-5}$ cũ chỉ tính trên các bài toán dữ liệu đầy đủ ở Mục 4.4.)*
 
-### 40. Nhận xét 6 (chi phí mỗi vòng lặp)
+### 39. Nhận xét 6 (chi phí mỗi vòng lặp)
 
 - **Trước:** Simplex projection costs $O(p\log p)$.
   → Phép chiếu lên đơn hình tốn $O(p\log p)$.
 - **Sau:** Projection onto $K=\Delta_{p-1}$ by sorting costs $O(p\log p)$ operations [6].
   → Phép chiếu lên $K=\Delta_{p-1}$ bằng sắp xếp tốn $O(p\log p)$ phép toán [6].
 
-*(Câu Sau gộp câu cũ ở Mục 2, xem mục 11.)*
+*(Câu Sau gộp câu cũ ở Mục 2, xem mục 10.)*
 
-### 41. Mục 4.2: câu về SG-const và SG-dyn
+### 40. Mục 4.2: câu về SG-const và SG-dyn
 
 **Trước**
 1. SG-const uses step $10^{-3}$.
@@ -583,14 +578,14 @@
 1. SG-const uses the step $\nu_k=10^{-3}$ and SG-dyn the sampled modulus $\widehat L$ (Section 4.2.1); tuned moduli are considered only in Section 4.4.
    → SG-const dùng bước $\nu_k=10^{-3}$ và SG-dyn dùng mô-đun lấy mẫu $\widehat L$ (Mục 4.2.1); mô-đun tinh chỉnh chỉ được xét ở Mục 4.4.
 
-### 42. Mục 4.2.1: câu mở đầu
+### 41. Mục 4.2.1: câu mở đầu
 
 - **Trước:** The following updates specify the two baseline solvers for the models in Sections 4.1.1 and 4.1.2.
   → Các bước cập nhật sau đây mô tả hai bộ giải cơ sở cho các mô hình ở Mục 4.1.1 và 4.1.2.
 - **Sau:** The following paragraphs specify the baseline solvers: N-Fscore and AFRSFCV for the models of Sections 4.1.1 and 4.1.2, and the subgradient methods SG-const and SG-dyn.
   → Các đoạn sau mô tả các bộ giải cơ sở: N-Fscore và AFRSFCV cho các mô hình ở Mục 4.1.1 và 4.1.2, và các phương pháp dưới gradient SG-const và SG-dyn.
 
-### 43. N-Fscore: tích phân Euler
+### 42. N-Fscore: tích phân Euler
 
 **Trước**
 1. We integrate (45) by explicit Euler on $[0,T]$ with $N_{\rm step}$ steps under a fixed budget (no stopping rule), with the fixed parameters reported in the experimental protocol, and take as weight vector the projection $P_K(g(u(T)))$ of the network output at the final time onto the simplex $K$.
@@ -602,7 +597,7 @@
 2. The weight vector is the projection $P_K(g(u(T)))$ of the final network output onto $K$.
    → Vector trọng số là hình chiếu $P_K(g(u(T)))$ của đầu ra cuối cùng của mạng lên $K$.
 
-### 44. Đoạn mới "SG-const and SG-dyn" ở Mục 4.2.1 (chuyển từ Mục 4.4 lên và viết lại)
+### 43. Đoạn mới "SG-const and SG-dyn" ở Mục 4.2.1 (chuyển từ Mục 4.4 lên và viết lại)
 
 **Trước** (ở đoạn "Protocol and tuning cost", Mục 4.4)
 1. SG-const uses $\nu_k=10^{-3}$.
@@ -624,7 +619,7 @@
 
 *(Câu 5 cũ "The averaging specifies how ties are handled." bị bỏ.)*
 
-### 45. Mục 4.2.2: quy trình đánh giá
+### 44. Mục 4.2.2: quy trình đánh giá
 
 **Trước**
 1. No classifier parameter or vote threshold is chosen from these test outcomes.
@@ -642,14 +637,14 @@
 3. Because a single split is used, this is an exploratory evaluation, not an end-to-end or nested-validation study.
    → Vì chỉ dùng một phép chia, đây là một đánh giá khám phá, không phải một nghiên cứu đầu-cuối hay kiểm định lồng.
 
-### 46. Chỉ số ổn định Nogueira
+### 45. Chỉ số ổn định Nogueira
 
 - **Trước:** Here $\bar Z_j=N_f^{-1}\sum_b Z_{bj}$; the unbiased variance correction is $N_f/(N_f-1)$, not $p/(p-1)$.
   → Ở đây $\bar Z_j=N_f^{-1}\sum_b Z_{bj}$; hệ số hiệu chỉnh phương sai không chệch là $N_f/(N_f-1)$, không phải $p/(p-1)$.
 - **Sau:** Here $\bar Z_j=N_f^{-1}\sum_b Z_{bj}$, and $s_j^2$ is the unbiased variance over the $N_f$ folds.
   → Ở đây $\bar Z_j=N_f^{-1}\sum_b Z_{bj}$, và $s_j^2$ là phương sai không chệch trên $N_f$ fold.
 
-### 47. Mục 4.3: độ ổn định
+### 46. Mục 4.3: độ ổn định
 
 **Trước**
 1. Its mean stability is $0.786$, compared with N-Fscore's $0.822$; thus the results support moderate reduction rather than uniform sparsity or stability superiority.
@@ -661,24 +656,24 @@
 2. Thus DTAP reduces the number of features moderately; it does not select sparser or more stable sets than the base models.
    → Như vậy DTAP giảm số đặc trưng ở mức vừa phải; nó không chọn được các tập thưa hơn hay ổn định hơn các mô hình gốc.
 
-### 48. Mục 4.3: kết quả của SG
+### 47. Mục 4.3: kết quả của SG
 
 - **Trước:** The per-dataset exceptions are included in Table 3, and all five methods appear in the summary.
   → Các ngoại lệ theo từng bộ dữ liệu có trong Bảng 3, và cả năm phương pháp đều có trong bảng tóm tắt.
 - **Sau:** The SG results on Spambase, the only dataset where they differ from DTAP, are given below Table 3; Table 4 includes all five methods.
   → Kết quả SG trên Spambase, bộ dữ liệu duy nhất mà chúng khác DTAP, được ghi dưới Bảng 3; Bảng 4 gồm cả năm phương pháp.
 
-### 49. Mục 4.4: đoạn mở đầu (kiểm tra tính khả thi)
+### 48. Mục 4.4: đoạn mở đầu (kiểm tra tính khả thi)
 
 **Trước**
 1. The percentile calibration defines experimental thresholds; it does not guarantee that their sublevel sets intersect.
    → Việc hiệu chỉnh theo phân vị xác định các ngưỡng thực nghiệm; nó không bảo đảm các tập mức dưới của chúng giao nhau.
-2. (Ba câu về tập mẫu, quy tắc chọn phân vị, ngưỡng cho trước: xem mục 39, câu 15–17.)
+2. (Ba câu về tập mẫu, quy tắc chọn phân vị, ngưỡng cho trước: xem mục 38, câu 15–17.)
 3. For the full-data instances below, saved numerical witnesses satisfy all three inequalities strictly under an independent evaluation; the smallest slack is $4.33\times10^{-4}$.
    → Với các bài toán dữ liệu đầy đủ dưới đây, các điểm chứng số đã lưu thỏa chặt cả ba bất đẳng thức khi được đánh giá độc lập; độ dôi nhỏ nhất là $4.33\times10^{-4}$.
 4. This numerical check is distinct from an exact feasibility certificate.
    → Phép kiểm tra số này khác với một chứng nhận khả thi chính xác.
-5. (Câu về tọa độ Fisher: xem mục 39, câu 18.)
+5. (Câu về tọa độ Fisher: xem mục 38, câu 18.)
 6. We measure the frequency of $F_3(w^k)-b_3>10^{-6}$ over all evaluated points, including the terminating point.
    → Ta đo tần suất $F_3(w^k)-b_3>10^{-6}$ trên mọi điểm được đánh giá, kể cả điểm kết thúc.
 
@@ -694,7 +689,7 @@
 5. We count the iterates of a run, including the last (its evaluated points), at which $F_3(w^k)-b_3>10^{-6}$.
    → Ta đếm các điểm lặp của một lần chạy, kể cả điểm cuối (các điểm được đánh giá của nó), tại đó $F_3(w^k)-b_3>10^{-6}$.
 
-### 50. Mục 4.4: mức hoạt động của $F_3$
+### 49. Mục 4.4: mức hoạt động của $F_3$
 
 **Trước**
 1. Table 6 shows that the third track is inactive on seven of the eight standard-start runs for the classification datasets and active at only one of the $48$ evaluated points on Abalone.
@@ -716,14 +711,14 @@
 3. We also report the all-convex comparator (AC), which assigns all three constraints to the convex track.
    → Ta cũng báo cáo phương án so sánh toàn lồi (AC), gán cả ba ràng buộc vào track lồi.
 
-### 51. Mục 4.4: đoạn "Protocol and tuning cost"
+### 50. Mục 4.4: đoạn "Protocol and tuning cost"
 
-- **Trước:** (năm câu định nghĩa SG, xem mục 44) — The tuned variant selects $L=c\widehat L$ from the manually specified grid $c\in\{10^{-3},10^{-2.5},\ldots,10^1\}$ using three random starting points (seeds 1101–1103).
+- **Trước:** (năm câu định nghĩa SG, xem mục 43) — The tuned variant selects $L=c\widehat L$ from the manually specified grid $c\in\{10^{-3},10^{-2.5},\ldots,10^1\}$ using three random starting points (seeds 1101–1103).
   → … Biến thể tinh chỉnh chọn $L=c\widehat L$ từ lưới đặt thủ công $c\in\{\ldots\}$ bằng ba điểm xuất phát ngẫu nhiên (seed 1101–1103).
 - **Sau:** SG-const and SG-dyn are defined in Section 4.2.1. Besides SG-dyn with the sampled modulus $\widehat L$, a tuned variant selects $L=c\widehat L$ from the manually specified grid $c\in\{10^{-3},10^{-2.5},\ldots,10^1\}$ using three random starting points (seeds 1101–1103).
   → SG-const và SG-dyn được định nghĩa ở Mục 4.2.1. Bên cạnh SG-dyn với mô-đun lấy mẫu $\widehat L$, một biến thể tinh chỉnh chọn $L=c\widehat L$ từ lưới đặt thủ công $c\in\{\ldots\}$ bằng ba điểm xuất phát ngẫu nhiên (seed 1101–1103).
 
-### 52. Mục 4.4: Abalone, sai khác giữa DTAP và AC
+### 51. Mục 4.4: Abalone, sai khác giữa DTAP và AC
 
 **Trước**
 1. … the values of $J$ along the two trajectories differ by at most $3.18\times10^{-5}$ relative to AC, and both runs stop after $48$ evaluated points.
@@ -737,7 +732,7 @@
 2. The columns are therefore not a comparison of the two assignments, whose success counts differ only on the random starts ($26/36$ versus $36/36$).
    → Vì vậy các cột này không phải là phép so sánh hai cách gán, mà số lần thành công của chúng chỉ khác nhau trên các điểm xuất phát ngẫu nhiên ($26/36$ so với $36/36$).
 
-### 53. Mục 4.4: biến thể cân bằng
+### 52. Mục 4.4: biến thể cân bằng
 
 **Trước**
 1. A balanced DTAP variant also obtains $26/36$; it assigns equal weights when both tracks are nonzero and full weight to the sole nonzero track.
@@ -751,26 +746,26 @@
 2. Thus these tests do not establish a uniform advantage of the proportional weight or robustness to initialization.
    → Như vậy các phép thử này không chứng tỏ được ưu thế đồng đều của trọng số tỉ lệ, cũng như độ bền đối với điểm khởi đầu.
 
-### 54. Mục 4.4: bài toán giả lồi không lồi
+### 53. Mục 4.4: bài toán giả lồi không lồi
 
 - **Trước:** To exercise the third track directly, consider $K=[-2,2]^d$ and (47).
   → Để kiểm tra trực tiếp track thứ ba, xét $K=[-2,2]^d$ và (47).
 - **Sau:** To exercise the pseudoconvex track directly, consider $K=[-2,2]^d$ and (47).
   → Để kiểm tra trực tiếp track giả lồi, xét $K=[-2,2]^d$ và (47).
 
-### 55. Mục 4.4: giải thích dòng $\delta$ của Bảng 8 (chuyển từ Nhận xét 4 xuống)
+### 54. Mục 4.4: giải thích dòng $\delta$ của Bảng 8 (chuyển từ Nhận xét 4 xuống)
 
-- **Trước:** *(nằm trong Nhận xét 4, xem mục 31)*
+- **Trước:** *(nằm trong Nhận xét 4, xem mục 30)*
 - **Sau:** On (47), $\delta=10^{-1}$ and $\delta=10^{-3}$ give identical iterates because the pseudoconvex track has a single index, at every start either only $F_1$ is violated or $v_1-v_2\ge4.79$, and the convex track is satisfied from the second evaluated point on; the $\delta$ row of Table 8 is therefore a consistency check, not evidence about the role of $\delta$.
   → Trên (47), $\delta=10^{-1}$ và $\delta=10^{-3}$ cho các dãy lặp giống hệt nhau vì track giả lồi chỉ có một chỉ số, tại mọi điểm xuất phát hoặc chỉ $F_1$ bị vi phạm hoặc $v_1-v_2\ge4.79$, và track lồi được thỏa từ điểm đánh giá thứ hai trở đi; vì vậy dòng $\delta$ của Bảng 8 là một phép kiểm tra tính nhất quán, không phải bằng chứng về vai trò của $\delta$.
 
-### 56. Câu bị xóa trước đoạn "Reproducibility"
+### 55. Câu bị xóa trước đoạn "Reproducibility"
 
 - **Trước:** The experiments support neither universal speed superiority nor a finite-budget robustness claim.
   → Các thực nghiệm không ủng hộ ưu thế tốc độ phổ quát, cũng không ủng hộ khẳng định về độ bền trong ngân sách hữu hạn.
 - **Sau:** *(xóa; ý này đã có ở Abstract và Conclusion)*
 
-### 57. Đoạn "Reproducibility"
+### 56. Đoạn "Reproducibility"
 
 - **Trước:** In this environment the package also reproduces exactly every numerical entry of Tables 1–5 (Tables 4 and 5 from unrounded scores) and of Table 6, and the counts quoted in Sections 4.3 and 4.4.
   → Trong môi trường này, gói mã còn tái tạo chính xác mọi giá trị số trong Bảng 1–5 (Bảng 4 và 5 từ điểm chưa làm tròn) và Bảng 6, cùng các số đếm nêu ở Mục 4.3 và 4.4.
@@ -825,7 +820,7 @@
 | (15) | có định nghĩa $\Phi^{\rm ps}(x)$ | bỏ $\Phi^{\rm ps}(x)$ (không được dùng ở đâu) |
 | Chứng minh Định lý 3.12, đoạn "Reaching the contradiction" | $L'$ | $L'_B$ (như trong Bổ đề 3.7) |
 | (41), chứng minh Mệnh đề 4.1 | $D_\rho$ | $U_\rho$ |
-| Định nghĩa SG (mục 44) | $D_k$, $x^k$ | $\mathcal I_k$, $w^k$ |
+| Định nghĩa SG (mục 43) | $D_k$, $x^k$ | $\mathcal I_k$, $w^k$ |
 | Nhận xét 6 | "including $Q$" | "including $Q_R$" |
 | Mục 4.2.2 (kiểm định signed-rank) | "all-zero pairs have $p=1$" → *các cặp toàn số 0 có $p=1$* | "all-zero pairs receive the $p$-value $1$" → *các cặp toàn số 0 nhận giá trị $p$ bằng 1* |
 | Đầu Mục 4.1 (câu thêm) | — | "Here $n$ is the number of samples; subscripts index features and superscripts index iterations." → *Ở đây $n$ là số mẫu; chỉ số dưới đánh số đặc trưng, chỉ số trên đánh số vòng lặp.* |

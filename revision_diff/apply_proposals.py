@@ -25,8 +25,7 @@ def rep(old, new, tag):
 
 
 # ---------------------------------------------------------------- front matter
-rep("Adaptive step size; Strong convergence; Feature selection",
-    "Adaptive step size; Global convergence; Feature selection", "G4 keyword")
+# Keywords: kept as in v1.
 
 # Abstract: the v1 wording is kept; only the terminology follows the body ("track",
 # "proportional weight").
