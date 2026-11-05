@@ -1,6 +1,6 @@
 # Đề xuất sửa câu chữ — `DTAP Finally/main_document.tex`
 
-Tài liệu để **duyệt**: chưa có thay đổi nào được áp vào bài. Mỗi mục gồm câu **gốc**, câu **đề xuất** (tiếng Anh), **bản dịch** tiếng Việt của câu đề xuất và **lý do**. Số thứ tự theo `writing_review.md`; dòng là số dòng hiện tại của `main_document.tex`.
+Tài liệu để **duyệt**: chưa có thay đổi nào được áp vào bài. Các đề xuất đã được viết lại để bài **ngắn đi** chứ không dài thêm (Phần IV), theo các tiêu chí ở đầu Phần I. Mỗi mục gồm câu **gốc**, câu **đề xuất** (tiếng Anh), **bản dịch** tiếng Việt của câu đề xuất và **lý do**. Số thứ tự theo `writing_review.md`; dòng là số dòng hiện tại của `main_document.tex`.
 
 Cách duyệt: đánh dấu ở cuối mỗi mục: `[x] Duyệt`, `[x] Sửa lại` (ghi chú bên dưới), hoặc `[x] Bỏ`.
 
@@ -14,6 +14,16 @@ Các số liệu mới đưa vào câu đề xuất đều đã được kiểm 
 > **Lưu ý cho response letter.** Các mục **A0, 50** sửa những câu mà letter đang trích nguyên văn. Nếu duyệt, cần sửa trích dẫn tương ứng trong letter: R1.1 và R1.2 trích Abstract, R1.3 trích câu ở dòng 663–664.
 
 ---
+
+## Tiêu chí: vô nghĩa, lan man, súc tích
+
+| Khái niệm | Định nghĩa | Phép thử |
+|---|---|---|
+| **Vô nghĩa / thừa** | Câu không mang thông tin người đọc cần để hiểu, kiểm chứng hoặc dùng kết quả: câu đệm, câu lặp điều hiển nhiên hoặc điều đã nói, câu đánh giá chung chung. | **Xóa thử:** bỏ câu đi mà không mất gì thì câu đó thừa. |
+| **Lan man** | Nội dung lệch mục đích của đoạn: sai chỗ, sai cấp độ chi tiết, lặp một giới hạn ở nhiều nơi, rào đón. | **Mục đích:** câu có phục vụ mục đích của đoạn không? **Lặp:** đã nói ở chỗ khác chưa? |
+| **Súc tích** | Mỗi câu nói một ý cần thiết, chính xác, bằng ít chữ nhất mà vẫn không phải đoán. Nén quá mức thành biệt ngữ là tối nghĩa, không phải súc tích. | **Mật độ:** có cách nói ít chữ hơn mà cùng độ chính xác không? **Giải nén:** người đọc có phải đoán ý không? |
+
+Quy tắc cấp độ chi tiết: Introduction nói *vấn đề gì* và *vì sao*; phần thân nói *làm thế nào*; seed, ngưỡng sàn và môi trường chạy thuộc phần thiết lập hoặc tái lập. Mỗi giới hạn chỉ nói **một lần**, ở chỗ phù hợp.
 
 ## Phần I. Quy ước dùng chung cho cả bài
 
@@ -33,10 +43,10 @@ Mỗi quy ước được áp ở mọi vị trí liệt kê.
 
 ### G2. Bỏ "block", định nghĩa "track" một lần
 - Dòng 174, câu đầu §3.2. **Gốc:** "We split the constraint index set into a \emph{convex track} and a \emph{pseudoconvex track}."
-  **Đề xuất:** "We split the constraint indices into two sets, $I^{\cvx}$ and $I^{\ps}$. Each set, together with the step rule used on it, is called a \emph{track}: the \emph{convex track} and the \emph{pseudoconvex track}."
-  **Dịch:** "Ta chia các chỉ số ràng buộc thành hai tập $I^{\cvx}$ và $I^{\ps}$. Mỗi tập, cùng với quy tắc bước dùng trên nó, được gọi là một *track*: track lồi và track giả lồi."
-- Dòng 185. **Gốc:** "into disjoint groups". **Đề xuất:** "into two disjoint sets". **Dịch:** "thành hai tập rời nhau".
-- Các chỗ dùng "block" ở 68 và 103 được xử lý trong A0 và mục 20.
+  **Đề xuất:** "We split $I$ into a \emph{convex track} $I^{\cvx}$ and a \emph{pseudoconvex track} $I^{\ps}$, each with its own step rule."
+  **Dịch:** "Ta chia $I$ thành *track lồi* $I^{\cvx}$ và *track giả lồi* $I^{\ps}$, mỗi track có quy tắc bước riêng."
+- Dòng 184–186 ("Partition $I$ … into disjoint groups … The per-track maximal violations are"): câu này lặp lại câu trên, nên rút còn: "Assumption~\ref{ass:standing} makes the partition precise. The per-track maximal violations are". **Dịch:** "Giả thiết 1 phát biểu chính xác phép chia này. Độ vi phạm lớn nhất trên mỗi track là".
+- Các chữ "block" ở dòng 68 và 103 được xử lý trong A0 và mục 20.
 
 [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
@@ -66,14 +76,15 @@ Mỗi quy ước được áp ở mọi vị trí liệt kê.
 *Lý do:* Abstract, C2 và Kết luận đều dùng chữ "consistency". [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### G6. Nói rõ nghĩa của "approximate active set"
-- Thêm sau (13), dòng 198. **Đề xuất (câu mới):** "Here `active' refers to a violation within $\delta$ of the largest violation on the track, not to the equality $F_i(x)=b_i$." **Dịch:** "Ở đây 'active' chỉ các vi phạm cách vi phạm lớn nhất trên track không quá $\delta$, không phải đẳng thức $F_i(x)=b_i$."
+- Trong câu dẫn của (12)–(13), dòng 192–194: "…a $\delta$-enlarged \emph{approximate active set} on each track:" → "…a $\delta$-enlarged \emph{approximate active set} on each track (`active' meaning within $\delta$ of the largest violation):"
+  **Dịch:** "…một *tập active xấp xỉ* nới rộng thêm $\delta$ trên mỗi track ('active' nghĩa là cách vi phạm lớn nhất không quá $\delta$):"
 
-*Lý do:* trong tối ưu, "active" thường nghĩa là $F_i=b_i$; Reviewer 2 cũng hỏi về thuật ngữ này ở m4. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+[ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### G7. Ký hiệu trùng nghĩa
 | Ký hiệu | Vị trí | Đề xuất |
 |---|---|---|
-| $n$, $x_i$, chỉ số $k$ | đầu §4.1, dòng 747 | Thêm câu: "In this section the variable is $w\in\R^p$; $n$ denotes the number of samples and $x_i$ a sample, subscripts index features, and superscripts index iterations." — *Dịch:* "Trong mục này biến là $w\in\R^p$; $n$ là số mẫu, $x_i$ là một mẫu, chỉ số dưới đánh số đặc trưng và chỉ số trên đánh số vòng lặp." |
+| $n$, $x_i$, chỉ số $k$ | đầu §4.1, dòng 747 | Thêm câu: "Here $n$ is the number of samples; subscripts index features and superscripts index iterations." — *Dịch:* "Ở đây $n$ là số mẫu; chỉ số dưới đánh số đặc trưng, chỉ số trên đánh số vòng lặp." |
 | $p$ là $p$-value | dòng 904 | "all-zero pairs have $p=1$" → "all-zero pairs receive the $p$-value $1$" — *Dịch:* "các cặp toàn số 0 nhận giá trị $p$ bằng 1". |
 | $Q$ thay vì $Q_R$ | dòng 831 | "including $Q$" → "including $Q_R$". |
 | $D_\rho$ | dòng 801, 817 | Đổi $D_\rho$ thành $U_\rho$ (đây chính là lân cận mở $U$ của Giả thiết 1). |
@@ -86,36 +97,32 @@ Mỗi quy ước được áp ở mọi vị trí liệt kê.
 [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### G8. Định nghĩa SG-const và SG-dyn trước khi dùng
-Thêm một đoạn vào cuối §4.2.1 (sau "AFRSFCV: gradient and update", dòng 870). Đồng thời bỏ phần định nghĩa tương ứng ở §4.4 (dòng 1050–1060), chỉ giữ phần tinh chỉnh (xem mục 78).
+Chuyển định nghĩa từ §4.4 (dòng 1053–1060) lên cuối §4.2.1 và rút gọn. Ở §4.4 chỉ giữ phần tinh chỉnh (mục 78). Số chữ gần như không đổi, vì đây là chuyển chỗ.
 
-**Đề xuất (đoạn mới):**
-> \paragraph*{SG-const and SG-dyn: subgradient methods}
-> We also compare with two subgradient methods for quasiconvex feasibility~\citep{hu2022quasi}. Both follow the most-violated-constraint strategy of~\citep{hu2022quasi}: with $\mathcal I_k=\argmax_i v_i(w^k)$, they iterate
-> \[ w^{k+1}=P_K(w^k-\nu_k\bar h_k),\qquad \bar h_k=\frac1{|\mathcal I_k|}\sum_{i\in\mathcal I_k}\frac{\nabla F_i(w^k)}{\|\nabla F_i(w^k)\|}, \]
-> where the average over $\mathcal I_k$ handles ties. SG-const uses the constant step $\nu_k=10^{-3}$. SG-dyn uses the dynamic step $\nu_k=J(w^k)/L$ of~\citep{hu2022quasi} with H\"older exponent $1$. By default $L=\widehat L$, the largest gradient norm over $500$ points sampled in $K$.
+**Đề xuất (đoạn mới ở §4.2.1):**
+> \paragraph*{SG-const and SG-dyn}
+> These subgradient methods for quasiconvex feasibility~\citep{hu2022quasi} follow its most-violated-constraint strategy: with $\mathcal I_k=\argmax_i v_i(w^k)$,
+> \[ w^{k+1}=P_K(w^k-\nu_k\bar h_k),\qquad \bar h_k=\frac1{|\mathcal I_k|}\sum_{i\in\mathcal I_k}\frac{\nabla F_i(w^k)}{\|\nabla F_i(w^k)\|}. \]
+> SG-const uses $\nu_k=10^{-3}$; SG-dyn uses the dynamic step $\nu_k=J(w^k)/L$ (H\"older exponent $1$), with $L=\widehat L$, the largest gradient norm at $500$ points sampled in $K$.
 
 **Dịch:**
-> **SG-const và SG-dyn: các phương pháp dưới gradient.** Ta còn so sánh với hai phương pháp dưới gradient cho bài toán khả thi tựa lồi [7]. Cả hai theo chiến lược "ràng buộc bị vi phạm nhiều nhất" của [7]: với $\mathcal I_k=\argmax_i v_i(w^k)$, chúng lặp theo công thức trên, trong đó việc lấy trung bình trên $\mathcal I_k$ xử lý trường hợp có nhiều chỉ số cùng đạt cực đại. SG-const dùng bước hằng $\nu_k=10^{-3}$. SG-dyn dùng bước động $\nu_k=J(w^k)/L$ của [7] với số mũ Hölder bằng 1. Mặc định $L=\widehat L$, là chuẩn gradient lớn nhất trên 500 điểm lấy mẫu trong $K$.
+> **SG-const và SG-dyn.** Hai phương pháp dưới gradient cho bài toán khả thi tựa lồi này [7] theo chiến lược "ràng buộc bị vi phạm nhiều nhất" của [7]: với $\mathcal I_k=\argmax_i v_i(w^k)$, chúng lặp theo công thức trên. SG-const dùng $\nu_k=10^{-3}$; SG-dyn dùng bước động $\nu_k=J(w^k)/L$ (số mũ Hölder bằng 1), với $L=\widehat L$ là chuẩn gradient lớn nhất tại 500 điểm lấy mẫu trong $K$.
 
-*Lý do:* SG-const và SG-dyn được dùng ở §4.2–4.3 (Bảng 2–5) nhưng đến §4.4 mới được định nghĩa. Đã kiểm code `hu2022.py`: $\beta=1$, hệ số bước động bằng 1, nên công thức khớp. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+*Lý do:* SG-const và SG-dyn được dùng ở §4.2–4.3 nhưng đến §4.4 mới được định nghĩa. Đã kiểm `hu2022.py`: công thức trong code khớp với công thức trên. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### G9. Mô tả cách tính ngưỡng $b_i$
-Thay đoạn ở dòng 822 bằng đoạn sau.
-
-**Gốc:**
+**Gốc (dòng 822):**
 > Externally specified thresholds remain fixed. Training-based thresholds instead define the benchmark instance and must be shared by all solvers. Separate empirical percentiles do not ensure $\Omega\ne\varnothing$. A common point must satisfy all constraints, and checks to a numerical tolerance establish only the corresponding approximate feasibility. The threshold protocol and constraint-activity diagnostics are reported with the experiments.
 
 **Đề xuất:**
-> In the experiments the thresholds are computed from the training data of each instance. We draw $3\,000$ points from the uniform (Dirichlet) distribution on $K$ (seed $42$), add the $p$ vertices of $K$, and set $b_i$ to the $q_i$-th percentile of the values of $F_i$ at these points. The levels $q_1,q_2,q_3$ are chosen by a fixed rule from the sample size, the number of features, the number of classes and the class-imbalance ratio of the dataset; they are listed in the supplementary metadata. All solvers use the same thresholds. Since each $b_i$ is calibrated separately, this procedure does not guarantee $\Omega\ne\varnothing$; Section~\ref{ssec:feasibility-audit} reports numerical feasibility checks. When an application prescribes the thresholds, they are used as given, and consistency remains an assumption.
+> The thresholds are calibrated on the training data: $b_i$ is the $q_i$-th percentile of $F_i$ over $3\,000$ Dirichlet points (seed $42$) and the $p$ vertices of $K$, where a fixed rule chooses $q_i$ from the sample size, the number of features and classes, and the class imbalance (supplementary metadata). All solvers share these thresholds. Calibrating each $b_i$ separately does not guarantee $\Omega\ne\varnothing$; Section~\ref{ssec:feasibility-audit} checks feasibility numerically. Prescribed thresholds would be used as given.
 
 **Dịch:**
-> Trong thực nghiệm, các ngưỡng được tính từ dữ liệu huấn luyện của từng bài toán. Ta lấy 3 000 điểm theo phân phối đều (Dirichlet) trên $K$ (seed 42), thêm $p$ đỉnh của $K$, rồi đặt $b_i$ bằng phân vị bậc $q_i$ của các giá trị $F_i$ tại các điểm này. Các bậc $q_1,q_2,q_3$ được chọn theo một quy tắc cố định, dựa trên cỡ mẫu, số đặc trưng, số lớp và tỉ lệ mất cân bằng lớp của bộ dữ liệu; chúng được liệt kê trong metadata bổ sung. Mọi bộ giải dùng chung các ngưỡng này. Vì mỗi $b_i$ được hiệu chỉnh riêng, quy trình này không bảo đảm $\Omega\ne\varnothing$; Mục 4.4 báo cáo các kiểm tra khả thi bằng số. Khi ứng dụng đã quy định ngưỡng, ngưỡng được dùng nguyên như vậy và tính nhất quán vẫn là một giả thiết.
+> Các ngưỡng được hiệu chỉnh trên dữ liệu huấn luyện: $b_i$ là phân vị bậc $q_i$ của $F_i$ trên 3 000 điểm Dirichlet (seed 42) và $p$ đỉnh của $K$, trong đó một quy tắc cố định chọn $q_i$ theo cỡ mẫu, số đặc trưng và số lớp, và độ mất cân bằng lớp (metadata bổ sung). Mọi bộ giải dùng chung các ngưỡng này. Hiệu chỉnh riêng từng $b_i$ không bảo đảm $\Omega\ne\varnothing$; Mục 4.4 kiểm tra tính khả thi bằng số. Nếu ứng dụng quy định sẵn ngưỡng thì dùng nguyên các ngưỡng đó.
 
-*Lý do:* hiện bài không có câu nào nói $b_i$ được tính thế nào; Reviewer 1 hỏi đúng điểm này ở R1.4. Đã đối chiếu `thresholds.py`: 3000 mẫu Dirichlet(1) với seed 42, thêm các đỉnh, lấy phân vị. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+**Kèm theo**, dòng 1021–1026 (khoảng 60 từ) được thay bằng một câu ngắn hơn: "As noted in Section~\ref{ssec:reduction}, the calibrated thresholds need not yield $\Omega\ne\varnothing$." — **Dịch:** "Như đã nêu ở Mục 4.1.3, các ngưỡng hiệu chỉnh không nhất thiết cho $\Omega\ne\varnothing$."
 
-**Kèm theo**, dòng 1021–1026 rút gọn thành:
-> **Đề xuất:** "As noted in Section~\ref{ssec:reduction}, the calibrated thresholds do not guarantee that the sublevel sets intersect. In an application with prescribed thresholds, consistency remains an assumption."
-> **Dịch:** "Như đã nêu ở Mục 4.1.3, các ngưỡng hiệu chỉnh không bảo đảm các tập mức dưới giao nhau. Trong ứng dụng có ngưỡng quy định sẵn, tính nhất quán vẫn là một giả thiết."
+*Lý do:* bài hiện không có câu nào nói $b_i$ được tính thế nào (Reviewer 1 hỏi ở R1.4). Sau khi gộp hai chỗ, tổng số chữ giảm. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### G10. Định nghĩa $A^\star$
 - Sau câu về bỏ phiếu đa số ở dòng 881. **Đề xuất (câu mới):** "We denote the voted feature set by $A^\star$." **Dịch:** "Ta ký hiệu tập đặc trưng sau bỏ phiếu là $A^\star$."
@@ -149,23 +156,13 @@ Thay đoạn ở dòng 822 bằng đoạn sau.
 ## Phần II. Từng câu
 
 ### A0. Abstract (dòng 68), viết lại toàn bộ (gộp các mục 1–6)
-**Gốc:** (xem dòng 68)
-
 **Đề xuất:**
-> We study a nonlinear split feasibility problem in $\R^n$ whose output set is a normal box and whose component functions are differentiable and either convex or pseudoconvex. The constraints are split into a convex track and a pseudoconvex track. On each track, the Dual-Track Adaptive Projection (DTAP) algorithm uses the nearly most violated constraints: it takes a residual-scaled Polyak-type step on the convex track and a safeguarded diminishing step on the pseudoconvex track. It combines the two steps with a proportional weight, a residual-responsive choice for which no optimality is claimed, and projects the result onto the base convex set. Its step sizes require no prescribed operator norm, Lipschitz constant, or H\"older modulus. Assuming that the problem is consistent and the component functions are continuously differentiable, we prove that the whole sequence of iterates converges to a feasible point. The proof uses bounds on the functions and gradients over a bounded set that contains the iterates. In a feature-selection application, three constraints are taken from a fractional model and a fuzzy-rough model; we show that all three are convex. The experiments report how often the pseudoconvex constraint is violated, compare DTAP with subgradient methods whose moduli are tuned, and test DTAP on problems with a nonconvex pseudoconvex constraint. Tuned subgradient methods can match or outperform DTAP, and DTAP is sensitive to its starting point and to the scale of its diminishing step.
+> We study a nonlinear split feasibility problem in $\R^n$ whose output set is a normal box and whose components are differentiable and either convex or pseudoconvex. The Dual-Track Adaptive Projection (DTAP) algorithm splits the constraints into a convex and a pseudoconvex track. It takes a residual-scaled Polyak-type step on the nearly most violated convex constraints and a safeguarded diminishing step on the nearly most violated pseudoconvex ones, combines the two steps by a proportional weight, and projects onto the base set. The weight is a residual-responsive choice, without a claim of optimality. Its step sizes require no prescribed operator norm, Lipschitz constant, or H\"older modulus; the proof uses bounds over a bounded set containing the iterates. If the problem is consistent and the components are continuously differentiable, the whole sequence converges to a feasible point. In a feature-selection application all three constraints are convex. Experiments with constraint-activity counts, tuned subgradient methods and nonconvex pseudoconvex test problems show that tuned subgradient methods can match or outperform DTAP, and that DTAP is sensitive to its starting point and step scale.
 
 **Dịch:**
-> Ta nghiên cứu một bài toán chấp nhận tách phi tuyến trong $\R^n$, có tập đầu ra là một hộp chuẩn và các hàm thành phần khả vi, mỗi hàm lồi hoặc giả lồi. Các ràng buộc được chia thành một track lồi và một track giả lồi. Trên mỗi track, thuật toán Chiếu Thích nghi Hai Track (DTAP) dùng các ràng buộc gần bị vi phạm nhiều nhất: nó lấy một bước kiểu Polyak co theo phần dư trên track lồi và một bước giảm dần có chặn an toàn trên track giả lồi. Nó kết hợp hai bước bằng một trọng số tỉ lệ (một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu) rồi chiếu kết quả lên tập lồi cơ sở. Độ dài bước không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder. Với giả thiết bài toán nhất quán và các hàm thành phần khả vi liên tục, ta chứng minh toàn bộ dãy lặp hội tụ tới một điểm khả thi. Chứng minh dùng các cận của hàm và gradient trên một tập bị chặn chứa dãy lặp. Trong ứng dụng chọn đặc trưng, ba ràng buộc được lấy từ một mô hình phân thức và một mô hình tập thô mờ; ta chứng minh cả ba đều lồi. Thực nghiệm báo cáo tần suất ràng buộc giả lồi bị vi phạm, so sánh DTAP với các phương pháp dưới gradient có mô-đun được tinh chỉnh, và thử DTAP trên các bài toán có ràng buộc giả lồi không lồi. Các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, và DTAP nhạy với điểm xuất phát và với thang của bước giảm dần.
+> Ta nghiên cứu một bài toán chấp nhận tách phi tuyến trong $\R^n$, có tập đầu ra là hộp chuẩn và các thành phần khả vi, mỗi thành phần lồi hoặc giả lồi. Thuật toán Chiếu Thích nghi Hai Track (DTAP) chia các ràng buộc thành một track lồi và một track giả lồi. Thuật toán lấy một bước kiểu Polyak co theo phần dư trên các ràng buộc lồi gần bị vi phạm nhiều nhất, và một bước giảm dần có chặn an toàn trên các ràng buộc giả lồi gần bị vi phạm nhiều nhất. Hai bước được kết hợp bằng một trọng số tỉ lệ, rồi chiếu lên tập cơ sở. Trọng số này là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu. Độ dài bước không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder; chứng minh dùng các cận trên một tập bị chặn chứa dãy lặp. Nếu bài toán nhất quán và các thành phần khả vi liên tục thì toàn bộ dãy hội tụ tới một điểm khả thi. Trong ứng dụng chọn đặc trưng, cả ba ràng buộc đều lồi. Các thực nghiệm (đếm mức hoạt động của ràng buộc, so với các phương pháp dưới gradient đã tinh chỉnh, và thử trên bài toán có ràng buộc giả lồi không lồi) cho thấy các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, và DTAP nhạy với điểm xuất phát và thang bước.
 
-*Lý do:*
-- định nghĩa "track" ngay trong Abstract (mục 1);
-- giới thiệu trọng số trước khi dùng mạo từ xác định (mục 2);
-- nêu rõ các giả thiết (mục 3);
-- nói rõ "lớp con lồi" là gì (mục 4);
-- nói rõ DTAP là phương pháp nhạy với điểm xuất phát (mục 5);
-- đưa các câu phủ định xuống cuối (mục 6).
-
-*Letter:* R1.1 trích "a residual-responsive choice, without a claim of optimality", nay thành "a residual-responsive choice for which no optimality is claimed". R1.2 trích "the proof uses local bounds on the bounded iterate region", nay thành câu mới. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+*Lý do:* định nghĩa "track" ngay trong Abstract; giới thiệu trọng số trước khi dùng; nêu rõ giả thiết; nói rõ "convex subclass" là gì; gom các câu giới hạn về một câu cuối. Các cụm R1.1 và R1.2 của letter trích được giữ nguyên ("a residual-responsive choice, without a claim of optimality"; "require no prescribed operator norm, Lipschitz constant, or Hölder modulus"). Riêng cụm R1.2 "the proof uses local bounds on the bounded iterate region" đổi thành "the proof uses bounds over a bounded set containing the iterates", nên letter cần sửa theo. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 7–8. Introduction, dòng 80
 **Gốc:** "The split feasibility problem (SFP) models constrained reconstruction~\citep{censor1994}. For closed convex sets $C\subseteq\R^n$, $Q\subseteq\R^m$, and a matrix $\mathcal A$, it seeks"
@@ -181,21 +178,21 @@ Thay đoạn ở dòng 822 bằng đoạn sau.
 
 ### Mục 10–11. Dòng 89
 **Gốc:** "Supporting half-spaces simplify projections~\citep{yang2004}, while self-adaptive steps reduce parameter dependence~\citep{…}. Operator splitting~\citep{…} and modified alternating directions~\citep{…} provide decomposition strategies. Adaptive steps and decomposition are therefore established principles."
-**Đề xuất:** "Relaxed variants replace the projections onto $C$ and $Q$ by projections onto supporting half-spaces, which have closed forms~\citep{yang2004}. Self-adaptive step sizes remove the need to know $\norm{\mathcal A}$~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}. Operator splitting~\citep{zhang2012simultaneous} and modified alternating direction methods~\citep{yang2014alternating} decompose the problem into simpler subproblems. This paper uses both ideas, adaptive step sizes and decomposition, but does not claim them as new."
-**Dịch:** "Các biến thể nới lỏng thay phép chiếu lên $C$ và $Q$ bằng phép chiếu lên các nửa không gian tựa, vốn có công thức tường minh [17]. Bước tự thích nghi giúp không cần biết $\norm{\mathcal A}$ [20, 22, 10]. Phương pháp tách toán tử [21] và phương pháp hướng luân phiên cải biên [18] phân rã bài toán thành các bài toán con đơn giản hơn. Bài báo này dùng cả hai ý tưởng, bước thích nghi và phân rã, nhưng không coi chúng là đóng góp mới."
-[ ] Duyệt [ ] Sửa lại [ ] Bỏ
+**Đề xuất:** "Relaxed variants project onto supporting half-spaces~\citep{yang2004}; self-adaptive steps avoid estimating $\norm{\mathcal A}$~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}; operator splitting~\citep{zhang2012simultaneous} and alternating direction methods~\citep{yang2014alternating} decompose the problem. These ideas are standard; DTAP adapts them to the nonlinear case."
+**Dịch:** "Các biến thể nới lỏng chiếu lên nửa không gian tựa [17]; bước tự thích nghi tránh phải ước lượng $\norm{\mathcal A}$ [20, 22, 10]; tách toán tử [21] và phương pháp hướng luân phiên [18] phân rã bài toán. Các ý tưởng này đã là chuẩn mực; DTAP vận dụng chúng cho trường hợp phi tuyến."
+*Lý do:* thay các cụm tối nghĩa ("simplify projections", "parameter dependence") và từ nối sai "therefore". [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 12–15. Dòng 91–95
-**Gốc:** "We study the nonlinear SFP (3) where $K\subseteq\R^n$ is closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$, and each differentiable component of $F=(F_1,\ldots,F_m)$ is convex or pseudoconvex on $K$. Pseudoconvex functions have convex sublevel sets, so the feasible set is convex even when some components are nonconvex. We seek feasibility, rather than minimization of every component."
-**Đề xuất:** "Replacing the matrix $\mathcal A$ by a nonlinear map $F$ gives the nonlinear SFP~\citep{li2013nsfp,yen2019}. We study it in the form (3), where $K\subseteq\R^n$ is nonempty, closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$ is a normal box, and each component $F_i$ of $F=(F_1,\ldots,F_m)$ is differentiable and either convex or pseudoconvex on $K$. Since pseudoconvex functions have convex sublevel sets, the feasible set $\Omega=\{x\in K:F(x)\in Q\}$ is convex even when some components are nonconvex. We seek a point of $\Omega$; we do not minimize any of the components."
-**Dịch:** "Thay ma trận $\mathcal A$ bằng một ánh xạ phi tuyến $F$ ta được SFP phi tuyến [9, 19]. Ta nghiên cứu nó dưới dạng (3), trong đó $K\subseteq\R^n$ khác rỗng, đóng và lồi, $Q=\prod_{i=1}^m(-\infty,b_i]$ là một hộp chuẩn, và mỗi thành phần $F_i$ của $F$ khả vi và lồi hoặc giả lồi trên $K$. Vì hàm giả lồi có các tập mức dưới lồi, tập khả thi $\Omega=\{x\in K:F(x)\in Q\}$ lồi ngay cả khi một số thành phần không lồi. Ta tìm một điểm thuộc $\Omega$; ta không cực tiểu hóa thành phần nào."
-*Lý do:* thêm câu chuyển ý (mục 12); thêm "nonempty" (13); sửa câu đọc ra hai nghĩa "each differentiable component" (14); đặt tên $\Omega$ ngay khi nói tới tập khả thi (15). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+**Gốc:** "We study the nonlinear SFP (3) where $K\subseteq\R^n$ is closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$, and each differentiable component of $F$ … is convex or pseudoconvex on $K$. Pseudoconvex functions have convex sublevel sets, so the feasible set is convex even when some components are nonconvex. We seek feasibility, rather than minimization of every component."
+**Đề xuất:** "Replacing $\mathcal A$ by a nonlinear map $F$ gives the nonlinear SFP~\citep{li2013nsfp,yen2019}. We study (3), where $K\subseteq\R^n$ is nonempty, closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$ is a normal box, and each $F_i$ is differentiable and convex or pseudoconvex on $K$. Since pseudoconvex functions have convex sublevel sets, the feasible set $\Omega=\{x\in K:F(x)\in Q\}$ is convex. We seek a point of $\Omega$, not a minimizer of any $F_i$."
+**Dịch:** "Thay $\mathcal A$ bằng một ánh xạ phi tuyến $F$ ta được SFP phi tuyến [9, 19]. Ta nghiên cứu (3), trong đó $K\subseteq\R^n$ khác rỗng, đóng và lồi, $Q=\prod_{i=1}^m(-\infty,b_i]$ là hộp chuẩn, và mỗi $F_i$ khả vi và lồi hoặc giả lồi trên $K$. Vì hàm giả lồi có các tập mức dưới lồi, tập khả thi $\Omega=\{x\in K:F(x)\in Q\}$ là lồi. Ta tìm một điểm thuộc $\Omega$, không tìm điểm cực tiểu của $F_i$ nào."
+*Lý do:* thêm câu chuyển ý; thêm "nonempty"; sửa câu đọc ra hai nghĩa "each differentiable component"; đặt tên $\Omega$. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 16–18. Dòng 97
 **Gốc:** "Nonlinear SFP and generalized convex feasibility have several relevant antecedents. Li et al. use a convex aggregate proximity function, a property not ensured by componentwise pseudoconvexity. Yen et al. combine equilibrium and nonlinear image constraints. Hu et al. treat quasiconvex inequalities, which include our component class. Our method exploits the additional derivative information of convex components within this established feasibility setting."
-**Đề xuất:** "Nonlinear SFPs and feasibility problems with generalized convex functions have been studied before. Li et al.~\citep{li2013nsfp} solve the nonlinear multiple-sets SFP under the assumption that the aggregate proximity function is convex; componentwise pseudoconvexity does not imply this. Yen et al.~\citep{yen2019} use the same max-type violation measure and the same active-set device as we do, but require every component to be quasilinear, that is, both quasiconvex and quasiconcave. This class neither contains nor is contained in ours: $x\mapsto x^2$ is convex but not quasilinear, and $x\mapsto x^3$ is quasilinear but not pseudoconvex. Hu et al.~\citep{hu2022quasi} solve systems of quasiconvex inequalities, a class that contains ours, by subgradient methods. Our method additionally uses the gradient inequality satisfied by the convex components."
-**Dịch:** "SFP phi tuyến và các bài toán khả thi với hàm lồi suy rộng đã được nghiên cứu trước đây. Li và cộng sự [9] giải SFP đa tập phi tuyến với giả thiết hàm lân cận tổng hợp là lồi; tính giả lồi của từng thành phần không suy ra được điều này. Yen và cộng sự [19] dùng cùng hàm đo vi phạm kiểu max và cùng kỹ thuật tập active như ta, nhưng đòi mọi thành phần là tựa tuyến tính, tức vừa tựa lồi vừa tựa lõm. Lớp này không chứa và cũng không bị chứa trong lớp của ta: $x\mapsto x^2$ lồi nhưng không tựa tuyến tính, còn $x\mapsto x^3$ tựa tuyến tính nhưng không giả lồi. Hu và cộng sự [7] giải hệ bất đẳng thức tựa lồi, một lớp chứa lớp của ta, bằng phương pháp dưới gradient. Phương pháp của ta dùng thêm bất đẳng thức gradient mà các thành phần lồi thỏa mãn."
-*Lý do:* sửa cụm "a property" đọc ra hai nghĩa (16); nêu rõ vì sao Yen et al. liên quan và khác bài này ở đâu, đây là công trình gần nhất (17); bỏ cụm tối nghĩa "this established setting" (18). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+**Đề xuất:** "Li et al.~\citep{li2013nsfp} assume a convex aggregate proximity function, which componentwise pseudoconvexity does not ensure. Yen et al.~\citep{yen2019} use the same max-type violation measure and active-set device, but require quasilinear components, a class incomparable with ours. Hu et al.~\citep{hu2022quasi} treat quasiconvex inequalities, which contain our class, without using the gradient inequality of convex components."
+**Dịch:** "Li và cộng sự [9] giả thiết hàm lân cận tổng hợp lồi, điều mà tính giả lồi của từng thành phần không bảo đảm. Yen và cộng sự [19] dùng cùng hàm đo vi phạm kiểu max và cùng kỹ thuật tập active, nhưng đòi các thành phần tựa tuyến tính, một lớp không so sánh được với lớp của ta. Hu và cộng sự [7] xét bất đẳng thức tựa lồi, một lớp chứa lớp của ta, nhưng không dùng bất đẳng thức gradient của các thành phần lồi."
+*Lý do:* sửa cụm "a property" đọc ra hai nghĩa; nêu rõ vì sao Yen et al. liên quan và khác bài này ở đâu; bỏ câu mở đầu và câu kết rỗng nghĩa. Phản ví dụ $x^2$, $x^3$ không đưa vào Introduction vì là chi tiết; có thể nêu trong letter nếu cần. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 19. Dòng 99
 **Gốc:** "The box gives the explicit violation measure"
@@ -206,35 +203,35 @@ Thay đoạn ở dòng 822 bằng đoạn sau.
 ### Mục 20–24. Dòng 103, viết lại cả đoạn
 **Gốc:** (đoạn 10 câu, bắt đầu "The Dual-Track Adaptive Projection algorithm (\dtap) forms violation-weighted gradient sums…")
 **Đề xuất:**
-> DTAP uses the two tracks introduced above. On each track it forms a weighted sum of the gradients of the nearly most violated constraints. On the convex track, the gradient inequality of convex functions justifies a residual-scaled Polyak-type step~\citep{polyak1969,lopez2012}. On the pseudoconvex track, pseudoconvexity gives only the sign of a directional derivative, and DTAP takes a safeguarded diminishing step. The two steps are combined with a proportional weight $\mu_k$, and the result is projected onto $K$. We do not claim that this weight is unique or optimal; the convergence proof uses it to ensure that a track which stays violated keeps a positive weight (Remark~\ref{rem:weight-scope}). The step sizes require no prescribed operator norm, Lipschitz constant, or H\"older modulus. The proof first shows, by a quasi-Fej\'er inequality, that the iterates are bounded, and then uses bounds on the functions and gradients over a compact set that contains them; the gradients need not be Lipschitz continuous.
+> DTAP splits the constraints into a convex track and a pseudoconvex track. On each track it sums the gradients of the nearly most violated constraints, weighted by their violations. The gradient inequality of convex functions justifies a residual-scaled Polyak-type step on the convex track~\citep{polyak1969,lopez2012}; pseudoconvexity gives only the sign of a directional derivative, so the pseudoconvex track uses a safeguarded diminishing step. A proportional weight combines the two steps, and the result is projected onto $K$; the proof uses this weight only to keep a persistently violated track active (Remark~\ref{rem:weight-scope}). No prescribed operator norm, Lipschitz constant, or H\"older modulus is needed: a quasi-Fej\'er inequality shows that the iterates are bounded, and the proof then uses local bounds, without Lipschitz gradients.
 
 **Dịch:**
-> DTAP dùng hai track nêu trên. Trên mỗi track, nó lập tổng có trọng số các gradient của những ràng buộc gần bị vi phạm nhiều nhất. Trên track lồi, bất đẳng thức gradient của hàm lồi biện minh cho một bước kiểu Polyak co theo phần dư [14, 10]. Trên track giả lồi, tính giả lồi chỉ cho biết dấu của đạo hàm theo hướng, và DTAP lấy một bước giảm dần có chặn an toàn. Hai bước được kết hợp bằng trọng số tỉ lệ $\mu_k$ và kết quả được chiếu lên $K$. Ta không khẳng định trọng số này là duy nhất hay tối ưu; chứng minh hội tụ dùng nó để bảo đảm một track bị vi phạm kéo dài vẫn giữ trọng số dương (Nhận xét 1). Độ dài bước không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder. Chứng minh trước hết dùng một bất đẳng thức tựa Fejér để chỉ ra dãy lặp bị chặn, rồi dùng các cận của hàm và gradient trên một tập compact chứa dãy lặp; gradient không cần liên tục Lipschitz.
+> DTAP chia các ràng buộc thành một track lồi và một track giả lồi. Trên mỗi track, nó cộng các gradient của những ràng buộc gần bị vi phạm nhiều nhất, có trọng số theo độ vi phạm. Bất đẳng thức gradient của hàm lồi biện minh cho một bước kiểu Polyak co theo phần dư trên track lồi [14, 10]; tính giả lồi chỉ cho biết dấu của đạo hàm theo hướng, nên track giả lồi dùng một bước giảm dần có chặn an toàn. Một trọng số tỉ lệ kết hợp hai bước, rồi kết quả được chiếu lên $K$; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét 1). Không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder: một bất đẳng thức tựa Fejér cho thấy dãy lặp bị chặn, sau đó chứng minh dùng các cận địa phương, không cần gradient Lipschitz.
 
-*Lý do:* nối các câu ngắn rời rạc thành một mạch (20); thay câu "preventing neglect" bằng ý cụ thể (21); câu "one-step bound…" đã có ở Nhận xét 1 nên bỏ khỏi phần mở đầu (22); sửa hai cụm tối nghĩa (23, 24). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+*Lý do:* nối các câu ngắn rời rạc thành một mạch; thay cụm "preventing neglect" bằng ý cụ thể; câu "one-step bound…" đã có ở Nhận xét 1 nên bỏ. Đoạn mới ngắn hơn đoạn gốc. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 25–27. Dòng 105, viết lại cả đoạn
 **Gốc:** (đoạn bắt đầu "Feature-selection criteria from fractional and fuzzy-rough models … define separate threshold constraints.")
 **Đề xuất:**
-> As an application, we take three criteria from a fractional feature-selection model~\citep{wang2021fractional} and a fuzzy-rough model~\citep{wang2026afrsfcv} and impose an upper bound on each. A feasible weight vector is then acceptable for all three criteria simultaneously; it need not solve either source optimization problem. The fractional criterion is a positive semidefinite quadratic form divided by a linear form that is positive on $K$. We show that it is convex, so this application has only convex constraints. To exercise the pseudoconvex track, we also use test problems with a pseudoconvex constraint that is not convex. In the classification study, the feature selections are computed once and evaluated on one fixed training/test split (Section~\ref{sssec:protocol}). Subgradient methods with tuned moduli can match or outperform DTAP.
+> As an application, upper bounds on three criteria from a fractional model~\citep{wang2021fractional} and a fuzzy-rough model~\citep{wang2026afrsfcv} define the constraints; a feasible weight vector satisfies all three bounds but need not solve either source problem. These constraints are convex (Proposition~\ref{prop:fs-reg}), so we also use test problems with a nonconvex pseudoconvex constraint to exercise the pseudoconvex track.
 
 **Dịch:**
-> Làm ứng dụng, ta lấy ba tiêu chí từ một mô hình chọn đặc trưng phân thức [15] và một mô hình tập thô mờ [16], rồi áp một cận trên cho mỗi tiêu chí. Khi đó một vector trọng số khả thi chấp nhận được đồng thời theo cả ba tiêu chí; nó không nhất thiết là nghiệm của bài toán tối ưu gốc nào. Tiêu chí phân thức là một dạng toàn phương nửa xác định dương chia cho một dạng tuyến tính dương trên $K$. Ta chứng minh nó lồi, nên ứng dụng này chỉ có ràng buộc lồi. Để kiểm tra track giả lồi, ta còn dùng các bài toán thử có ràng buộc giả lồi nhưng không lồi. Trong nghiên cứu phân loại, các lựa chọn đặc trưng được tính một lần và đánh giá trên một phép chia huấn luyện/kiểm tra cố định (Mục 4.2.2). Các phương pháp dưới gradient có mô-đun được tinh chỉnh có thể bằng hoặc tốt hơn DTAP.
+> Làm ứng dụng, các cận trên của ba tiêu chí lấy từ một mô hình phân thức [15] và một mô hình tập thô mờ [16] tạo thành các ràng buộc; một vector trọng số khả thi thỏa cả ba cận nhưng không nhất thiết là nghiệm của bài toán gốc nào. Các ràng buộc này lồi (Mệnh đề 4.1), nên ta còn dùng các bài toán thử có ràng buộc giả lồi không lồi để kiểm tra track giả lồi.
 
-*Lý do:* thay cụm tối nghĩa "simultaneous acceptance" (25); tách cụm chồng danh từ (26); tách câu 32 từ dễ đọc nhầm (27). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+*Lý do:* thay cụm tối nghĩa "simultaneous acceptance"; tách cụm chồng danh từ; bỏ câu 32 từ. Chi tiết về phép chia train/test thuộc về §4.2.2, còn câu "tuned subgradient methods can match…" đã có trong Abstract và Kết luận, nên cả hai đều bỏ khỏi đoạn này. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 28–30. Các đóng góp C1–C3 (dòng 109–111)
 **Đề xuất:**
-> C1. A dual-track projection method that uses the gradient inequality on the convex constraints and only sign information on the pseudoconvex constraints, and combines the two steps with a proportional weight. Unlike~\citep{li2013nsfp}, it does not require the aggregate proximity function to be convex; unlike~\citep{yen2019}, it admits convex components that are not quasilinear; unlike the dynamic step of~\citep{hu2022quasi}, its step on the convex track needs no H\"older modulus.
-> C2. Under Assumption~\ref{ass:standing} (consistency, continuous differentiability, convexity or pseudoconvexity of each component, and the step-size conditions), the whole sequence of iterates converges to a feasible point (Theorem~\ref{thm:strong}).
-> C3. Experiments that separate classification quality from the cost of solving the feasibility problem, report how often the pseudoconvex constraint is violated, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and to the step scale. They do not show that DTAP is uniformly faster.
+> C1. A dual-track method that uses the gradient inequality on the convex constraints and only sign information on the pseudoconvex ones, without assuming a convex proximity function, unlike~\citep{li2013nsfp}, or a H\"older modulus, unlike the dynamic step of~\citep{hu2022quasi}.
+> C2. Convergence of the whole sequence to a feasible point under Assumption~\ref{ass:standing} (Theorem~\ref{thm:strong}).
+> C3. Experiments that report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.
 
 **Dịch:**
-> C1. Một phương pháp chiếu hai track: dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ thông tin về dấu trên các ràng buộc giả lồi, rồi kết hợp hai bước bằng một trọng số tỉ lệ. Khác với [9], phương pháp không đòi hàm lân cận tổng hợp lồi; khác với [19], nó chấp nhận các thành phần lồi không tựa tuyến tính; khác với bước động của [7], bước trên track lồi không cần mô-đun Hölder.
-> C2. Dưới Giả thiết 1 (tính nhất quán, khả vi liên tục, mỗi thành phần lồi hoặc giả lồi, và các điều kiện về bước), toàn bộ dãy lặp hội tụ tới một điểm khả thi (Định lý 3.12).
-> C3. Thực nghiệm tách chất lượng phân loại khỏi chi phí giải bài toán khả thi, báo cáo tần suất ràng buộc giả lồi bị vi phạm, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của DTAP với điểm xuất phát và thang bước. Thực nghiệm không cho thấy DTAP nhanh hơn một cách đồng đều.
+> C1. Một phương pháp hai track dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ thông tin về dấu trên các ràng buộc giả lồi, không cần giả thiết hàm lân cận lồi như [9], cũng không cần mô-đun Hölder như bước động của [7].
+> C2. Sự hội tụ của toàn bộ dãy tới một điểm khả thi dưới Giả thiết 1 (Định lý 3.12).
+> C3. Các thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của DTAP với điểm xuất phát và thang bước.
 
-*Lý do:* thay cụm "the stated step conditions" không rõ ở đâu (28); thay cụm tối nghĩa "distinguish prediction from feasibility cost" (29); nêu điểm mới so với ba công trình gần nhất (30). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+*Lý do:* các cụm "the stated step conditions" và "distinguish prediction from feasibility cost" được thay bằng tham chiếu cụ thể. So sánh với Yen et al. đã có ở đoạn 97 nên không lặp lại. Bỏ các câu giới hạn lặp ("They do not establish uniform superiority", "Convergence of distances… suffice"). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 31. §2, dòng 118
 **Gốc:** "Throughout, $H=\R^n$ is Euclidean space with…" → **Đề xuất:** "Throughout, $H=\R^n$ is the Euclidean space with…" — **Dịch:** "Trong toàn bài, $H=\R^n$ là không gian Euclid với…"
@@ -263,8 +260,8 @@ Thay đoạn ở dòng 822 bằng đoạn sau.
 
 ### Mục 38. Dòng 168
 **Gốc:** "Then $F(x)\in Q$ iff $J(x)=0$, so finding a feasible point amounts to minimizing $J$ over $K$."
-**Đề xuất:** "Then $F(x)\in Q$ if and only if $J(x)=0$. Hence $x\in K$ is feasible if and only if $J(x)=0$, and, when $\Omega\ne\emptyset$, the feasible points are exactly the minimizers of $J$ over $K$."
-**Dịch:** "Khi đó $F(x)\in Q$ khi và chỉ khi $J(x)=0$. Do đó $x\in K$ khả thi khi và chỉ khi $J(x)=0$, và khi $\Omega\ne\emptyset$ thì các điểm khả thi chính là các điểm cực tiểu của $J$ trên $K$."
+**Đề xuất:** "Then $x\in K$ is feasible if and only if $J(x)=0$; when $\Omega\ne\emptyset$, the feasible points are the minimizers of $J$ over $K$."
+**Dịch:** "Khi đó $x\in K$ khả thi khi và chỉ khi $J(x)=0$; khi $\Omega\ne\emptyset$, các điểm khả thi chính là các điểm cực tiểu của $J$ trên $K$."
 [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 39. Dòng 192
@@ -354,9 +351,9 @@ Trong chứng minh: "\emph{Stage 1 (convex half)}" → "\emph{Stage 1 (convex co
 
 ### Mục 55. Dòng 794
 **Gốc:** "The three terms measure label-approximation error, incorrect-decision confidence, and Tikhonov regularization, respectively."
-**Đề xuất:** "The first term measures how well the weighted lower approximations reproduce the label matrix; the second penalizes, for each sample, the total weight of the features that classify it incorrectly; the third is a Tikhonov regularization."
-**Dịch:** "Số hạng thứ nhất đo mức các xấp xỉ dưới có trọng số tái tạo ma trận nhãn; số hạng thứ hai phạt, với mỗi mẫu, tổng trọng số của các đặc trưng phân loại sai mẫu đó; số hạng thứ ba là hiệu chỉnh Tikhonov."
-*Lý do:* đã kiểm: $1-(Pw)_i$ đúng bằng tổng trọng số các đặc trưng phân loại sai mẫu $i$. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+**Đề xuất:** "The three terms are the label-approximation error, the weight of misclassifying features per sample, and a Tikhonov term."
+**Dịch:** "Ba số hạng lần lượt là sai số xấp xỉ nhãn, tổng trọng số các đặc trưng phân loại sai trên mỗi mẫu, và một số hạng Tikhonov."
+*Lý do:* cụm "incorrect-decision confidence" tối nghĩa. Đã kiểm: $1-(Pw)_i$ đúng bằng tổng trọng số các đặc trưng phân loại sai mẫu $i$. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 56. Dòng 803: "the first two components of (38)" → "the first two terms of (38)" — *Dịch:* "hai số hạng đầu của (38)". [ ] Duyệt [ ] Bỏ
 
@@ -368,15 +365,15 @@ Trong chứng minh: "\emph{Stage 1 (convex half)}" → "\emph{Stage 1 (convex co
 
 ### Mục 58. Dòng 820, câu 1–4
 **Gốc:** "The assignment $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$ used in the experiments is admissible because convexity implies pseudoconvexity. It treats $F_3$ conservatively and does not test a genuinely nonconvex constraint. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also available. Under the assumptions of Theorem 3.12, either assignment converges to a feasible weight."
-**Đề xuất:** "The experiments assign $F_3$ to the pseudoconvex track, $I^{\cvx}=\{1,2\}$ and $I^{\ps}=\{3\}$; this is admissible because convex functions are pseudoconvex. With this assignment DTAP uses only sign information for $F_3$, so the instances do not test a genuinely nonconvex constraint. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also admissible. Under the assumptions of Theorem~\ref{thm:strong}, DTAP converges to a feasible weight vector with either assignment."
-**Dịch:** "Thực nghiệm xếp $F_3$ vào track giả lồi, $I^{\cvx}=\{1,2\}$ và $I^{\ps}=\{3\}$; điều này hợp lệ vì hàm lồi là giả lồi. Với cách xếp này DTAP chỉ dùng thông tin về dấu của $F_3$, nên các bài toán không kiểm tra một ràng buộc thực sự không lồi. Cách xếp toàn lồi $I^{\cvx}=\{1,2,3\}$ cũng hợp lệ. Dưới các giả thiết của Định lý 3.12, DTAP hội tụ tới một vector trọng số khả thi với cả hai cách xếp."
-[ ] Duyệt [ ] Sửa lại [ ] Bỏ
+**Đề xuất:** "The experiments use $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$, which is admissible since convex functions are pseudoconvex; DTAP then uses only sign information for $F_3$, so no genuinely nonconvex constraint is tested. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also admissible, and Theorem~\ref{thm:strong} applies to both."
+**Dịch:** "Thực nghiệm dùng $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$; cách xếp này hợp lệ vì hàm lồi là giả lồi. Khi đó DTAP chỉ dùng thông tin về dấu của $F_3$, nên không có ràng buộc thực sự không lồi nào được kiểm tra. Cách xếp toàn lồi $I^{\cvx}=\{1,2,3\}$ cũng hợp lệ, và Định lý 3.12 áp dụng cho cả hai cách xếp."
+*Lý do:* "conservatively" là ẩn dụ; "assignment converges" sai chủ ngữ (thuật toán hội tụ, không phải cách xếp). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
-### Mục 59. Dòng 820, câu 5–9 (và mục 74)
-**Gốc:** "Score positivity must be checked on each instance. Replacing a zero score by a positive floor changes the model and must be declared. The implementation also uses $\max\{\rho^\top w,10^{-15}\}$ during evaluation. This agrees with (41) only where the floor is inactive. Applying the theorem to this implementation therefore requires that the floor remain inactive."
-**Đề xuất:** "Proposition~\ref{prop:fs-reg} requires every Fisher score to be positive. This holds on every instance used here: the smallest score is $4.77\times10^{-5}$ over all selection folds of the classification study and $5.99\times10^{-5}$ over the full-data instances of Section~\ref{ssec:feasibility-audit}. For numerical safety, the implementation evaluates the denominator of $F_3$ as $\max\{\rho^\top w,10^{-15}\}$; since $\rho^\top w\ge\min_k\rho_k$ on $K$, this floor is never active on these instances, and the implemented $F_3$ coincides with~\eqref{eq:fsF3}."
-**Dịch:** "Mệnh đề 4.1 đòi mọi điểm Fisher dương. Điều này đúng trên mọi bài toán dùng ở đây: điểm nhỏ nhất là $4.77\times10^{-5}$ trên mọi fold chọn đặc trưng của nghiên cứu phân loại, và $5.99\times10^{-5}$ trên các bài toán dùng toàn bộ dữ liệu ở Mục 4.4. Để an toàn số, cài đặt tính mẫu số của $F_3$ là $\max\{\rho^\top w,10^{-15}\}$; vì $\rho^\top w\ge\min_k\rho_k$ trên $K$, ngưỡng sàn này không bao giờ có hiệu lực trên các bài toán này, và $F_3$ được cài đặt trùng với (41)."
-*Lý do:* thay các câu "phải kiểm tra" bằng kết quả kiểm tra thực tế. Con số $4.77\times10^{-5}$ (Spambase) tôi tính lại trong phiên này bằng hàm `_fisher_score` của package, cùng phép chia và cùng fold như `comparison.py`; nên chạy lại để xác nhận. Con số $5.99\times10^{-5}$ lấy từ dòng 1032. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+### Mục 59. Dòng 820, câu 5–9; gộp với dòng 1031–1032
+**Gốc:** "Score positivity must be checked on each instance. Replacing a zero score by a positive floor changes the model and must be declared. The implementation also uses $\max\{\rho^\top w,10^{-15}\}$ during evaluation. This agrees with (41) only where the floor is inactive. Applying the theorem to this implementation therefore requires that the floor remain inactive." và (dòng 1031) "All Fisher coordinates are positive on these instances, with minimum $5.99\times10^{-5}$."
+**Đề xuất (thay câu 5–9; bỏ câu ở dòng 1031–1032):** "Proposition~\ref{prop:fs-reg} needs $\min_k\rho_k>0$; on all instances used here the smallest score is $4.77\times10^{-5}$. Hence the safeguard $\max\{\rho^\top w,10^{-15}\}$ in the implementation is never active, and the implemented $F_3$ is~\eqref{eq:fsF3}."
+**Dịch:** "Mệnh đề 4.1 cần $\min_k\rho_k>0$; trên mọi bài toán dùng ở đây, điểm nhỏ nhất là $4.77\times10^{-5}$. Do đó ngưỡng an toàn $\max\{\rho^\top w,10^{-15}\}$ trong cài đặt không bao giờ có hiệu lực, và $F_3$ được cài đặt chính là (41)."
+*Lý do:* thay các câu "phải kiểm tra" bằng kết quả kiểm tra thực tế. Con số $4.77\times10^{-5}$ là giá trị nhỏ nhất trên mọi fold (Spambase), nhỏ hơn giá trị $5.99\times10^{-5}$ của các bài toán dùng toàn bộ dữ liệu; tôi tính lại trong phiên này bằng code của package, nên chạy lại để xác nhận. Cả cụm giảm khoảng 25 từ. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 60. Đoạn ngưỡng (dòng 822): xem G9. [ ] Duyệt [ ] Bỏ
 
@@ -441,12 +438,12 @@ Trong chứng minh: "\emph{Stage 1 (convex half)}" → "\emph{Stage 1 (convex co
 **Dịch:** "Với mỗi bài toán dùng toàn bộ dữ liệu dưới đây, ta giữ điểm đã đánh giá có độ dư $\min_i(b_i-F_i(w))$ lớn nhất trên mọi lần chạy. Khi đánh giá lại trên các ma trận dựng lại từ dữ liệu, mỗi điểm này thỏa chặt cả ba bất đẳng thức; độ dư nhỏ nhất là $4.33\times10^{-4}$. Đây là kiểm tra bằng số, không phải chứng nhận khả thi chính xác."
 *Lý do:* thay các biệt ngữ "witnesses", "independent evaluation" bằng mô tả cụ thể. Đã đối chiếu mô tả "witness" trong `Readme.md` của package. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
-### Mục 74. Điểm Fisher trên các fold: đã gộp vào mục 59; câu ở dòng 1031–1032 có thể giữ nguyên. [ ] Duyệt [ ] Bỏ
+### Mục 74. Điểm Fisher trên các fold: đã gộp vào mục 59. [ ] Duyệt [ ] Bỏ
 
 ### Mục 75. Dòng 1034
 **Gốc:** "We measure the frequency of $F_3(w^k)-b_3>10^{-6}$ over all evaluated points, including the terminating point."
-**Đề xuất:** "We call the iterates $w^0,w^1,\dots$ of a run, including the last one, its evaluated points, and we count the evaluated points at which $F_3(w^k)-b_3>10^{-6}$."
-**Dịch:** "Ta gọi các điểm lặp $w^0,w^1,\dots$ của một lần chạy, kể cả điểm cuối, là các điểm đã đánh giá, và đếm số điểm đã đánh giá mà tại đó $F_3(w^k)-b_3>10^{-6}$."
+**Đề xuất:** "We count the iterates of a run, including the last (its evaluated points), at which $F_3(w^k)-b_3>10^{-6}$."
+**Dịch:** "Ta đếm số điểm lặp của một lần chạy, kể cả điểm cuối (gọi là các điểm đã đánh giá), mà tại đó $F_3(w^k)-b_3>10^{-6}$."
 [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ### Mục 76. Dòng 1037–1039
@@ -500,13 +497,42 @@ Trong chứng minh: "\emph{Stage 1 (convex half)}" → "\emph{Stage 1 (convex co
 
 ### Mục 84. Kết luận (dòng 1251), viết lại
 **Đề xuất:**
-> We studied a nonlinear split feasibility problem with a normal-box output set and convex or pseudoconvex component functions. DTAP combines a residual-scaled step on the convex constraints with a safeguarded diminishing step on the pseudoconvex constraints and projects onto the base set. Under consistency and continuous differentiability, the whole sequence of iterates converges to a feasible point; the proof combines a quasi-Fej\'er inequality with the existence of one feasible cluster point. The method needs no prescribed regularity modulus, but the analysis uses bounds on a compact set that contains the iterates. The proportional weight is one admissible choice, not an optimal one. In the feature-selection application all constraints turn out to be convex, and controlled examples with a nonconvex pseudoconvex constraint exercise the pseudoconvex track. In these experiments, tuned subgradient methods can match or outperform DTAP, and within a finite budget the performance of DTAP depends on the starting point and on the scale of its diminishing step. Rates for the full residual $J(x^k)$, beyond the best-iterate bound of Remark~\ref{rem:rate} for the convex track, and guarantees under additional geometric assumptions, such as error bounds, remain open.
+> DTAP solves normal-box nonlinear split feasibility problems with convex and pseudoconvex components by combining a residual-scaled convex step with a safeguarded pseudoconvex step. Under consistency and continuous differentiability, the whole sequence converges to a feasible point; no regularity modulus is an input, although the analysis uses bounds on a compact set containing the iterates. In the feature-selection application all constraints are convex, and test problems with a nonconvex pseudoconvex constraint exercise the pseudoconvex track. In the experiments, tuned subgradient methods can match or outperform DTAP, whose finite-budget performance depends on the starting point and the step scale. Rates for the full residual $J(x^k)$, beyond the convex-track bound of Remark~\ref{rem:rate}, and guarantees under error-bound conditions remain open.
 
 **Dịch:**
-> Ta đã nghiên cứu một bài toán chấp nhận tách phi tuyến với tập đầu ra là hộp chuẩn và các hàm thành phần lồi hoặc giả lồi. DTAP kết hợp một bước co theo phần dư trên các ràng buộc lồi với một bước giảm dần có chặn an toàn trên các ràng buộc giả lồi, rồi chiếu lên tập cơ sở. Với giả thiết nhất quán và khả vi liên tục, toàn bộ dãy lặp hội tụ tới một điểm khả thi; chứng minh kết hợp một bất đẳng thức tựa Fejér với sự tồn tại của một điểm tụ khả thi. Phương pháp không cần biết trước mô-đun chính quy nào, nhưng phân tích dùng các cận trên một tập compact chứa dãy lặp. Trọng số tỉ lệ là một lựa chọn hợp lệ, không phải lựa chọn tối ưu. Trong ứng dụng chọn đặc trưng, mọi ràng buộc hóa ra đều lồi, còn các ví dụ có kiểm soát với ràng buộc giả lồi không lồi kiểm tra track giả lồi. Trong các thực nghiệm này, các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, và với ngân sách hữu hạn, hiệu năng của DTAP phụ thuộc vào điểm xuất phát và thang của bước giảm dần. Tốc độ hội tụ cho phần dư đầy đủ $J(x^k)$, ngoài cận cho điểm lặp tốt nhất của Nhận xét 5 trên track lồi, và các bảo đảm dưới giả thiết hình học bổ sung như cận sai số, vẫn còn là câu hỏi mở.
+> DTAP giải các bài toán chấp nhận tách phi tuyến với hộp chuẩn và các thành phần lồi hoặc giả lồi, bằng cách kết hợp một bước co theo phần dư cho phần lồi với một bước có chặn an toàn cho phần giả lồi. Với giả thiết nhất quán và khả vi liên tục, toàn bộ dãy hội tụ tới một điểm khả thi; không mô-đun chính quy nào là đầu vào, dù phân tích dùng các cận trên một tập compact chứa dãy lặp. Trong ứng dụng chọn đặc trưng, mọi ràng buộc đều lồi, và các bài toán thử có ràng buộc giả lồi không lồi kiểm tra track giả lồi. Trong thực nghiệm, các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, và hiệu năng của DTAP với ngân sách hữu hạn phụ thuộc vào điểm xuất phát và thang bước. Tốc độ hội tụ cho phần dư đầy đủ $J(x^k)$, ngoài cận cho track lồi ở Nhận xét 5, và các bảo đảm dưới điều kiện cận sai số vẫn còn mở.
 
-*Lý do:* giữ nội dung cũ nhưng sắp lại theo trình tự kết quả → giới hạn → câu hỏi mở. Cụm "such as error bounds" là ví dụ mới thêm, có thể bỏ. [ ] Duyệt [ ] Sửa lại [ ] Bỏ
+*Lý do:* giữ đủ nội dung của bản cũ nhưng mỗi ý chỉ nói một lần. Bỏ các câu lặp lại Abstract ("The proportional weight is an admissible residual-responsive choice…", "The activity measurements and controlled nonconvex tests distinguish these settings"). [ ] Duyệt [ ] Sửa lại [ ] Bỏ
 
 ---
+
+---
+
+## Phần III. Câu thừa hoặc lặp nên xóa
+
+Mỗi câu dưới đây không qua được phép thử "xóa thử" (bỏ đi không mất thông tin) hoặc phép thử "lặp" (đã được nói ở chỗ khác).
+
+| Dòng | Câu | Đã nói ở | |
+|---|---|---|---|
+| 744 | "These two scopes are stated separately below." | — (câu đệm) | [ ] Xóa [ ] Giữ |
+| 807 | "A feasible weight need not minimize either baseline objective." | câu ngay trước ("does not preserve either source optimization problem or its minimizers") | [ ] Xóa [ ] Giữ |
+| 1039–1040 | "Moreover, the quadratic-over-linear function $F_3$ is convex when $Q_R\succeq0$ and $\rho^\top w>0$." | Mệnh đề 4.1 | [ ] Xóa [ ] Giữ |
+| 1044–1045 | "Movement Libras is an additional solver robustness case, separate from the eight-dataset classification study." | đầu §4 và chú thích Bảng 1 | [ ] Xóa [ ] Giữ |
+| 1203–1204 | "The experiments support neither universal speed superiority nor a finite-budget robustness claim." | Abstract và Kết luận | [ ] Xóa [ ] Giữ |
+| 1251 (trong bản viết lại) | các câu lặp lại Abstract | xem mục 84 | — |
+
+---
+
+## Phần IV. Ngân sách số chữ (đo bằng script trên văn xuôi, không tính công thức)
+
+| | 16 đoạn chính | Thay đổi |
+|---|---|---|
+| Bản đề xuất đầu tiên (đã thay) | 1 218 → 1 665 từ | **+447** |
+| Bản hiện tại | 1 288 → 1 147 từ | **−141** |
+| Phần III (xóa câu thừa) | | **−53** |
+| G2, G6, G7 (câu định nghĩa, ký hiệu) | | **+27** |
+| **Tổng ước tính** | | **khoảng −165 từ** |
+
+G8 là chuyển chỗ nên gần như không đổi. Các mục 7–9, 19, 31–57, 62–83 là sửa vài chữ, mỗi mục thay đổi không quá ±10 từ.
 
 **Không đề xuất sửa:** mục 35 (gộp vào G11), mục 41 (giữ nguyên). Các chứng minh trong §3 giữ nguyên ngoài các chỗ đã nêu.
