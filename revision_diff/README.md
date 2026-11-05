@@ -8,6 +8,7 @@
 | `../DTAP Finally v2/` | **Bộ bản nộp v2** (tách riêng, độc lập với `DTAP Finally`): `main_document.tex` + `DTAP_OMS.pdf` là bản đã áp dụng toàn bộ đề xuất trong `proposed_edits.md` (tạo bằng `python3 apply_proposals.py`); `main_document_colored.tex` + `DTAP_OMS_colored.pdf` là bản tô đỏ so với bản submission (tạo bằng `DTAP_NEW_DIR="DTAP Finally v2" python3 make_colored.py`); `response_letter.tex` + `.pdf` là letter đã sửa các câu trích, mục m3/m11/m14 và thêm hai mục ở "Additional changes" cho khớp v2 (biên dịch bằng `lualatex`). |
 | `../DTAP Finally/response_letter.tex`, `../DTAP Finally/response_letter.pdf` | **Bản response letter cuối để nộp** (bản sao của `response_letter_draft.tex`, biên dịch độc lập bằng `lualatex`). |
 | `response_letter_draft.pdf` | Bản nháp response letter (tiếng Anh), trả lời từng ý kiến M1–M4, m1–m20 và liệt kê các thay đổi do tác giả tự làm. Số mục/bảng/trang lấy tự động từ bản Finally. Chữ xám `[Cn]` là mã nội bộ; chữ đỏ `[CẦN XÁC NHẬN: …]` là chỗ cần tác giả kiểm tra. Cả hai phải xóa trước khi gửi (xem đầu file `.tex`). |
+| `v1_v2_changes.md` | Đối chiếu từng câu **trước/sau** giữa `DTAP Finally` và `DTAP Finally v2` (58 mục, kèm bản dịch tiếng Việt cho cả câu trước và câu sau); các thay đổi chỉ về ký hiệu ghi gọn ở Phụ lục. |
 | `change_notes.json` | Mô tả tiếng Việt và ý kiến phản biện cho từng mã `Cn`. Sửa file này rồi build lại để cập nhật Bảng A/B. |
 | `review_comments.json` | Tóm tắt các ý kiến trong `referee_report.pdf`. |
 | `build_diff.py`, `assemble.py` | Script tạo bản đối chiếu. |
