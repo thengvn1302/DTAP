@@ -1,0 +1,18 @@
+{
+ "dataset": "Satimage",
+ "n": 6435,
+ "p": 36,
+ "percentiles": {
+  "f1_percentile": 5,
+  "f2_percentile": 25,
+  "f3_percentile": 75
+ },
+ "sampling": {
+  "n_samples": 3000,
+  "seed": 42,
+  "plus_vertices": true
+ },
+ "b1": 6362.835508798192,
+ "b2": 4494.938060506891,
+ "b3": 0.036409939159730634
+}

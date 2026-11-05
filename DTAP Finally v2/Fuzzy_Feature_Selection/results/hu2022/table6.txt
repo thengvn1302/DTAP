@@ -1,0 +1,23 @@
+Table 6 (full-data instances), random starts: Dirichlet(1), default_rng; datasets present: 9/9
+
+Dataset            DTAP     AC  SG-const  Sampled  Tuned  F3 activity        c
+Glass                89     89       520    1000†    100         0/89      0.1
+Diabetes             14     14       350    1000†     51         0/14    0.001
+Segmentation          3      3       124      170      3          0/3      0.1
+Abalone              48     48       638    1000†      3         1/48 0.003162
+Satimage              2      2        60      102      2          0/2      0.1
+Movement_libras     637    637        62    1000†    144        0/637    0.001
+Yeast                 4      4       324      305      3          0/4     0.01
+Spambase              5      5        93      295     56          0/5   0.3162
+Pendigits             2      2        49       10     31          0/2 0.003162
+
+† = tolerance not reached within 1000 evaluated points.
+Successes over the standard start and the evaluation starts (all datasets present):
+  DTAP      26/36
+  AC        36/36
+  Balanced  26/36
+  SG-const  33/36
+  Sampled   15/36
+  Tuned     28/36
+Standard-start successes: sampled SG-dyn 5/9, tuned SG-dyn 9/9
+Tuning searches: 179744 evaluated points, 532.76 s solver time (L_hat sampling, preprocessing and search overhead excluded)

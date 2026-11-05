@@ -1,0 +1,18 @@
+{
+ "dataset": "Movement_libras",
+ "n": 360,
+ "p": 90,
+ "percentiles": {
+  "f1_percentile": 20,
+  "f2_percentile": 25,
+  "f3_percentile": 65
+ },
+ "sampling": {
+  "n_samples": 3000,
+  "seed": 42,
+  "plus_vertices": true
+ },
+ "b1": 359.5412029106984,
+ "b2": 124.18492007341261,
+ "b3": 0.006482291559070866
+}

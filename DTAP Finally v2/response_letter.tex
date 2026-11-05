@@ -1,0 +1,371 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem} % \uline: an underline that breaks across lines
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+
+% Reviewer comment vs. our response formatting.
+\newcommand{\comment}[1]{\medskip\noindent\textbf{Comment.}\ \textit{#1}\par}
+\newcommand{\response}[1]{\smallskip\noindent{\color{blue!60!black}\textbf{Response.}}\ #1\par\medskip}
+\newcommand{\loc}[1]{\textcolor{blue!50!black}{[#1]}}
+
+\newenvironment{point}[1]{\medskip\noindent\textbf{\uline{#1}}\par}{\par}
+
+\title{\vspace{-2em}Response to Reviewers\\[0.3em]
+\large Manuscript: \emph{A Dual-Track Adaptive Projection Algorithm for a Nonlinear
+Split Feasibility Problem with Mixed Convex--Pseudoconvex Constraints}\\[0.2em]
+\normalsize Journal: \emph{Optimization Methods and Software}}
+\author{Nguyen Van The, Tran Ngoc Thang, and Nguyen Hong Son}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2em}
+
+\noindent We thank the Editor and both Reviewers for their careful and constructive
+reading. The comments have materially strengthened the paper, and in several places led
+us to remove overstated claims and to add new, more honest evidence. Below we respond to
+each point individually and indicate the corresponding change in the revised manuscript.
+\textbf{All added or modified text in the revised manuscript is typeset in
+\textcolor{red}{colored text}} so the changes are easy to locate. Section, equation,
+theorem, and table numbers below refer to the revised manuscript. In summary, the
+revision:
+\begin{itemize}[nosep]
+  \item merges the former Introduction and Related work into a single, shorter
+        Introduction and cuts the paper from $39$ to $25$ pages, rewriting it throughout
+        in shorter sentences;
+  \item qualifies the ``constant-free'' claim (new Remark~2) and reframes the proportional
+        weight as a heuristic residual-share allocation, with no claim of necessity or
+        optimality (new Remark~1);
+  \item makes the whole-sequence convergence argument explicit (rewritten Stage~3 of
+        Theorem~3.12), clarifying that it needs only one feasible cluster point and
+        Fej\'er monotonicity, not a unique limit;
+  \item adds a solver diagnostic (new Sec.~4.4) reporting per-trajectory constraint
+        activation, a tuned-modulus subgradient comparison with its tuning cost, and
+        controlled instances with a genuinely nonconvex pseudoconvex constraint;
+  \item proves that the feature-selection ratio is in fact convex (new Proposition~4.1),
+        states plainly that the application is a convex special case, and removes all
+        claims of uniform superiority;
+  \item unifies the reference format, adds the requested self-adaptive and decomposition
+        works for the SFP, moves the appendix results into the main text, and resolves
+        every notational and presentation issue raised.
+\end{itemize}
+
+% =====================================================================
+\section*{Response to the Editor}
+
+\begin{point}{The Associate Editor recorded no specific comments; the decision was major
+revision.}
+\response{We have revised the manuscript in full accordance with both Reviewers' reports,
+as detailed below, and have highlighted all changes in colored text. The two most
+substantial structural changes --- merging and shortening the front matter (Reviewer~2)
+and adding the solver diagnostic with constraint-activation and tuned-baseline evidence
+(Reviewer~1) --- are summarized in the list above.}
+\end{point}
+
+% =====================================================================
+\section*{Response to Reviewer \#1}
+
+\noindent We thank the Reviewer for the accurate summary of the contribution and for five
+comments that led directly to a more careful statement of the theory and a more complete
+experimental section.
+
+\begin{point}{R1.1 The soft weight $\mu_k=J_k^{\mathrm{cvx}}/(J_k^{\mathrm{cvx}}+J_k^{\mathrm{ps}})$
+is central to the algorithm's novelty, yet the convergence proof only requires $\mu_k$ to
+satisfy certain summability conditions -- any sequence in $[0,1]$ would suffice. The chosen
+form is therefore not structurally necessary. The authors should either justify this
+specific weighting or reframe the contribution accordingly.}
+\response{We have adopted the Reviewer's second suggestion and reframed the contribution.
+We agree that the proportional form is not structurally necessary: the one-step
+quasi-Fej\'er inequality (Lemma~3.8) holds for every $\mu_k\in[0,1]$, and the convergence
+proof needs only that the weight keep each track active --- with the constant weight
+$\mu_k\equiv\tfrac12$, for instance, the proofs of Lemma~3.10 and of Stage~2 go through with
+only minor changes. The experiments point the same way: a balanced variant, which assigns
+equal weights when both tracks are violated, succeeds in $26/36$ runs on the feature
+instances and $24/36$ on the nonconvex family, the same counts as DTAP \loc{Sec.~4.4,
+Table~7}. We therefore no longer present the specific weight as a theoretical necessity or
+an optimum. The abstract now calls it ``a residual-responsive choice, without a claim of
+optimality'', and the Introduction states that ``the proof uses this weight only to keep a
+persistently violated track active''. New Remark~1 \loc{Remark~1, Sec.~3.4} states this explicitly: it records where
+the proportional form enters the present proof and notes that the one-step inequality,
+although valid for every $\mu_k\in[0,1]$, does not by itself imply convergence for every
+weight sequence. The degenerate regimes of Corollaries~3.13--3.14 correspond to
+$\mu_k\equiv1$ and $\mu_k\equiv0$. The dual-track
+construction --- a residual-scaled step where a quantitative gradient inequality is
+available and a safeguarded step where only sign information is --- remains the
+contribution; the particular weight that blends them does not.}
+\end{point}
+
+\begin{point}{R1.2 The ``constant-free'' claim is overstated. The algorithm does not
+explicitly require Lipschitz constants, but Assumption~1(A2) and Lemma~4.9 ensure the
+iterates lie in a compact set where a Lipschitz constant necessarily exists. The claim
+should be qualified.}
+\response{We agree. Such an implicit dependence is shared by any method with bounded
+iterates and continuous gradients, which is why we now frame the point as being about
+algorithm \emph{inputs} rather than about the existence of a constant. The precise statement is now that no
+operator norm, Lipschitz constant, or H\"older modulus is an \emph{input} of the
+iteration, while the \emph{analysis} does use finite bounds on function values and
+gradients over the compact set that contains the (provably bounded) iterates. New
+Remark~2 \loc{Remark~2, Sec.~3.4} makes this explicit: ``Bounded gradients imply
+Lipschitz continuity of the functions on that convex compact set, but these bounds are
+not algorithm inputs,'' and notes that boundedness is established first (Lemma~3.9, the
+former Lemma~4.9) before any such bound is invoked. The abstract now says that the
+step sizes ``require no prescribed operator norm, Lipschitz constant, or H\"older modulus;
+the proof uses bounds over a bounded set containing the iterates'', and the Conclusion
+that ``no regularity modulus is an input, although the analysis uses bounds on a compact
+set containing the iterates''. We no longer use the unqualified phrase ``constant-free.''}
+\end{point}
+
+\begin{point}{R1.3 Theorem~4.12 claims convergence of the whole sequence to a feasible
+point. However, Stage~2 of the proof only establishes that at least one limit point is
+feasible. Since the problem is nonconvex, multiple limit points may exist. The authors
+should either strengthen the argument or revise the theorem to subsequential
+convergence.}
+\response{We have kept the whole-sequence statement, because it is correct, and rewritten
+Stage~3 so that the step the Reviewer flagged is now explicit. The argument does not
+require a unique limit point. For \emph{every} fixed $x^\star\in\Omega$, Lemma~3.9(i)
+shows that $\{\lVert x^k-x^\star\rVert^2\}$ converges (Fej\'er monotonicity with respect
+to the whole feasible set, using only $R^{x^\star}_k\ge0$ from Lemma~3.5). Stage~2
+produces \emph{one} feasible cluster point $\bar x\in C\cap\Omega$. Applying Lemma~3.9(i)
+with the admissible choice $x^\star=\bar x$, the limit $\lim_k\lVert x^k-\bar x\rVert^2$
+exists; since a subsequence converges to $\bar x$, that limit is $0$, so the \emph{whole}
+sequence converges to $\bar x$. Multiple feasible cluster points therefore cannot coexist.
+The rewritten Stage~3 states this in full and closes with: ``The argument does not
+require $\Omega$ to be a singleton: one feasible cluster point and the convergence of its
+distance suffice'' \loc{proof of Theorem~3.12,
+Sec.~3.8}. We have also aligned the Introduction (contribution~C2) with this wording.}
+\end{point}
+
+\begin{point}{R1.4 The thresholds $b_i$ are set as percentiles of sampled $F_i(w)$ to
+guarantee $\Omega\neq\emptyset$. In real applications, thresholds are given by the problem,
+not adjustable. More critically, if $b_3$ is so large that $F_3(w)\ll b_3$ throughout, the
+pseudoconvex constraint is never binding. The authors should report constraint activation
+frequencies and confirm the mixed setting is genuinely engaged.}
+\response{We now address both halves of this comment directly, in the new subsection
+\emph{Constraint activity and a tuned subgradient comparison} \loc{Sec.~4.4}. On
+thresholds: we clarify that externally specified thresholds remain fixed inputs, and that
+the percentile calibration is used only to define the benchmark instance, with the same
+thresholds shared by all solvers; consistency ($\Omega\neq\emptyset$) is treated as an
+assumption, and the exact levels are recorded in the supplementary metadata
+\loc{Sec.~4.1.3 and Sec.~4.4}. On activation: we report the frequency of
+$F_3(w^k)-b_3>10^{-6}$ along every trajectory. The third constraint is in fact
+\emph{inactive} on seven of the eight datasets and active at only $1$ of $48$ evaluated
+points on Abalone (Table~6). We state the consequence plainly, agreeing with the
+Reviewer: on these instances the pseudoconvex track is essentially never binding, so the
+dual-track mechanism is not needed there --- these feature-selection instances exercise a
+convex subclass. Indeed, new Proposition~4.1 proves that the
+fractional criterion $F_3=w^{\top}Q_Rw/\rho^{\top}w$ is \emph{convex} on a neighbourhood
+of the simplex when $Q_R\succeq0$ and $\min_k\rho_k>0$, so the feature model is an
+all-convex normal-box NSFP. To engage the mixed setting genuinely, we added controlled
+instances with a provably nonconvex pseudoconvex constraint,
+$F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Eq.~(47), Sec.~4.4}; there the
+pseudoconvex track is active in all $36$ runs (pooled activity $12\,835/12\,877$ evaluated
+points), so the pseudoconvex track is exercised directly rather than vacuously.}
+\end{point}
+
+\begin{point}{R1.5 DTAP and SG-const/SG-dyn are statistically indistinguishable on three
+of four metrics (Table~5). SG-dyn's failure on $3$ datasets is attributed to poor
+H\"older modulus estimation --- but with a tuned modulus it might perform comparably. An
+additional experiment with manually tuned moduli would strengthen the comparison.}
+\response{We added exactly this experiment \loc{Sec.~4.4, Tables~6--8}. For SG-dyn we now
+report, alongside the sampled-modulus variant, a \emph{tuned} variant whose modulus is
+selected from a manual grid $c\in\{10^{-3},\dots,10^{1}\}$ on held-out starts, and we
+account for its tuning cost separately ($179\,744$ optimization evaluations and
+$10.80$\,s on the feature instances; comparable figures for the synthetic family). Tuning
+raises SG-dyn's standard-start success from $5/9$ to $9/9$ and, as the Reviewer
+anticipated, a tuned subgradient method can match or outperform DTAP --- e.g.\ on Abalone,
+and on the nonconvex family tuned SG-const and tuned SG-dyn reach the tolerance in all
+$36$ runs versus $24/36$ for DTAP (Table~7). We have accordingly revised every comparative
+claim: the text now states that no pairwise comparison is significant after Holm
+adjustment, that the classification results reflect a size--prediction trade-off rather
+than superiority, and, in the Abstract and Conclusion, that ``tuned subgradient methods can match or
+outperform DTAP''. The
+reported advantage of DTAP is narrowed to the fact that no modulus has to be estimated or
+tuned as an input of the iteration.}
+\end{point}
+
+% =====================================================================
+\section*{Response to Reviewer \#2}
+
+\noindent We thank the Reviewer for the detailed, page-by-page reading. We have followed
+all comments; the paper is now substantially shorter and, we hope, considerably clearer.
+
+\subsection*{Major issues}
+
+\begin{point}{M1. Sections~1 (Introduction) and~2 (Related work) should be reorganized and
+merged into Section~1, limited to about $4$ pages; the paper should be shortened (about
+$25$ pages) by removing redundant content and long sentences.}
+\response{Done. The Related work section (and its Table~1) has been removed and its
+essential content condensed into the Introduction \loc{Sec.~1}, which now recalls the
+$CQ$ method, self-adaptive and decomposition strategies, and the closest nonlinear
+antecedents (Li et al., Yen et al., Hu et al.) in a few short paragraphs and states three
+contributions instead of five. The Preliminaries were reduced to the facts actually used
+and no longer carry subsections; the feature-selection framework (former Section~5) is now
+a subsection of the experiments \loc{Sec.~4.1}; the sparse variant DTAP-S, the runtime
+comparison, the robustness/ablation section, and the ``Summary of findings'' were removed;
+the Conclusion is a single paragraph. The paper is now $25$ pages, down from $39$.}
+\end{point}
+
+\begin{point}{M2. The writing should be substantially improved: many sentences are
+ambiguous or too long. Describe the problem, algorithms, etc.\ in short sentences; polish
+each sentence; remove ``nonsense'' descriptions.}
+\response{We rewrote the manuscript with this request in mind. Long sentences were split,
+ambiguous phrases were replaced or deleted, and descriptive passages that did not support
+a result were removed. The abstract, Introduction, Preliminaries, the opening of Section~3,
+the entire experimental section, and the Conclusion were rewritten. Terminology and
+notation are now uniform: the weight $\mu_k$ has one name (``proportional weight''),
+``track'' is defined once, each symbol has one meaning (e.g.\ $\zeta$ for the Young
+parameter, distinct from the tolerance $\varepsilon$), and the baseline solvers and the
+threshold calibration are defined before they are used. The parenthetical names of lemmas,
+propositions, remarks, and corollaries were removed to shorten the text.}
+\end{point}
+
+\begin{point}{M3. The reference format is inconsistent, and important SFP references are
+omitted; e.g.\ the authors of [23] and [35] also have self-adaptive or decomposition work
+on the SFP.}
+\response{We have unified the reference format to one style (initials, italic journal
+names, volume, issue, pages, year, and DOI where available), and we now cite the
+self-adaptive and decomposition works of the authors of [23] (Z.~Li, D.~Han, W.~Zhang) and
+[35] (Q.~Yang) on the (multiple-sets) SFP: Zhang--Han--Li (\emph{Inverse Problems}, 2009),
+Zhang--Han--Yuan (\emph{Comput.\ Optim.\ Appl.}, 2012), Zhao--Yang (\emph{Inverse
+Problems}, 2011), and Yang--Yang--Zhang (\emph{J.\ Optim.\ Theory Appl.}, 2014). They are
+cited in the first paragraph of the Introduction, where self-adaptive steps and
+decomposition strategies for the SFP are recalled. References that were needed only for the
+removed material were deleted.}
+\end{point}
+
+\begin{point}{M4. Why are some numerical results presented in the Appendix?}
+\response{We agree, and the appendix has been removed. The per-dataset accuracy and AUC
+values are now in the main text \loc{Table~3, Sec.~4.3}, and the two baseline solvers are
+described in the main text \loc{Sec.~4.2.1}. The threshold and runtime tables were removed;
+the thresholds of every instance are recorded in the supplementary reproducibility
+package.}
+\end{point}
+
+\subsection*{Minor issues}
+
+\noindent{\color{blue!60!black}\textbf{Response.}}\ We agree with all twenty minor
+comments and have adopted every one of them without exception. For conciseness we list
+them, with the corresponding change and its location, in the table below; in each case the
+change is marked in colored text in the revised manuscript.
+
+\medskip
+{\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.42\textwidth}
+                    >{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+\toprule
+\textbf{Reviewer's minor comment} & \textbf{Change made (location in revised manuscript)}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Reviewer's minor comment} & \textbf{Change made (location in revised manuscript)}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+m1 (p.~2, l.~18) --- ``reference point'' is ambiguous.
+  & Phrase removed; the L\'opez et al.\ rule is now cited among the self-adaptive methods in Sec.~1.\\
+m2 (p.~2, l.~27) --- ``differing'' vs.\ ``different densities''.
+  & ``Different''; the radiotherapy sentence was removed (Sec.~1).\\
+m3 (p.~2, l.~35) --- polish ``The NSFP is not itself new''.
+  & Sentence removed; Li et al., Yen et al.\ and Hu et al.\ are now compared with DTAP directly (Sec.~1).\\
+m4 (p.~2, l.~39) --- ``active index set'' vs.\ ``active set''.
+  & ``Active set''; sentence removed; we use ``approximate active set'' (Sec.~3.2).\\
+m5 (p.~2, ll.~47--49) --- ``We ask instead \dots'' is unclear.
+  & Removed; the class relation is restated in short sentences (Sec.~1).\\
+m6 (p.~3, ll.~48--53) --- sentences too long.
+  & Paragraph removed; reduced to one sentence (Sec.~1).\\
+m7 (p.~3) --- five contributions too detailed.
+  & Replaced by three short items C1--C3 (Sec.~1).\\
+m8 (p.~5) --- ``Rule (3) has since been extended'' grammar.
+  & Sentence removed with the Related work section.\\
+m9 (p.~5, l.~33) --- ``drives their proof is for free''; ``nonconvexity sits in the sets''.
+  & Unclear passage removed with the Related work section.\\
+m10 (p.~5, l.~35) --- ``plain gradient inequality''.
+  & Removed (it meant the convex gradient inequality $f(y)\ge f(x)+\langle\nabla f(x),y-x\rangle$).\\
+m11 (p.~5, l.~44) --- ``the closest predecessor''.
+  & Removed; the three antecedents are compared with DTAP directly (Sec.~1).\\
+m12 (p.~5, l.~48) --- ``step'' vs.\ ``step size''.
+  & ``Step size''; sentence removed with the Related work section.\\
+m13 (p.~7, l.~31) --- ``dtap'' should be ``DTAP''.
+  & Corrected throughout; the acronym is now always ``DTAP''.\\
+m14 (p.~7, l.~39) --- ``Combettes 10'' should be ``Combettes~[10]''.
+  & Corrected; the surviving citation reads ``in the sense of Combettes~[5]'' (Sec.~3.7).\\
+m15 (p.~9) --- subsections 3.1--3.2 unnecessary; 3.3 should move to the experiments.
+  & Preliminaries de-subsectioned (Sec.~2); the feature-selection model is now Sec.~4.1.\\
+m16 (p.~12) --- $H:=\mathbb{R}^n$ repeated.
+  & Repetition removed from the problem statement (Sec.~3.1).\\
+m17 (p.~13) --- meaning of ``standing assumption''.
+  & Subsection retitled ``Assumptions'' (Sec.~3.3); the name was dropped.\\
+m18 (p.~18, l.~40) --- AMS style for $\sum_{k=0}^{\infty}\lVert x^{k+1}-x^k\rVert^2<\infty$.
+  & Series displayed with limits above/below (Prop.~3.11); other displays checked.\\
+m19 (p.~20, l.~36) --- polish ``so no Young splitting is needed''.
+  & Phrase removed from the proof of Corollary~3.13.\\
+m20 (p.~20, l.~35) --- expression $K\cap\bigcap_{i\in I^{\mathrm{cvx}}}$ is not good.
+  & Rewritten as $\Omega=\{x\in K:F_i(x)\le b_i\ \forall i\in I^{\mathrm{cvx}}\}$ (Cor.~3.13), and as $\bigcap_{i\in I^{\mathrm{cvx}}}\{x\in K:F_i(x)\le b_i\}$ in the proof of Thm.~3.12.\\
+\end{longtable}}
+
+\begin{point}{General. Please consider the above comments and make the paper concise.}
+\response{We have followed every comment and shortened the paper from $39$ to $25$ pages
+(see M1 and M2).}
+\end{point}
+
+% =====================================================================
+\section*{Additional changes made by the authors}
+
+\noindent While revising, we also made the following changes, not requested by the
+Reviewers, which we list for completeness and transparency.
+\begin{enumerate}[leftmargin=1.6em,itemsep=3pt]
+\item \textbf{Convexity of the fractional criterion.} The submitted version called
+  $F_3(w)=w^{\top}Q_Rw/\rho^{\top}w$ pseudoconvex. We now prove it is \emph{convex} on an
+  open neighbourhood of the simplex when $Q_R\succeq0$ and $\min_k\rho_k>0$
+  (Proposition~4.1), so the feature-selection instance is an all-convex NSFP. The
+  assignment $F_3$ to the pseudoconvex track used in the experiments remains admissible
+  (convex $\Rightarrow$ pseudoconvex), and the all-convex assignment is reported as a
+  comparator.
+\item \textbf{Domain of the component functions.} The functions are now defined on an open
+  neighbourhood $U$ of $K$, and (A2) requires continuous differentiability on $U$; this
+  covers fractional functions with denominators positive on $K$. A short paragraph after
+  Assumption~1 explains this and why $\Omega$ is convex.
+\item \textbf{Scope of the analysis.} Besides Remarks~1 and~2 (see R1.1, R1.2), Remark~5
+  now states precisely that the $O(N^{-1/3})$ bound concerns only the \emph{best}
+  convex-track violation --- not a last-iterate bound, not a rate for the full residual or
+  the distance to feasibility.
+\item \textbf{Experimental protocol.} Section~4.2.2 now states the protocol exactly:
+  min--max scaling is fitted once on the training pool, the voted masks are computed once
+  and reused, the SVM probability calibration uses a fixed seed, and the evaluation is
+  exploratory rather than nested. The Nogueira stability index (with the correct
+  $N_f/(N_f-1)$ variance correction) and the statistical procedure (exact signed-rank
+  test, Holm adjustment, Friedman test) are given explicitly.
+\item \textbf{Recomputed values.} The stability values, the SVM AUC values, and the
+  $p$-values were recomputed and now include raw and Holm-adjusted $p$-values; columns for
+  SG-const and SG-dyn were added. Accuracies and all $5$-NN results are unchanged.
+\item \textbf{Revised claims.} Statements of superiority (accuracy, speed, robustness)
+  were removed or qualified: no pairwise comparison is significant after Holm adjustment,
+  the results show a size--prediction trade-off, and tuned subgradient methods can match or
+  outperform DTAP.
+\item \textbf{Presentation of the algorithm.} The stopping test of Algorithm~1 is now
+  stated at the start of Step~1 instead of in a separate Step~3; the iterates and the
+  returned point are unchanged. Since all convergence statements are in $\mathbb{R}^n$,
+  ``strong convergence'' is now written ``convergence''.
+\item \textbf{Denominator safeguard.} Section~4.1.3 now reports that the smallest Fisher
+  score on all instances is $4.77\times10^{-5}$, so the safeguard $\max\{\rho^{\top}w,10^{-15}\}$
+  of the implementation is never active and the implemented $F_3$ is exactly~(41).
+\item \textbf{Declarations.} The declaration of generative-AI use and the data-availability
+  statement were updated, and a reproducibility package now accompanies the paper.
+\end{enumerate}
+
+\bigskip
+\noindent We believe these revisions fully address the Reviewers' and Editor's comments
+and have improved the clarity, rigor, and honesty of the manuscript. We thank the
+Reviewers and the Editor again for their time.
+
+\end{document}

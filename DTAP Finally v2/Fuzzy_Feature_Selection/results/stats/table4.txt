@@ -1,0 +1,8 @@
+Table 4: unweighted means
+Method       Accuracy, SVM  Accuracy, 5-NN        AUC, SVM       AUC, 5-NN
+Full                 80.61           78.71          0.9170          0.8870
+N-Fscore             77.05           77.12          0.9024          0.8770
+AFRSFCV              75.34           75.16          0.8818          0.8759
+DTAP                 80.17           78.63          0.9146          0.8938
+SG-const             80.16           78.62          0.9148          0.8939
+SG-dyn               80.16           78.62          0.9148          0.8939

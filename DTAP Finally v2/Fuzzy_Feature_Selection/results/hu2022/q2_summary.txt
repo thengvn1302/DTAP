@@ -1,0 +1,7 @@
+ModelCombined Q2: DTAP vs Hu (2022)
+==================================================
+datasets: 9
+Reached feasibility (J<=eps) on:
+  dtap      : 9/9  (failed: 0/9)
+  hu_const  : 9/9  (failed: 0/9)
+  hu_dyn    : 5/9  (failed: 4/9)

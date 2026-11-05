@@ -2,7 +2,7 @@
 """Apply every proposal of proposed_edits.md to a copy of the revised manuscript.
 
 Reads  DTAP Finally/main_document.tex  (unchanged)
-Writes DTAP Finally/main_document_v2.tex
+Writes DTAP Finally v2/main_document.tex
 Every replacement must match exactly once; otherwise the script stops.
 """
 import re
@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "DTAP Finally" / "main_document.tex"
-DST = ROOT / "DTAP Finally" / "main_document_v2.tex"
+DST = ROOT / "DTAP Finally v2" / "main_document.tex"
 
 s = SRC.read_text(encoding="utf-8")
 

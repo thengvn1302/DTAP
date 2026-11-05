@@ -2,7 +2,8 @@
 """Write a copy of the revised manuscript in which added or modified text is red.
 
 The journal asks for the changes to be highlighted in the revised manuscript. This
-script writes "DTAP Finally/main_document_colored.tex" and its PDF; the original
+script writes "DTAP Finally/main_document_colored.tex" and its PDF (with
+DTAP_NEW_DIR="DTAP Finally v2": into that folder instead); the original
 main_document.tex is not touched.
 
 The comparison is by content, sentence by sentence, not character by character:

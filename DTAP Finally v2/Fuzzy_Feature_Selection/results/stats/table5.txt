@@ -1,0 +1,6 @@
+Table 5: raw / Holm-adjusted signed-rank p; tie-corrected Friedman
+Metric                  N-Fscore         AFRSFCV        SG-const          SG-dyn  Friedman
+Accuracy, SVM      0.0312/0.0938   0.0156/0.0625   1.0000/1.0000   1.0000/1.0000    0.0005
+Accuracy, 5-NN     0.3750/1.0000   0.0312/0.1250   1.0000/1.0000   1.0000/1.0000    0.0057
+AUC, SVM           0.0156/0.0625   0.0312/0.0938   1.0000/1.0000   1.0000/1.0000    0.0055
+AUC, 5-NN          0.0781/0.3125   0.1562/0.4688   1.0000/1.0000   1.0000/1.0000    0.0435

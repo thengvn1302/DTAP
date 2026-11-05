@@ -1,0 +1,18 @@
+{
+ "dataset": "Diabetes",
+ "n": 768,
+ "p": 8,
+ "percentiles": {
+  "f1_percentile": 15,
+  "f2_percentile": 8,
+  "f3_percentile": 40
+ },
+ "sampling": {
+  "n_samples": 3000,
+  "seed": 42,
+  "plus_vertices": true
+ },
+ "b1": 764.8156828994635,
+ "b2": 156.43757002348863,
+ "b3": 0.040933047386028654
+}

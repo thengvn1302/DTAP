@@ -22,15 +22,17 @@ import json
 import re
 import shutil
 import subprocess
+import os
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 OLD_TEX = REPO / "DTAP_submission" / "main_document_old.tex"
-NEW_TEX = REPO / "DTAP Finally" / "main_document.tex"
+# The revised version; set DTAP_NEW_DIR="DTAP Finally v2" to compare against that copy.
 OLD_DIR = REPO / "DTAP_submission"
-NEW_DIR = REPO / "DTAP Finally"
+NEW_DIR = REPO / os.environ.get("DTAP_NEW_DIR", "DTAP Finally")
+NEW_TEX = NEW_DIR / "main_document.tex"
 NOTES = ROOT / "change_notes.json"
 REVIEW = ROOT / "review_comments.json"
 BUILD = ROOT / "build"

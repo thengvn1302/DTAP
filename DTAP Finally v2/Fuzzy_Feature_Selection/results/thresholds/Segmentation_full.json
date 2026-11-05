@@ -1,0 +1,18 @@
+{
+ "dataset": "Segmentation",
+ "n": 2310,
+ "p": 18,
+ "percentiles": {
+  "f1_percentile": 12,
+  "f2_percentile": 16,
+  "f3_percentile": 45
+ },
+ "sampling": {
+  "n_samples": 3000,
+  "seed": 42,
+  "plus_vertices": true
+ },
+ "b1": 2024.8242871379396,
+ "b2": 720.036982294276,
+ "b3": 0.010284434882806821
+}
