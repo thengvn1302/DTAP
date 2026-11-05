@@ -129,7 +129,7 @@ overview = (
     "Lemma~\\ref{lem:fejer} combines both tracks in one quasi-Fej\\'er inequality; the choice of the\n"
     "parameter $\\zeta$ in Young's inequality keeps the convex-track term negative. Stage~2 of\n"
     "Theorem~\\ref{thm:strong} then shows, by contradiction, that at least one cluster point is\n"
-    "feasible, and Stage~3 shows that the whole sequence converges to it. The two degenerate cases\n"
+    "feasible, and Stage~3 shows that the whole sequence converges strongly to it. The two degenerate cases\n"
     "follow as corollaries.\n\n" + throughout + "\n\n")
 rep("\\subsection{Auxiliary lemmas}\\label{ssec:aux}\nWe begin with two preparatory results used repeatedly below.",
     "\\subsection{Auxiliary lemmas}\\label{ssec:aux}\n" + overview + "We begin with two preparatory results used repeatedly below.", "45/G13")
@@ -143,13 +143,10 @@ s = re.sub(r"\\epsilon(?![a-zA-Z])", r"\\zeta", s)      # G7: Young parameter
 rep("Assume $I^{\\cvx}\\ne\\emptyset$ and\nput $B:=", "Assume $I^{\\cvx}\\ne\\emptyset$, fix\n$x^\\star\\in\\Omega$, and put $B:=", "48a")
 rep("Fix $x^\\star\\in\\Omega$. Remark~\\ref{rem:grad-cvx-sum} gives\n$\\inner{g^{\\cvx}_k}{x^k-x^\\star}\\ge2\\Phi^{\\cvx}_k>0$",
     "Remark~\\ref{rem:grad-cvx-sum} gives\n$\\inner{g^{\\cvx}_k}{x^k-x^\\star}\\ge2\\Phi^{\\cvx}_k>0$", "48b")
-rep("\\subsection{Strong convergence to a feasible point}", "\\subsection{Convergence to a feasible point}", "G4a")
+# Section 3.8 keeps the v1 title "Strong convergence to a feasible point".
 rep("The goal of the analysis is strong convergence of $\\{x^k\\}$ to a feasible point. The\nargument has three stages: exploit convex-track feasibility (Lemma~\\ref{lem:jcvx0}) to\nconfine the cluster set to the convex half; use a contradiction argument with\npseudoconvexity to produce a cluster point in $\\Omega$; and combine with distance\nconvergence to upgrade to convergence of the whole sequence.",
-    "We now prove that the whole sequence converges to a feasible point. The proof has three\nstages. Stage~1 uses Lemma~\\ref{lem:jcvx0} to show that every cluster point satisfies the\nconvex constraints. Stage~2 shows, by contradiction and pseudoconvexity, that at least one\ncluster point is feasible. Stage~3 uses the convergence of $\\norm{x^k-\\bar x}$ to show that\nthe whole sequence converges to that point.", "49")
-n = s.count("converges strongly to")
-if n != 3:
-    sys.exit("[G4] expected 3 'converges strongly to', found %d" % n)
-s = s.replace("converges strongly to", "converges to")
+    "We now prove that the whole sequence converges strongly to a feasible point. The proof has three\nstages. Stage~1 uses Lemma~\\ref{lem:jcvx0} to show that every cluster point satisfies the\nconvex constraints. Stage~2 shows, by contradiction and pseudoconvexity, that at least one\ncluster point is feasible. Stage~3 uses the convergence of $\\norm{x^k-\\bar x}$ to show that\nthe whole sequence converges to that point.", "49")
+# Theorem 3.12 and Corollaries 3.13-3.14 keep "converges strongly to" as in v1.
 rep("\\emph{Stage 1 (convex half).}", "\\emph{Stage 1 (convex constraints).}", "49a")
 rep("\\emph{Stage 2 (pseudoconvex half by contradiction).}", "\\emph{Stage 2 (a feasible cluster point).}", "49b")
 rep("This argument requires neither uniqueness of the feasible point nor convexity of the\ntarget set: one feasible cluster point and convergence of its distance suffice.",
