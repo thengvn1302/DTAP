@@ -12,7 +12,7 @@
 
 ## A. Tóm tắt
 
-### 1. Abstract — giữ câu chữ của bản cũ, chỉ đổi thuật ngữ ("block" → "track", bỏ "mixing")
+### 1. Abstract — giữ câu chữ của bản cũ, đổi thuật ngữ ("block" → "track", bỏ "mixing") và viết lại hai câu cuối
 
 **Trước**
 1. A max-type violation measure identifies nearly active constraints in two blocks.
@@ -21,6 +21,10 @@
    → Thuật toán Chiếu Thích nghi Hai Track (DTAP) kết hợp một bước co theo phần dư cho khối lồi với một bước giảm dần có chặn an toàn cho khối giả lồi, rồi chiếu lên tập lồi cơ sở.
 3. The proportional mixing weight is a residual-responsive choice, without a claim of optimality.
    → Trọng số pha trộn tỉ lệ là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu.
+4. On these examples, DTAP is sensitive to the scale of its diminishing step.
+   → Trên các ví dụ này, DTAP nhạy với thang của bước giảm dần.
+5. The results also show initialization sensitivity and do not establish uniform computational superiority.
+   → Kết quả cũng cho thấy sự nhạy với điểm khởi đầu và không chứng tỏ được ưu thế tính toán đồng đều.
 
 **Sau**
 1. A max-type violation measure identifies nearly active constraints in two tracks.
@@ -29,6 +33,8 @@
    → Thuật toán Chiếu Thích nghi Hai Track (DTAP) kết hợp một bước co theo phần dư cho track lồi với một bước giảm dần có chặn an toàn cho track giả lồi, rồi chiếu lên tập lồi cơ sở.
 3. The proportional weight is a residual-responsive choice, without a claim of optimality.
    → Trọng số tỉ lệ là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu.
+4. On these examples, tuned subgradient methods can match or outperform DTAP, whose performance depends on the starting point and the scale of its diminishing step.
+   → Trên các ví dụ này, các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, mà hiệu năng của nó phụ thuộc vào điểm xuất phát và thang của bước giảm dần.
 
 *(Các câu còn lại của Abstract giữ nguyên như bản cũ.)*
 

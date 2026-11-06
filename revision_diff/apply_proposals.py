@@ -33,6 +33,8 @@ rep("nearly active constraints in two blocks.", "nearly active constraints in tw
 rep("a residual-scaled step for the convex block with a safeguarded diminishing step for the pseudoconvex block,",
     "a residual-scaled step for the convex track with a safeguarded diminishing step for the pseudoconvex track,", "A0b")
 rep("The proportional mixing weight is a residual-responsive choice,", "The proportional weight is a residual-responsive choice,", "A0c")
+rep("On these examples, DTAP is sensitive to the scale of its diminishing step. The results also show initialization sensitivity and do not establish uniform computational superiority.",
+    "On these examples, tuned subgradient methods can match or outperform DTAP, whose performance depends on the starting point and the scale of its diminishing step.", "A0d")
 
 # ---------------------------------------------------------------- Introduction
 rep(r"The split feasibility problem (SFP) models constrained reconstruction~\citep{censor1994}. For closed convex sets $C\subseteq\R^n$, $Q\subseteq\R^m$, and a matrix $\mathcal A$, it seeks",
