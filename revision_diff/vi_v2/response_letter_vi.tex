@@ -1,0 +1,378 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+
+\newcommand{\response}[1]{\smallskip\noindent{\color{blue!60!black}\textbf{Trả lời.}}\ #1\par\medskip}
+\newcommand{\loc}[1]{\textcolor{blue!50!black}{[#1]}}
+% original English wording of a quotation, shown for checking
+\newcommand{\en}[1]{{\color{gray}\small(EN: ``#1'')}}
+
+\newenvironment{point}[1]{\medskip\noindent\textbf{\uline{#1}}\par}{\par}
+
+\title{\vspace{-2em}Thư trả lời phản biện\\[0.3em]
+\large Bản thảo: \emph{Thuật toán Chiếu Thích nghi Hai Track cho một bài toán chấp nhận tách phi tuyến với các ràng buộc hỗn hợp lồi--giả lồi}\\[0.2em]
+\normalsize Tạp chí: \emph{Optimization Methods and Software}}
+\author{Nguyen Van The, Tran Ngoc Thang và Nguyen Hong Son}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2em}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\small Bản dịch tiếng Việt của \texttt{DTAP Finally v2/response\_letter.tex}, chỉ dùng để rà soát nội dung, không nộp. Ý kiến của Reviewer cũng được dịch. Với các câu trích từ bản thảo, nguyên văn tiếng Anh được ghi kèm bằng chữ xám ``(EN: \dots)'' để tiện đối chiếu.}}
+\end{center}
+
+\noindent Chúng tôi cảm ơn Editor và cả hai Reviewer đã đọc kỹ và góp ý mang tính xây dựng.
+Các ý kiến đã làm bài báo vững hơn đáng kể, và ở nhiều chỗ đã khiến
+chúng tôi bỏ đi các khẳng định quá mức và bổ sung bằng chứng mới, trung thực hơn. Dưới đây chúng tôi trả lời
+từng ý kiến và chỉ ra thay đổi tương ứng trong bản thảo sửa.
+\textbf{Mọi phần chữ được thêm hoặc sửa trong bản thảo sửa đều được in bằng
+\textcolor{red}{chữ màu}} để dễ tìm thấy các thay đổi. Số mục, công thức,
+định lý và bảng dưới đây theo bản thảo sửa. Tóm lại, bản sửa:
+\begin{itemize}[nosep]
+  \item gộp phần Giới thiệu và phần Các công trình liên quan cũ thành một phần Giới thiệu
+        duy nhất, ngắn hơn, và rút bài từ $39$ xuống $25$ trang, viết lại toàn bộ
+        bằng các câu ngắn hơn;
+  \item làm rõ giới hạn của khẳng định ``không cần hằng số'' (Nhận xét~2 mới) và trình bày lại trọng số tỉ lệ
+        như một cách phân bổ kinh nghiệm theo tỉ phần phần dư, không khẳng định là cần thiết hay
+        tối ưu (Nhận xét~1 mới);
+  \item làm tường minh lập luận hội tụ của toàn bộ dãy (viết lại Giai đoạn~3 của
+        Định lý~3.12), làm rõ rằng nó chỉ cần một điểm tụ khả thi và
+        tính đơn điệu Fej\'er, không cần giới hạn duy nhất;
+  \item bổ sung một phần chẩn đoán bộ giải (Mục~4.4 mới) báo cáo mức hoạt động của ràng buộc
+        theo từng quỹ đạo, một phép so sánh với phương pháp dưới gradient có mô-đun tinh chỉnh cùng chi phí tinh chỉnh, và
+        các bài toán có kiểm soát với một ràng buộc giả lồi thực sự không lồi;
+  \item chứng minh rằng tỉ số dùng trong chọn đặc trưng thực ra là lồi (Mệnh đề~4.1 mới),
+        nói rõ rằng ứng dụng là một trường hợp riêng lồi, và bỏ mọi
+        khẳng định về ưu thế đồng đều;
+  \item thống nhất định dạng tài liệu tham khảo, bổ sung các công trình về bước tự thích nghi và phân rã
+        cho SFP theo yêu cầu, chuyển các kết quả ở phụ lục vào thân bài, và giải quyết
+        mọi vấn đề về ký hiệu và trình bày đã được nêu.
+\end{itemize}
+
+% =====================================================================
+\section*{Trả lời Editor}
+
+\begin{point}{Associate Editor không ghi ý kiến cụ thể nào; quyết định là sửa lớn (major
+revision).}
+\response{Chúng tôi đã sửa bản thảo theo đúng báo cáo của cả hai Reviewer,
+như trình bày chi tiết dưới đây, và đã đánh dấu mọi thay đổi bằng chữ màu. Hai thay đổi
+cấu trúc lớn nhất --- gộp và rút ngắn phần mở đầu (Reviewer~2)
+và bổ sung phần chẩn đoán bộ giải với bằng chứng về mức hoạt động của ràng buộc và phương pháp cơ sở đã tinh chỉnh
+(Reviewer~1) --- đã được tóm tắt trong danh sách ở trên.}
+\end{point}
+
+% =====================================================================
+\section*{Trả lời Reviewer \#1}
+
+\noindent Chúng tôi cảm ơn Reviewer đã tóm tắt chính xác đóng góp của bài và đã đưa ra năm
+ý kiến trực tiếp giúp phát biểu lý thuyết cẩn thận hơn và phần thực nghiệm
+đầy đủ hơn.
+
+\begin{point}{R1.1 Trọng số mềm $\mu_k=J_k^{\mathrm{cvx}}/(J_k^{\mathrm{cvx}}+J_k^{\mathrm{ps}})$
+là trung tâm của tính mới của thuật toán, nhưng chứng minh hội tụ chỉ đòi $\mu_k$
+thỏa một số điều kiện khả tổng -- bất kỳ dãy nào trong $[0,1]$ cũng đủ. Vì vậy dạng
+được chọn không cần thiết về mặt cấu trúc. Tác giả nên hoặc biện minh cho cách đặt trọng số
+cụ thể này, hoặc trình bày lại đóng góp cho phù hợp.}
+\response{Chúng tôi chọn đề nghị thứ hai của Reviewer và trình bày lại đóng góp.
+Chúng tôi đồng ý rằng dạng tỉ lệ không cần thiết về mặt cấu trúc: bất đẳng thức
+tựa Fej\'er một bước (Bổ đề~3.8) đúng với mọi $\mu_k\in[0,1]$, và chứng minh
+hội tụ chỉ cần trọng số giữ cho mỗi track còn hoạt động --- chẳng hạn với trọng số hằng
+$\mu_k\equiv\tfrac12$, chứng minh của Bổ đề~3.10 và của Giai đoạn~2 vẫn đúng với
+vài thay đổi nhỏ. Thực nghiệm cũng cho thấy điều tương tự: một biến thể cân bằng, gán
+trọng số bằng nhau khi cả hai track bị vi phạm, thành công ở $26/36$ lần chạy trên các bài toán
+đặc trưng và $24/36$ trên họ bài toán không lồi, đúng bằng số lần của DTAP \loc{Mục~4.4,
+Bảng~7}. Vì vậy chúng tôi không còn trình bày trọng số cụ thể này như một điều cần thiết về lý thuyết hay
+một lựa chọn tối ưu. Tóm tắt nay gọi nó là ``một lựa chọn phản ứng theo phần dư, không khẳng định là tối
+ưu'' \en{a residual-responsive choice, without a claim of
+optimality}, và phần Giới thiệu nói rằng ``chứng minh chỉ dùng trọng số này để giữ cho một
+track bị vi phạm kéo dài vẫn có trọng số dương'' \en{the proof uses this weight only to keep a
+persistently violated track active}. Nhận xét~1 mới \loc{Nhận xét~1, Mục~3.4} nói rõ điều này: nó ghi lại chỗ
+dạng tỉ lệ được dùng trong chứng minh hiện tại và lưu ý rằng bất đẳng thức một bước,
+dù đúng với mọi $\mu_k\in[0,1]$, tự nó không suy ra hội tụ với mọi
+dãy trọng số. Các chế độ suy biến của Hệ quả~3.13--3.14 ứng với
+$\mu_k\equiv1$ và $\mu_k\equiv0$. Cấu trúc hai track
+--- một bước co theo phần dư ở nơi có bất đẳng thức gradient định lượng,
+và một bước có chặn an toàn ở nơi chỉ có thông tin về dấu --- vẫn là
+đóng góp; còn trọng số cụ thể dùng để pha trộn chúng thì không.}
+\end{point}
+
+\begin{point}{R1.2 Khẳng định ``không cần hằng số'' bị phóng đại. Thuật toán không
+đòi tường minh hằng số Lipschitz, nhưng Giả thiết~1(A2) và Bổ đề~4.9 bảo đảm
+dãy lặp nằm trong một tập compact, nơi chắc chắn tồn tại một hằng số Lipschitz. Khẳng định
+này cần được nói rõ giới hạn.}
+\response{Chúng tôi đồng ý. Sự phụ thuộc ngầm như vậy có ở mọi phương pháp có dãy lặp bị chặn
+và gradient liên tục, nên nay chúng tôi trình bày vấn đề theo nghĩa \emph{đầu vào} của thuật toán
+chứ không theo nghĩa sự tồn tại của một hằng số. Phát biểu chính xác hiện nay là: không có
+chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older nào là \emph{đầu vào} của
+phép lặp, trong khi \emph{phân tích} có dùng các cận hữu hạn của giá trị hàm và
+gradient trên tập compact chứa dãy lặp (đã được chứng minh là bị chặn). Nhận xét~2
+mới \loc{Nhận xét~2, Mục~3.4} nói rõ điều này: ``Gradient bị chặn kéo theo các hàm
+Lipschitz trên tập compact lồi đó, nhưng các cận này không phải là đầu vào của
+thuật toán'' \en{Bounded gradients imply
+Lipschitz continuity of the functions on that convex compact set, but these bounds are
+not algorithm inputs}, và lưu ý rằng tính bị chặn được chứng minh trước (Bổ đề~3.9, tức
+Bổ đề~4.9 cũ) rồi mới dùng đến các cận như vậy. Tóm tắt nay nói rằng
+độ dài bước ``không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older''
+\en{require no prescribed operator norm, Lipschitz constant, or H\"older modulus}
+và rằng ``chứng minh dùng các cận địa phương trên miền bị chặn chứa dãy lặp'' \en{the proof uses local bounds on the bounded iterate region}, còn phần Kết luận nói
+rằng ``không có mô-đun chính quy nào là đầu vào, mặc dù phân tích dùng các cận trên một tập compact
+chứa dãy lặp'' \en{no regularity modulus is an input, although the analysis uses bounds on a compact
+set containing the iterates}. Chúng tôi không còn dùng cụm ``không cần hằng số'' mà không kèm giới hạn.}
+\end{point}
+
+\begin{point}{R1.3 Định lý~4.12 khẳng định toàn bộ dãy hội tụ tới một điểm khả
+thi. Tuy nhiên, Giai đoạn~2 của chứng minh chỉ xác lập được rằng có ít nhất một điểm giới hạn
+khả thi. Vì bài toán không lồi, có thể tồn tại nhiều điểm giới hạn. Tác giả
+nên hoặc làm chặt lập luận, hoặc sửa định lý thành hội tụ theo
+dãy con.}
+\response{Chúng tôi giữ phát biểu về hội tụ của toàn bộ dãy, vì nó đúng, và viết lại
+Giai đoạn~3 để bước mà Reviewer chỉ ra nay được trình bày tường minh. Lập luận không
+cần điểm giới hạn duy nhất. Với \emph{mọi} $x^\star\in\Omega$ cố định, Bổ đề~3.9(i)
+cho thấy $\{\lVert x^k-x^\star\rVert^2\}$ hội tụ (tính đơn điệu Fej\'er đối với
+toàn bộ tập khả thi, chỉ dùng $R^{x^\star}_k\ge0$ từ Bổ đề~3.5). Giai đoạn~2
+tạo ra \emph{một} điểm tụ khả thi $\bar x\in C\cap\Omega$. Áp dụng Bổ đề~3.9(i)
+với lựa chọn hợp lệ $x^\star=\bar x$, giới hạn $\lim_k\lVert x^k-\bar x\rVert^2$
+tồn tại; vì có một dãy con hội tụ tới $\bar x$, giới hạn đó bằng $0$, nên \emph{toàn bộ}
+dãy hội tụ tới $\bar x$. Do đó không thể có nhiều điểm tụ khả thi cùng tồn tại.
+Giai đoạn~3 viết lại trình bày đầy đủ điều này và kết thúc bằng câu: ``Lập luận không
+cần $\Omega$ chỉ có một điểm: một điểm tụ khả thi và sự hội tụ của khoảng cách tới nó
+là đủ'' \en{The argument does not
+require $\Omega$ to be a singleton: one feasible cluster point and the convergence of its
+distance suffice} \loc{chứng minh Định lý~3.12,
+Mục~3.8}. Chúng tôi cũng sửa phần Giới thiệu (đóng góp~C2) cho khớp với cách diễn đạt này.}
+\end{point}
+
+\begin{point}{R1.4 Các ngưỡng $b_i$ được đặt bằng các phân vị của $F_i(w)$ lấy mẫu để
+bảo đảm $\Omega\neq\emptyset$. Trong ứng dụng thực tế, ngưỡng do bài toán cho trước,
+không điều chỉnh được. Quan trọng hơn, nếu $b_3$ lớn đến mức $F_3(w)\ll b_3$ ở mọi nơi, thì
+ràng buộc giả lồi không bao giờ chặt. Tác giả nên báo cáo tần suất ràng buộc hoạt động
+và xác nhận rằng bối cảnh hỗn hợp thực sự được kích hoạt.}
+\response{Chúng tôi nay trả lời trực tiếp cả hai nửa của ý kiến này, trong tiểu mục mới
+\emph{Mức hoạt động của ràng buộc và một phép so sánh với phương pháp dưới gradient đã tinh chỉnh} \loc{Mục~4.4}. Về
+ngưỡng: chúng tôi làm rõ rằng ngưỡng được cho từ bên ngoài vẫn là đầu vào cố định, và rằng
+việc hiệu chỉnh theo phân vị chỉ được dùng để xác định bài toán chuẩn, với cùng
+các ngưỡng dùng chung cho mọi bộ giải; tính nhất quán ($\Omega\neq\emptyset$) được xem là một
+giả thiết, và các mức cụ thể được ghi trong siêu dữ liệu bổ sung
+\loc{Mục~4.1.3 và Mục~4.4}. Về mức hoạt động: chúng tôi báo cáo tần suất
+$F_3(w^k)-b_3>10^{-6}$ dọc theo mọi quỹ đạo. Ràng buộc thứ ba thực ra
+\emph{không hoạt động} trên bảy trong tám bộ dữ liệu và chỉ hoạt động tại $1$ trong $48$ điểm được
+đánh giá trên Abalone (Bảng~6). Chúng tôi nói thẳng hệ quả, đồng ý với
+Reviewer: trên các bài toán này track giả lồi hầu như không bao giờ chặt, nên
+cơ chế hai track không cần thiết ở đó --- các bài toán chọn đặc trưng này chỉ kiểm tra một
+lớp con lồi. Thật vậy, Mệnh đề~4.1 mới chứng minh rằng
+tiêu chí phân thức $F_3=w^{\top}Q_Rw/\rho^{\top}w$ là \emph{lồi} trên một lân cận
+của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$, nên mô hình đặc trưng là
+một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Để thực sự kích hoạt bối cảnh hỗn hợp, chúng tôi bổ sung các bài toán
+có kiểm soát với một ràng buộc giả lồi được chứng minh là không lồi,
+$F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Công thức~(47), Mục~4.4}; ở đó
+track giả lồi hoạt động trong cả $36$ lần chạy (mức hoạt động gộp $12\,835/12\,877$ điểm
+được đánh giá), nên track giả lồi được kiểm tra trực tiếp chứ không phải một cách hình thức.}
+\end{point}
+
+\begin{point}{R1.5 DTAP và SG-const/SG-dyn không phân biệt được về mặt thống kê trên ba
+trong bốn độ đo (Bảng~5). Thất bại của SG-dyn trên $3$ bộ dữ liệu được quy cho việc ước lượng
+mô-đun H\"older kém --- nhưng với một mô-đun đã tinh chỉnh, nó có thể cho kết quả tương đương. Một
+thực nghiệm bổ sung với mô-đun tinh chỉnh thủ công sẽ làm phép so sánh vững hơn.}
+\response{Chúng tôi đã bổ sung đúng thực nghiệm này \loc{Mục~4.4, Bảng~6--8}. Với SG-dyn, bên cạnh
+biến thể dùng mô-đun lấy mẫu, chúng tôi nay báo cáo một biến thể \emph{tinh chỉnh} có mô-đun được
+chọn từ một lưới thủ công $c\in\{10^{-3},\dots,10^{1}\}$ trên các điểm xuất phát tách riêng, và
+tính riêng chi phí tinh chỉnh ($179\,744$ lần đánh giá trong tối ưu và
+$10.80$\,s trên các bài toán đặc trưng; số liệu tương tự cho họ bài toán tổng hợp). Tinh chỉnh
+nâng số lần thành công từ điểm xuất phát chuẩn của SG-dyn từ $5/9$ lên $9/9$ và, như Reviewer
+dự đoán, một phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP --- chẳng hạn trên Abalone,
+và trên họ bài toán không lồi, SG-const tinh chỉnh và SG-dyn tinh chỉnh đạt sai số dừng ở cả
+$36$ lần chạy, so với $24/36$ của DTAP (Bảng~7). Vì vậy chúng tôi đã sửa mọi khẳng định
+so sánh: bài nay nói rằng không phép so sánh từng cặp nào có ý nghĩa sau hiệu chỉnh
+Holm, rằng kết quả phân loại phản ánh sự đánh đổi giữa kích thước và khả năng dự đoán chứ không phải
+ưu thế, và, trong phần Kết luận, rằng ``các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn
+DTAP'' \en{tuned subgradient methods can match or outperform
+DTAP}. Ưu điểm được báo cáo của DTAP được thu hẹp lại ở chỗ không có mô-đun nào phải ước lượng hay
+tinh chỉnh như một đầu vào của phép lặp.}
+\end{point}
+
+% =====================================================================
+\section*{Trả lời Reviewer \#2}
+
+\noindent Chúng tôi cảm ơn Reviewer đã đọc chi tiết từng trang. Chúng tôi đã làm theo
+mọi ý kiến; bài nay ngắn hơn đáng kể và, chúng tôi hy vọng, rõ ràng hơn nhiều.
+
+\subsection*{Các vấn đề chính}
+
+\begin{point}{M1. Mục~1 (Giới thiệu) và Mục~2 (Các công trình liên quan) nên được sắp xếp lại và
+gộp vào Mục~1, giới hạn khoảng $4$ trang; bài nên được rút ngắn (khoảng
+$25$ trang) bằng cách bỏ nội dung thừa và các câu dài.}
+\response{Đã làm. Mục Các công trình liên quan (và Bảng~1 của nó) đã được bỏ, và
+nội dung cốt lõi được cô đọng vào phần Giới thiệu \loc{Mục~1}, nay nhắc lại
+phương pháp $CQ$, các chiến lược bước tự thích nghi và phân rã, và các công trình phi tuyến
+gần nhất (Li và cộng sự, Yen và cộng sự, Hu và cộng sự) trong vài đoạn ngắn, và nêu ba
+đóng góp thay vì năm. Phần Kiến thức chuẩn bị được rút gọn chỉ còn các kết quả thực sự được dùng
+và không còn chia tiểu mục; khung chọn đặc trưng (Mục~5 cũ) nay là
+một tiểu mục của phần thực nghiệm \loc{Mục~4.1}; biến thể thưa DTAP-S, phép so sánh
+thời gian chạy, mục về độ bền/ablation, và phần ``Tóm tắt kết quả'' đã được bỏ;
+phần Kết luận chỉ còn một đoạn. Bài nay dài $25$ trang, giảm từ $39$.}
+\end{point}
+
+\begin{point}{M2. Cần cải thiện cách viết đáng kể: nhiều câu
+mơ hồ hoặc quá dài. Hãy mô tả bài toán, thuật toán, v.v.\ bằng các câu ngắn; trau chuốt
+từng câu; bỏ các mô tả ``vô nghĩa''.}
+\response{Chúng tôi đã viết lại bản thảo theo yêu cầu này. Các câu dài được tách ra,
+các cụm từ mơ hồ được thay hoặc xóa, và các đoạn mô tả không phục vụ
+kết quả nào đã được bỏ. Tóm tắt, phần Giới thiệu, phần Kiến thức chuẩn bị, phần mở đầu của Mục~3,
+và toàn bộ phần thực nghiệm đã được viết lại. Tên trong ngoặc của các bổ đề,
+mệnh đề, nhận xét và hệ quả đã được bỏ để rút ngắn văn bản.}
+\end{point}
+
+\begin{point}{M3. Định dạng tài liệu tham khảo không nhất quán, và thiếu các tài liệu quan trọng về
+SFP; ví dụ, tác giả của [23] và [35] cũng có các công trình về bước tự thích nghi hoặc phân rã
+cho SFP.}
+\response{Chúng tôi đã thống nhất định dạng tài liệu tham khảo theo một kiểu (tên viết tắt, tên tạp chí
+in nghiêng, tập, số, trang, năm, và DOI nếu có), và nay trích dẫn các công trình
+về bước tự thích nghi và phân rã của tác giả [23] (Z.~Li, D.~Han, W.~Zhang) và
+[35] (Q.~Yang) cho SFP (nhiều tập): Zhang--Han--Li (\emph{Inverse Problems}, 2009),
+Zhang--Han--Yuan (\emph{Comput.\ Optim.\ Appl.}, 2012), Zhao--Yang (\emph{Inverse
+Problems}, 2011), và Yang--Yang--Zhang (\emph{J.\ Optim.\ Theory Appl.}, 2014). Chúng được
+trích ở đoạn đầu của phần Giới thiệu, nơi nhắc lại các bước tự thích nghi và
+chiến lược phân rã cho SFP. Các tài liệu chỉ cần cho phần nội dung đã bỏ
+đã được xóa.}
+\end{point}
+
+\begin{point}{M4. Tại sao một số kết quả số được trình bày ở Phụ lục?}
+\response{Chúng tôi đồng ý, và phụ lục đã được bỏ. Các giá trị độ chính xác và AUC theo từng bộ dữ liệu
+nay nằm trong thân bài \loc{Bảng~3, Mục~4.3}, và hai bộ giải cơ sở được
+mô tả trong thân bài \loc{Mục~4.2.1}. Các bảng ngưỡng và thời gian chạy đã được bỏ;
+ngưỡng của mọi bài toán được ghi trong gói tái lập
+bổ sung.}
+\end{point}
+
+\subsection*{Các vấn đề nhỏ}
+
+\noindent{\color{blue!60!black}\textbf{Trả lời.}}\ Chúng tôi đồng ý với cả hai mươi ý kiến
+nhỏ và đã làm theo tất cả, không có ngoại lệ. Để ngắn gọn, chúng tôi liệt kê
+chúng, cùng thay đổi tương ứng và vị trí, trong bảng dưới đây; trong mọi trường hợp
+thay đổi được đánh dấu bằng chữ màu trong bản thảo sửa.
+
+\medskip
+{\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.42\textwidth}
+                    >{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+\toprule
+\textbf{Ý kiến nhỏ của Reviewer} & \textbf{Thay đổi đã làm (vị trí trong bản thảo sửa)}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Ý kiến nhỏ của Reviewer} & \textbf{Thay đổi đã làm (vị trí trong bản thảo sửa)}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+m1 (tr.~2, d.~18) --- cụm ``reference point'' (điểm tham chiếu) mơ hồ.
+  & Đã bỏ cụm này; quy tắc của L\'opez và cộng sự nay được trích trong nhóm các phương pháp tự thích nghi ở Mục~1.\\
+m2 (tr.~2, d.~27) --- ``differing'' hay ``different densities'' (mật độ khác nhau).
+  & Dùng ``different''; câu về xạ trị đã được bỏ (Mục~1).\\
+m3 (tr.~2, d.~35) --- trau chuốt câu ``The NSFP is not itself new'' (bản thân NSFP không mới).
+  & Đã bỏ câu này; Li và cộng sự, Yen và cộng sự, Hu và cộng sự nay được so sánh trực tiếp với DTAP (Mục~1).\\
+m4 (tr.~2, d.~39) --- ``active index set'' hay ``active set'' (tập hoạt động).
+  & Dùng ``active set''; câu đó đã bỏ; chúng tôi dùng ``approximate active set'' (tập hoạt động xấp xỉ) (Mục~3.2).\\
+m5 (tr.~2, d.~47--49) --- câu ``We ask instead \dots'' (thay vào đó chúng tôi hỏi \dots) không rõ.
+  & Đã bỏ; quan hệ giữa các lớp hàm được nêu lại bằng các câu ngắn (Mục~1).\\
+m6 (tr.~3, d.~48--53) --- các câu quá dài.
+  & Đã bỏ đoạn đó; rút còn một câu (Mục~1).\\
+m7 (tr.~3) --- năm đóng góp quá chi tiết.
+  & Thay bằng ba mục ngắn C1--C3 (Mục~1).\\
+m8 (tr.~5) --- ngữ pháp của câu ``Rule (3) has since been extended'' (quy tắc (3) từ đó đã được mở rộng).
+  & Câu này đã bỏ cùng với mục Các công trình liên quan.\\
+m9 (tr.~5, d.~33) --- ``drives their proof is for free''; ``nonconvexity sits in the sets''.
+  & Đoạn không rõ nghĩa này đã bỏ cùng với mục Các công trình liên quan.\\
+m10 (tr.~5, d.~35) --- ``plain gradient inequality'' (bất đẳng thức gradient đơn giản).
+  & Đã bỏ (cụm này muốn nói bất đẳng thức gradient của hàm lồi $f(y)\ge f(x)+\langle\nabla f(x),y-x\rangle$).\\
+m11 (tr.~5, d.~44) --- ``the closest predecessor'' (công trình tiền nhiệm gần nhất).
+  & Đã bỏ; ba công trình đi trước được so sánh trực tiếp với DTAP (Mục~1).\\
+m12 (tr.~5, d.~48) --- ``step'' hay ``step size'' (độ dài bước).
+  & Dùng ``step size''; câu đó đã bỏ cùng với mục Các công trình liên quan.\\
+m13 (tr.~7, d.~31) --- ``dtap'' phải là ``DTAP''.
+  & Đã sửa trong toàn bài; từ viết tắt nay luôn là ``DTAP''.\\
+m14 (tr.~7, d.~39) --- ``Combettes 10'' phải là ``Combettes~[10]''.
+  & Đã sửa; trích dẫn còn lại có dạng ``in the sense of Combettes~[5]'' (theo nghĩa của Combettes [5]) (Mục~3.7).\\
+m15 (tr.~9) --- các tiểu mục 3.1--3.2 không cần thiết; 3.3 nên chuyển sang phần thực nghiệm.
+  & Phần Kiến thức chuẩn bị không còn chia tiểu mục (Mục~2); mô hình chọn đặc trưng nay là Mục~4.1.\\
+m16 (tr.~12) --- $H:=\mathbb{R}^n$ bị lặp lại.
+  & Đã bỏ phần lặp khỏi phát biểu bài toán (Mục~3.1).\\
+m17 (tr.~13) --- nghĩa của ``standing assumption'' (giả thiết thường trực).
+  & Tiểu mục được đổi tên thành ``Assumptions'' (Các giả thiết) (Mục~3.3); tên cũ đã bỏ.\\
+m18 (tr.~18, d.~40) --- kiểu AMS cho $\sum_{k=0}^{\infty}\lVert x^{k+1}-x^k\rVert^2<\infty$.
+  & Chuỗi được hiển thị với cận trên/dưới (Mệnh đề~3.11); các công thức hiển thị khác đã được kiểm tra.\\
+m19 (tr.~20, d.~36) --- trau chuốt cụm ``so no Young splitting is needed'' (nên không cần tách theo Young).
+  & Đã bỏ cụm này khỏi chứng minh Hệ quả~3.13.\\
+m20 (tr.~20, d.~35) --- biểu thức $K\cap\bigcap_{i\in I^{\mathrm{cvx}}}$ không tốt.
+  & Viết lại thành $\Omega=\{x\in K:F_i(x)\le b_i\ \forall i\in I^{\mathrm{cvx}}\}$ (Hệ quả~3.13), và thành $\bigcap_{i\in I^{\mathrm{cvx}}}\{x\in K:F_i(x)\le b_i\}$ trong chứng minh Định lý~3.12.\\
+\end{longtable}}
+
+\begin{point}{Chung. Xin hãy xem xét các ý kiến trên và làm cho bài súc tích.}
+\response{Chúng tôi đã làm theo mọi ý kiến và rút bài từ $39$ xuống $25$ trang
+(xem M1 và M2).}
+\end{point}
+
+% =====================================================================
+\section*{Các thay đổi khác do tác giả tự thực hiện}
+
+\noindent Trong khi sửa bài, chúng tôi còn thực hiện các thay đổi sau, không do
+Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
+\begin{enumerate}[leftmargin=1.6em,itemsep=3pt]
+\item \textbf{Tính lồi của tiêu chí phân thức.} Bản nộp ban đầu gọi
+  $F_3(w)=w^{\top}Q_Rw/\rho^{\top}w$ là giả lồi. Nay chúng tôi chứng minh nó \emph{lồi} trên một
+  lân cận mở của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$
+  (Mệnh đề~4.1), nên bài toán chọn đặc trưng là một NSFP mà mọi ràng buộc đều lồi. Cách
+  gán $F_3$ vào track giả lồi dùng trong thực nghiệm vẫn hợp lệ
+  (lồi $\Rightarrow$ giả lồi), và cách gán toàn lồi được báo cáo như một phương án
+  so sánh.
+\item \textbf{Miền xác định của các hàm thành phần.} Các hàm nay được định nghĩa trên một lân cận
+  mở $U$ của $K$, và (A2) đòi khả vi liên tục trên $U$; điều này
+  bao gồm các hàm phân thức có mẫu số dương trên $K$. Một đoạn ngắn sau
+  Giả thiết~1 giải thích điều này và lý do $\Omega$ lồi.
+\item \textbf{Phạm vi của phân tích.} Ngoài Nhận xét~1 và~2 (xem R1.1, R1.2), Nhận xét~5
+  nay nói chính xác rằng cận $O(N^{-1/3})$ chỉ liên quan đến độ vi phạm \emph{tốt nhất}
+  của track lồi --- không phải cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư hay
+  cho khoảng cách tới tập khả thi.
+\item \textbf{Quy trình thực nghiệm.} Mục~4.2.2 nay nêu chính xác quy trình:
+  chuẩn hóa min--max được khớp một lần trên tập huấn luyện, các mặt nạ bỏ phiếu được tính một lần
+  rồi dùng lại, việc hiệu chỉnh xác suất của SVM dùng một seed cố định, và việc đánh giá là
+  khám phá chứ không phải kiểm định lồng. Chỉ số ổn định Nogueira (với hệ số hiệu chỉnh phương sai đúng
+  $N_f/(N_f-1)$) và quy trình thống kê (kiểm định hạng có dấu chính xác,
+  hiệu chỉnh Holm, kiểm định Friedman) được nêu tường minh.
+\item \textbf{Các giá trị được tính lại.} Các giá trị độ ổn định, AUC của SVM, và
+  giá trị $p$ đã được tính lại và nay gồm cả giá trị $p$ gốc và sau hiệu chỉnh Holm; các cột cho
+  SG-const và SG-dyn đã được thêm vào. Độ chính xác và mọi kết quả $5$-NN không đổi.
+\item \textbf{Các khẳng định được sửa lại.} Các phát biểu về ưu thế (độ chính xác, tốc độ, độ bền)
+  đã được bỏ hoặc giới hạn lại: không phép so sánh từng cặp nào có ý nghĩa sau hiệu chỉnh Holm,
+  kết quả cho thấy sự đánh đổi giữa kích thước và khả năng dự đoán, và các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc
+  tốt hơn DTAP.
+\item \textbf{Trình bày thuật toán.} Phép kiểm tra dừng của Thuật toán~1 nay được
+  đặt ở đầu Bước~1 thay vì ở một Bước~3 riêng; các điểm lặp và
+  điểm được trả về không đổi.
+\item \textbf{Chặn an toàn ở mẫu số.} Mục~4.1.3 nay báo cáo rằng điểm Fisher
+  nhỏ nhất trên mọi bài toán là $4.77\times10^{-5}$, nên chặn an toàn $\max\{\rho^{\top}w,10^{-15}\}$
+  trong mã cài đặt không bao giờ có tác dụng và $F_3$ được cài đặt đúng là~(41).
+\item \textbf{Các tuyên bố.} Tuyên bố về việc dùng AI tạo sinh và tuyên bố về tính sẵn có của
+  dữ liệu đã được cập nhật, và một gói tái lập nay được cung cấp kèm bài.
+\end{enumerate}
+
+\bigskip
+\noindent Chúng tôi tin rằng các sửa đổi này đã trả lời đầy đủ ý kiến của các Reviewer và Editor
+và đã cải thiện độ rõ ràng, chặt chẽ và trung thực của bản thảo. Chúng tôi một lần nữa cảm ơn
+các Reviewer và Editor đã dành thời gian.
+
+\end{document}

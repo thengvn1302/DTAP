@@ -1,0 +1,71 @@
+% Optimization Methods and Software submission
+% Taylor & Francis Interact layout (reference style S)
+% Ported from the Elsevier cas-sc manuscript (optimization_ready.tex).
+\documentclass[]{interact}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage[caption=false]{subfig}% Support for small, `sub' figures and tables
+
+\usepackage[numbers,sort&compress]{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}% Bibliography support using natbib.sty
+
+% --- Packages carried over from the source manuscript ---
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xcolor,url}\graphicspath{{figures/}}
+\restylefloat{figure}
+
+% --- Theorem-like environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Định lý}[section]
+\newtheorem{lemma}[theorem]{Bổ đề}
+\newtheorem{corollary}[theorem]{Hệ quả}
+\newtheorem{proposition}[theorem]{Mệnh đề}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Định nghĩa}
+\newtheorem{example}[theorem]{Ví dụ}
+\newtheorem{assumption}{Giả thiết}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Nhận xét}
+\newtheorem{notation}{Ký hiệu}
+
+% --- Author macros carried over from the source manuscript ---
+\newcommand{\algstep}[1]{\smallskip\noindent\textbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\vecop}{vec}
+\newcommand{\cvx}{\mathrm{cvx}}
+\newcommand{\ps}{\mathrm{ps}}
+\newcommand{\dtap}{\textsc{DTAP}}
+
+% --- Vietnamese names for the class's fixed labels ---
+\renewcommand\abstractname{TÓM TẮT}
+\renewcommand\keywordsname{TỪ KHÓA}
+\renewcommand\amscodename{PHÂN LOẠI AMS}
+\renewcommand\tablename{Bảng}
+\renewcommand\figurename{Hình}
+\renewcommand\refname{Tài liệu tham khảo}
+\renewcommand\proofname{Chứng minh}
+\floatname{algorithm}{Thuật toán}
+\makeatletter
+\gdef\@history{\bfseries{BẢN DỊCH\\}\par}
+\gdef\@received{Bản dịch tiếng Việt của \texttt{DTAP Finally v2/main\_document.tex}, chỉ dùng để rà soát nội dung, không nộp. Công thức, nhãn và cách đánh số giữ nguyên như bản tiếng Anh.}
+\makeatother
+

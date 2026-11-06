@@ -10,6 +10,7 @@
 | `response_letter_draft.pdf` | Bản nháp response letter (tiếng Anh), trả lời từng ý kiến M1–M4, m1–m20 và liệt kê các thay đổi do tác giả tự làm. Số mục/bảng/trang lấy tự động từ bản Finally. Chữ xám `[Cn]` là mã nội bộ; chữ đỏ `[CẦN XÁC NHẬN: …]` là chỗ cần tác giả kiểm tra. Cả hai phải xóa trước khi gửi (xem đầu file `.tex`). |
 | `v1_v2_changes.md` | Đối chiếu từng câu **trước/sau** giữa `DTAP Finally` và `DTAP Finally v2` (56 mục, kèm bản dịch tiếng Việt cho cả câu trước và câu sau); các thay đổi chỉ về ký hiệu ghi gọn ở Phụ lục. |
 | `v1_v2_side_by_side.pdf` | Cùng nội dung với `v1_v2_changes.md` nhưng **đặt hai cột cạnh nhau**: Trước (trái) và Sau (phải), mỗi câu cũ cùng hàng với câu mới tương ứng, kèm bản dịch dưới mỗi câu. Tạo bằng `python3 side_by_side.py` (cần `lualatex`). |
+| `vi_v2/main_document_vi.pdf`, `vi_v2/response_letter_vi.pdf` | **Bản dịch tiếng Việt** của bài v2 và response letter v2, chỉ để tự rà soát nội dung (không nộp). Công thức, nhãn, số mục/công thức/bảng giữ nguyên như bản tiếng Anh; trong letter, câu trích từ bản thảo có kèm nguyên văn tiếng Anh. Mã nguồn dịch ở `vi_v2/parts/` và `vi_v2/response_letter_vi.tex`; dựng lại bằng `vi_v2/build.sh`. |
 | `change_notes.json` | Mô tả tiếng Việt và ý kiến phản biện cho từng mã `Cn`. Sửa file này rồi build lại để cập nhật Bảng A/B. |
 | `review_comments.json` | Tóm tắt các ý kiến trong `referee_report.pdf`. |
 | `build_diff.py`, `assemble.py` | Script tạo bản đối chiếu. |

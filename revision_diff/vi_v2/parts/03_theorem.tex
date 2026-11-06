@@ -1,0 +1,175 @@
+\subsection{Hội tụ mạnh tới một điểm khả thi}\label{ssec:strong}
+Bây giờ ta chứng minh toàn bộ dãy hội tụ mạnh tới một điểm khả thi. Chứng minh có ba
+giai đoạn. Giai đoạn~1 dùng Bổ đề~\ref{lem:jcvx0} để chứng minh mọi điểm tụ thỏa các
+ràng buộc lồi. Giai đoạn~2 chứng minh, bằng phản chứng và tính giả lồi, rằng có ít nhất một
+điểm tụ khả thi. Giai đoạn~3 dùng sự hội tụ của $\norm{x^k-\bar x}$ để chứng minh
+toàn bộ dãy hội tụ tới điểm đó.
+
+\begin{theorem}\label{thm:strong}
+Dưới Giả thiết~\ref{ass:standing}, dãy $\{x^k\}$ sinh bởi
+Thuật toán~\ref{alg:dtap} hội tụ mạnh tới một điểm $x^\infty\in\Omega$.
+\end{theorem}
+\begin{proof}
+Theo Bổ đề~\ref{lem:bounded}, $\{x^k\}$ bị chặn; gọi
+$C:=\{\bar x\in H:\exists\,k_l\to\infty,\ x^{k_l}\to\bar x\}$ là tập điểm tụ (khác rỗng, compact)
+của nó. Vì $K$ đóng và $x^k\in K$, ta có $C\subseteq K$.
+
+\emph{Giai đoạn 1 (các ràng buộc lồi).} Cố định $\bar x\in C$ và $x^{k_l}\to\bar x$. Theo (A2) mỗi
+$F_i$ liên tục, nên $v_i(x^{k_l})\to v_i(\bar x)$; với $i\in I^{\cvx}$,
+$v_i(x^{k_l})\le J^{\cvx}_{k_l}\to0$ theo Bổ đề~\ref{lem:jcvx0}, nên theo nguyên lý kẹp
+$v_i(\bar x)=0$, tức là $F_i(\bar x)\le b_i$. Do đó
+\begin{equation}\label{eq:p13}
+C\subseteq\bigcap_{i\in I^{\cvx}}\{x\in K:F_i(x)\le b_i\}.
+\end{equation}
+Nếu $I^{\ps}=\emptyset$ thì~\eqref{eq:p13} cho $C\subseteq\Omega$,
+nên $C\cap\Omega=C\ne\emptyset$.
+Từ đây giả sử $I^{\ps}\ne\emptyset$.
+
+\emph{Giai đoạn 2 (một điểm tụ khả thi).} Giả sử phản chứng rằng
+$C\cap\Omega=\emptyset$. Theo~\eqref{eq:p13} và phép chia $I=I^{\cvx}\cup I^{\ps}$, với
+mỗi $\bar x\in C$ có $j\in I^{\ps}$ với $F_j(\bar x)>b_j$, tức là
+$J^{\ps}(\bar x)>0$. Là max của hữu hạn hàm liên tục, $J^{\ps}$
+liên tục và dương trên tập compact $C$, nên $\alpha:=\min_{x\in C}J^{\ps}(x)>0$.
+
+\smallskip
+\emph{Khẳng định 1 (cận dưới đều cho $J^{\ps}_k$).} Tồn tại $\tau_0>0$ và $k_0$
+sao cho $J^{\ps}_k\ge\tau_0$ với mọi $k\ge k_0$. Thật vậy, đặt $\tau_0:=\alpha/2$. Nếu khẳng định
+sai thì có $k_l\to\infty$ với $J^{\ps}_{k_l}<\tau_0$; trích dãy con (giữ nguyên
+ký hiệu) $x^{k_l}\to\tilde x\in C$, tính liên tục cho $J^{\ps}(\tilde x)\le\tau_0<\alpha$,
+mâu thuẫn với định nghĩa của $\alpha$.
+
+\smallskip
+\emph{Khẳng định 2 ($\mu_k\to0$).} Với $k\ge k_0$,
+$\mu_k=J^{\cvx}_k/(J^{\cvx}_k+J^{\ps}_k)\le J^{\cvx}_k/\tau_0\to0$ theo
+Bổ đề~\ref{lem:jcvx0}. Do đó có $k_1\ge k_0$ với $1-\mu_k\ge1/2$ với mọi $k\ge k_1$.
+
+\smallskip
+\emph{Khẳng định 3 (cận dưới đều cho $R^{x^\star}_k$).} Cố định $x^\star\in\Omega$. Tồn tại
+$\xi_0>0$ và $k_2\ge k_1$ với $R^{x^\star}_k\ge\xi_0$ với mọi $k\ge k_2$. Giả sử
+không: có $k_l\to\infty$ với $R^{x^\star}_{k_l}\to0$. Vì $\{x^{k_l}\}$ bị chặn,
+trích $x^{k_l}\to\bar x\in C$; vì $I^{\ps}$ chỉ có hữu hạn tập con, trích tiếp
+để $K^{\ps}_{k_l}\equiv K^\star$ là hằng. Theo giả thiết phản chứng
+$J^{\ps}(\bar x)>0$; chọn $j^\star\in\argmax_{j\in I^{\ps}}v_j(\bar x)$, nên
+$v_{j^\star}(\bar x)=J^{\ps}(\bar x)>0$. Theo tính liên tục $v_{j^\star}(x^{k_l})\to
+v_{j^\star}(\bar x)$ và $J^{\ps}_{k_l}\to J^{\ps}(\bar x)$, nên
+$J^{\ps}_{k_l}-v_{j^\star}(x^{k_l})\to0$; với $\delta>0$ từ (A3)(i), khi $l$ đủ lớn ta
+có $v_{j^\star}(x^{k_l})\ge J^{\ps}_{k_l}-\delta$, do đó $j^\star\in K^{\ps}_{k_l}=K^\star$.
+Mỗi số hạng của
+$R^{x^\star}_{k_l}=\sum_{j\in K^\star}v_j(x^{k_l})\inner{\nabla F_j(x^{k_l})}{x^{k_l}-x^\star}$
+không âm theo Bổ đề~\ref{lem:sign-ps}, nên chỉ giữ lại $j^\star$,
+\[
+R^{x^\star}_{k_l}\ge v_{j^\star}(x^{k_l})\inner{\nabla F_{j^\star}(x^{k_l})}{x^{k_l}-x^\star}.
+\]
+Cho $l\to\infty$ và dùng tính liên tục của $v_{j^\star}$ và $\nabla F_{j^\star}$,
+\[
+\liminf_{l\to\infty}R^{x^\star}_{k_l}\ge v_{j^\star}(\bar x)\inner{\nabla F_{j^\star}(\bar x)}{\bar x-x^\star}=:\Lambda .
+\]
+Vì $j^\star\in I^{\ps}$ và $x^\star\in\Omega$, $F_{j^\star}(x^\star)\le b_{j^\star}<F_{j^\star}(\bar x)$;
+định nghĩa~\eqref{eq:contrapositive} với $x=\bar x$, $y=x^\star$ cho
+$\inner{\nabla F_{j^\star}(\bar x)}{\bar x-x^\star}>0$, và cùng với $v_{j^\star}(\bar x)>0$ ta
+được $\Lambda>0$, mâu thuẫn với $R^{x^\star}_{k_l}\to0$. Khẳng định~3 được chứng minh.
+
+\smallskip
+\emph{Đi đến mâu thuẫn.} Theo Bổ đề~\ref{lem:bound-ps} trên
+$B:=\overline{\conv}\{x^k\}$, $\norm{g^{\ps}_k}\le\abs{I^{\ps}}V_B L'_B$ với
+$L'_B:=\max_{j\in I^{\ps}}\sup_B\norm{\nabla F_j}<\infty$. Đặt
+$G':=\max\{1,\abs{I^{\ps}}V_B L'_B\}$; khi đó $\max\{1,\norm{g^{\ps}_k}\}\le G'$ với mọi $k$,
+nên $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}\ge\gamma_k/G'$. Với $k\ge k_2$,
+kết hợp với $1-\mu_k\ge1/2$ và $R^{x^\star}_k\ge\xi_0$,
+\[
+\sum_{k=0}^\infty(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k\ge\sum_{k\ge k_2}\frac12\cdot\frac{\gamma_k}{G'}\cdot\xi_0=\frac{\xi_0}{2G'}\sum_{k\ge k_2}\gamma_k=+\infty
+\]
+theo (A3)(iii), mâu thuẫn với Bổ đề~\ref{lem:bounded}(iii). Do đó $C\cap\Omega\ne\emptyset$.
+
+\emph{Giai đoạn 3 (hội tụ của toàn bộ dãy).} Cố định $\bar x\in C\cap\Omega$.
+Bổ đề~\ref{lem:bounded}(i), áp dụng với $x^\star=\bar x$, bảo đảm
+$\lim_{k\to\infty}\norm{x^k-\bar x}^2$ tồn tại. Vì $\bar x\in C$, có một dãy con
+$x^{k_l}$ hội tụ tới $\bar x$. Do đó
+\[
+\lim_{k\to\infty}\norm{x^k-\bar x}^2
+=\lim_{l\to\infty}\norm{x^{k_l}-\bar x}^2=0.
+\]
+Vậy toàn bộ dãy hội tụ tới $\bar x$, và ta đặt $x^\infty:=\bar x\in\Omega$.
+Lập luận không cần $\Omega$ chỉ có một điểm: một điểm tụ khả thi và
+sự hội tụ của khoảng cách tới nó là đủ.
+\end{proof}
+
+\begin{remark}\label{rem:delta-role}
+Tham số $\delta>0$ không cần thiết cho sự hội tụ. Khi $\delta=0$, ta lập luận theo
+dãy con: dọc theo $x^{k_l}\to\bar x\in C$, chọn
+$j_l\in\argmax_{j\in I^{\ps}}v_j(x^{k_l})$; vì $I^{\ps}$ hữu hạn, trích
+$j_l\equiv j^\star$, và $v_{j^\star}(x^{k_l})=J^{\ps}(x^{k_l})\to J^{\ps}(\bar x)>0$, nên
+$j^\star$ đạt độ vi phạm lớn nhất tại $\bar x$ và lập luận giả lồi
+vẫn đúng. Vai trò của $\delta>0$ là làm đơn giản: một chỉ số đạt max tại $\bar x$ tự động
+nằm trong $K^{\ps}_{k_l}$ khi $l$ đủ lớn, tránh phải trích dãy con theo ``hữu hạn chỉ số''.
+$\delta$ lớn hơn làm rộng $K^{\cvx}_k$ và $K^{\ps}_k$, điều này có thể cải thiện độ ổn định
+số khi nhiều $v_i(x^k)$ gần bằng nhau.
+\end{remark}
+
+\begin{remark}\label{rem:rate}
+Từ~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, suy ra
+$\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. Đây là cận cho độ vi phạm \emph{tốt nhất} của track lồi
+trong $N$ điểm lặp đầu tiên. Nó không phải là cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư
+$J(x^k)$, cũng không phải tốc độ cho khoảng cách tới một điểm khả thi. Với các đại lượng sau này,
+chỉ dưới (A1)--(A3) ta chỉ khẳng định sự hội tụ định tính.
+\end{remark}
+
+\subsection{Các cấu trúc ràng buộc suy biến}\label{ssec:degenerate}
+Khi cấu trúc ràng buộc suy biến (chỉ có track lồi hoặc chỉ có track giả lồi),
+\dtap{} và phân tích của nó đơn giản đi, cho hai hệ quả của
+Định lý~\ref{thm:strong}.
+
+\begin{corollary}\label{cor:cvx}
+Nếu $I^{\ps}=\emptyset$ thì $J^{\ps}_k\equiv0$, $g^{\ps}_k\equiv0$, và $\mu_k\equiv1$
+mỗi khi $J^{\cvx}_k>0$, nên Thuật toán~\ref{alg:dtap} trở thành
+$x^{k+1}=P_K(x^k-\eta^{\cvx}_k g^{\cvx}_k)$. Dãy hội tụ mạnh tới một điểm
+$x^\infty\in\Omega=\{x\in K:F_i(x)\le b_i\text{ với mọi }i\in I^{\cvx}\}$.
+\end{corollary}
+\begin{proof}
+Ở đây $d_k=\eta^{\cvx}_k g^{\cvx}_k$, và~\eqref{eq:p1} cho trực tiếp
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}+(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2$.
+Nếu $\norm{g^{\cvx}_k}=0$ thì $\eta^{\cvx}_k=0$, $T_k=0$, và cận trở thành
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2$. Ngược lại, Bổ đề~\ref{lem:grad-cvx} cho
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge2\Phi^{\cvx}_k$, và thay
+$\eta^{\cvx}_k=2\rho_{\cvx}\Phi^{\cvx}_k/\norm{g^{\cvx}_k}^2$ cùng với
+$(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2=\eta^{\cvx}_k\cdot2\rho_{\cvx}\Phi^{\cvx}_k$ ta được, sau khi
+rút gọn,
+$2\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}-(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2\ge\rho_{\cvx}(2-\rho_{\cvx})(2\Phi^{\cvx}_k)^2/\norm{g^{\cvx}_k}^2=2c_0T_k$.
+Do đó
+\begin{equation}\label{eq:p15}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2c_0T_k ,
+\end{equation}
+đúng với mọi $k$. Như vậy $\{\norm{x^k-x^\star}^2\}$ không tăng và hội tụ, và
+lấy tổng ta được $\sum_k T_k<\infty$. Như trong Bổ đề~\ref{lem:jcvx0}, khi $J^{\cvx}_k>0$ ta có
+$T_k\ge(J^{\cvx}_k)^2/(m^{\cvx}L^2)$ (để ý số mũ $2$ ở đây, so với $3$
+trong~\eqref{eq:p12}, vì không có thừa số $\mu_k$), nên $\sum_k(J^{\cvx}_k)^2<\infty$ và
+$J^{\cvx}_k\to0$. Cuối cùng, $I^{\ps}=\emptyset$ khiến Giai đoạn~2 của
+Định lý~\ref{thm:strong} trở nên hiển nhiên (thật vậy $C\subseteq\Omega$ đã có
+từ~\eqref{eq:p13}), và Giai đoạn~3 cho $x^k\to x^\infty\in\Omega$.
+\end{proof}
+
+\begin{corollary}\label{cor:ps}
+Nếu $I^{\cvx}=\emptyset$ thì $J^{\cvx}_k\equiv0$, $g^{\cvx}_k\equiv0$, và $\mu_k\equiv0$
+mỗi khi $J^{\ps}_k>0$, nên Thuật toán~\ref{alg:dtap} trở thành
+$x^{k+1}=P_K(x^k-\eta^{\ps}_k g^{\ps}_k)$ với $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}$.
+Dãy hội tụ mạnh tới một điểm $x^\infty\in\Omega$.
+\end{corollary}
+\begin{proof}
+Lúc này $d_k=\eta^{\ps}_k g^{\ps}_k$ với $\norm{d_k}^2\le\gamma_k^2$, nên~\eqref{eq:p1} cho
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\eta^{\ps}_k R^{x^\star}_k+\gamma_k^2$,
+chính là~\eqref{eq:fejer} trong trường hợp suy biến này ($T_k=0$, $1-\mu_k=1$). Vì
+$R^{x^\star}_k\ge0$ (Bổ đề~\ref{lem:sign-ps}), $a_{k+1}\le a_k+\gamma_k^2$, và
+Bổ đề~\ref{lem:seq} cho sự hội tụ của $\{\norm{x^k-x^\star}^2\}$ và tính bị chặn;
+lấy tổng ta được $\sum_k\eta^{\ps}_k R^{x^\star}_k<\infty$. Giai đoạn~1 của
+Định lý~\ref{thm:strong} cho $C\subseteq K$ (phần lồi là hiển nhiên); Giai đoạn~2 với
+$\mu_k=0$ (nên $1-\mu_k=1$) cho cùng mâu thuẫn $\sum\eta^{\ps}_k R^{x^\star}_k=+\infty$,
+nên $C\cap\Omega\ne\emptyset$; Giai đoạn~3 cho $x^k\to x^\infty\in\Omega$.
+\end{proof}
+
+
+\section{Thực nghiệm số}\label{sec:experiments}
+Ta tách hiệu quả dự đoán khỏi việc giải số hệ chấp nhận. Phép so sánh phân loại dùng tám bộ dữ liệu. Phần chẩn đoán bộ giải còn dùng thêm Movement Libras và các bài toán giả lồi không lồi có kiểm soát.
+
+\subsection{Mô hình chọn đặc trưng}\label{sec:fs}
+Ta áp dụng NSFP với hộp chuẩn cho bài toán chọn đặc trưng bằng cách kết hợp các tiêu chí từ mô hình quy hoạch phân thức của Wang và cộng sự~\citep{wang2021fractional} và mô hình tập thô mờ AFRSFCV~\citep{wang2026afrsfcv}. Cho $\mathcal{X}=\{x_1,\ldots,x_n\}$ là các mẫu huấn luyện, $A=\{a_1,\ldots,a_p\}$ là các đặc trưng, $X\in\R^{n\times p}$ là ma trận dữ liệu, và $y\in\{1,\ldots,r\}^n$ là nhãn lớp. Ở đây $n$ là số mẫu; chỉ số dưới đánh số đặc trưng, chỉ số trên đánh số vòng lặp. Các trọng số đặc trưng thuộc đơn hình lồi compact $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. Mọi đại lượng có giám sát dưới đây được ước lượng từ dữ liệu huấn luyện.
+

@@ -1,0 +1,245 @@
+\begin{lemma}\label{lem:proj-nonexp}
+Cho $K\subseteq H$ là tập lồi đóng khác rỗng. Với mọi $y\in H$ và $z\in K$,
+\begin{equation}\label{eq:proj-nonexp}
+\norm{P_K(y)-z}^2\le\norm{y-z}^2-\norm{y-P_K(y)}^2\le\norm{y-z}^2 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Đặt $p:=P_K(y)$. Theo Mệnh đề~\ref{prop:proj-char}, $\inner{y-p}{z-p}\le0$, nên khai triển
+$\norm{y-z}^2=\norm{y-p}^2+2\inner{y-p}{p-z}+\norm{p-z}^2$ và dùng $\inner{y-p}{p-z}\ge0$
+ta được $\norm{y-z}^2\ge\norm{y-p}^2+\norm{p-z}^2$, chính là~\eqref{eq:proj-nonexp}.
+\end{proof}
+
+\begin{lemma}\label{lem:seq}
+Cho $\{a_k\}\subset[0,\infty)$ và $\{\varepsilon_k\}\subset[0,\infty)$ thỏa
+$a_{k+1}\le a_k+\varepsilon_k$ với mọi $k$ và $\sum_{k=0}^\infty\varepsilon_k<\infty$.
+Khi đó $\{a_k\}$ hội tụ tới một giới hạn hữu hạn.
+\end{lemma}
+\begin{proof}
+Dãy $b_k:=a_k-\sum_{l<k}\varepsilon_l$ không tăng (do $a_{k+1}\le a_k+\varepsilon_k$) và
+bị chặn dưới bởi $-\sum_l\varepsilon_l>-\infty$, nên hội tụ; vì
+$\sum_{l<k}\varepsilon_l\to S<\infty$, dãy $a_k=b_k+\sum_{l<k}\varepsilon_l$ hội tụ.
+\end{proof}
+
+Trên track lồi, tính lồi cho một liên hệ định lượng giữa gradient và
+độ vi phạm.
+
+\begin{lemma}\label{lem:grad-cvx}
+Với $x^\star\in\Omega$, $i\in I^{\cvx}$ và $x\in K$,
+\[
+v_i(x)\,\inner{\nabla F_i(x)}{x-x^\star}\ge v_i(x)^2 .
+\]
+\end{lemma}
+\begin{proof}
+Nếu $v_i(x)=0$ thì cả hai vế bằng $0$. Giả sử $v_i(x)>0$, tức là $F_i(x)>b_i$. Định nghĩa
+$\varphi:[0,1]\to\R$ bởi $\varphi(t):=F_i((1-t)x+tx^\star)$; vì $K$ lồi,
+$[x,x^\star]\subset K$, nên $\varphi$ xác định, theo (A1)(b) nó lồi, và
+theo (A2) nó khả vi với $\varphi'(0^+)=\inner{\nabla F_i(x)}{x^\star-x}$. Bất đẳng thức
+gradient một chiều cho $\varphi(1)\ge\varphi(0)+\varphi'(0^+)$, tức là
+$F_i(x^\star)\ge F_i(x)+\inner{\nabla F_i(x)}{x^\star-x}$. Vì $x^\star\in\Omega$ nên
+$F_i(x^\star)\le b_i<F_i(x)$, do đó
+$\inner{\nabla F_i(x)}{x-x^\star}\ge F_i(x)-b_i=v_i(x)$. Nhân với $v_i(x)>0$ ta được
+khẳng định.
+\end{proof}
+
+\begin{remark}\label{rem:grad-cvx-sum}
+Cộng Bổ đề~\ref{lem:grad-cvx} trên tập hoạt động xấp xỉ $K^{\cvx}_k$ ta được
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge\sum_{i\in K^{\cvx}_k}v_i(x^k)^2=2\Phi^{\cvx}_k$, một cận
+được dùng trong chứng minh các Bổ đề~\ref{lem:fejer} và~\ref{lem:jcvx0}.
+\end{remark}
+
+Trên track giả lồi, ta chỉ có thông tin về dấu.
+
+\begin{lemma}\label{lem:sign-ps}
+Với $x^\star\in\Omega$, $j\in I^{\ps}$ và $x\in K$,
+$v_j(x)\,\inner{\nabla F_j(x)}{x-x^\star}\ge 0$, với bất đẳng thức chặt khi $v_j(x)>0$.
+\end{lemma}
+\begin{proof}
+Nếu $v_j(x)=0$ thì cả hai vế bằng $0$. Nếu $v_j(x)>0$ thì $F_j(x)>b_j\ge F_j(x^\star)$. Theo
+(A1)(b), $F_j|_K$ giả lồi; áp dụng~\eqref{eq:contrapositive}
+với $y=x^\star$ ta được $\inner{\nabla F_j(x)}{x^\star-x}<0$, tức là
+$\inner{\nabla F_j(x)}{x-x^\star}>0$. Nhân với $v_j(x)>0$ ta được bất đẳng thức
+chặt.
+\end{proof}
+
+Cuối cùng là hai cận chuẩn của các hướng tìm kiếm, dựa trên tính compact.
+
+\begin{lemma}\label{lem:bound-cvx}
+Giả sử $I^{\cvx}\ne\emptyset$ và $B\subset U$ compact. Với
+$L_B:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}$ (hữu hạn theo (A2)), với mọi
+$x\in B$,
+\[
+\norm{g^{\cvx}(x)}^2\le 2\,\abs{I^{\cvx}}\,L_B^2\,\Phi^{\cvx}(x).
+\]
+\end{lemma}
+\begin{proof}
+Đặt $K'=K^{\cvx}(x)$, $m'=\abs{K'}\le\abs{I^{\cvx}}$. Theo bất đẳng thức tam giác và
+Cauchy--Schwarz,
+\[
+\norm{g^{\cvx}(x)}=\Bigl\|\sum_{i\in K'}v_i(x)\nabla F_i(x)\Bigr\|
+\le\Bigl(\sum_{i\in K'}v_i(x)^2\Bigr)^{1/2}\Bigl(\sum_{i\in K'}\norm{\nabla F_i(x)}^2\Bigr)^{1/2}.
+\]
+Vì $\sum_{i\in K'}v_i(x)^2=2\Phi^{\cvx}(x)$ và
+$\sum_{i\in K'}\norm{\nabla F_i(x)}^2\le m'L_B^2\le\abs{I^{\cvx}}L_B^2$, bình phương lên ta được
+khẳng định.
+\end{proof}
+
+\begin{lemma}\label{lem:bound-ps}
+Giả sử $I^{\ps}\ne\emptyset$ và $B\subset U$ compact. Với
+$L'_B:=\max_{j\in I^{\ps}}\sup_{x\in B}\norm{\nabla F_j(x)}$ và
+$V_B:=\max_{j\in I^{\ps}}\sup_{x\in B}v_j(x)$ (cả hai hữu hạn theo (A2)), với mọi $x\in B$,
+\[
+\norm{g^{\ps}(x)}\le\abs{I^{\ps}}\,V_B\,L'_B .
+\]
+\end{lemma}
+\begin{proof}
+Theo bất đẳng thức tam giác,
+$\norm{g^{\ps}(x)}=\bigl\|\sum_{j\in K^{\ps}(x)}v_j(x)\nabla F_j(x)\bigr\|
+\le\sum_{j\in K^{\ps}(x)}v_j(x)\norm{\nabla F_j(x)}\le\abs{K^{\ps}(x)}V_BL'_B
+\le\abs{I^{\ps}}V_BL'_B$.
+\end{proof}
+
+\subsection{Tính bị chặn và sự giảm của sai số lặp}\label{ssec:bounded}
+Bất đẳng thức sau đây thuộc loại tựa Fej\'er theo nghĩa của
+Combettes~\citep{combettes2001quasifejer}. Nó cho tính bị chặn của $\{x^k\}$ và sự giảm của
+độ vi phạm trên track lồi. Đặt
+\begin{equation}\label{eq:c0C0}
+c_0:=\frac{\rho_{\cvx}(2-\rho_{\cvx})}{2}\in\Bigl(0,\tfrac12\Bigr],\qquad
+C_0:=\frac{2+\rho_{\cvx}}{2-\rho_{\cvx}}\in(1,\infty),
+\end{equation}
+và
+\begin{equation}\label{eq:Tk}
+T_k:=\begin{cases}\dfrac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2} & \text{nếu }\norm{g^{\cvx}_k}>0,\\ 0 & \text{nếu }\norm{g^{\cvx}_k}=0.\end{cases}
+\end{equation}
+Với $x^\star\in\Omega$ cố định, viết $R^{x^\star}_k:=\inner{g^{\ps}_k}{x^k-x^\star}$.
+
+\begin{lemma}\label{lem:fejer}
+Với mọi $x^\star\in\Omega$ và $k\ge 0$,
+\begin{equation}\label{eq:fejer}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-c_0\mu_k T_k-2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k+C_0\gamma_k^2 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Áp dụng Bổ đề~\ref{lem:proj-nonexp} với $y=y^k$ và $z=x^\star\in K$, và dùng
+$y^k=x^k-d_k$ từ~\eqref{eq:dk}:
+\begin{equation}\label{eq:p1}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\inner{d_k}{x^k-x^\star}+\norm{d_k}^2 .
+\end{equation}
+\emph{Số hạng chéo.} Khai triển $d_k$,
+\begin{equation}\label{eq:p2}
+\inner{d_k}{x^k-x^\star}=\mu_k\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}+(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k .
+\end{equation}
+Nếu $\norm{g^{\cvx}_k}=0$ thì $\eta^{\cvx}_k=0$ và số hạng đầu bằng $0$. Nếu
+$\norm{g^{\cvx}_k}>0$, Nhận xét~\ref{rem:grad-cvx-sum} cho
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge 2\Phi^{\cvx}_k$; nhân với
+$\mu_k\eta^{\cvx}_k\ge 0$ và thay
+$\eta^{\cvx}_k=2\rho_{\cvx}\Phi^{\cvx}_k/\norm{g^{\cvx}_k}^2$,
+\begin{equation}\label{eq:p4}
+\mu_k\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}\ge\mu_k\rho_{\cvx}\frac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2}=\mu_k\rho_{\cvx}T_k .
+\end{equation}
+\emph{Số hạng bậc hai.} Theo bất đẳng thức Young
+$\norm{u+v}^2\le(1+\zeta)\norm{u}^2+(1+\zeta^{-1})\norm{v}^2$ với
+$u=\mu_k\eta^{\cvx}_k g^{\cvx}_k$, $v=(1-\mu_k)\eta^{\ps}_k g^{\ps}_k$,
+\[
+\norm{d_k}^2\le(1+\zeta)\rho_{\cvx}^2\mu_k^2 T_k+(1+\zeta^{-1})(1-\mu_k)^2(\eta^{\ps}_k)^2\norm{g^{\ps}_k}^2 .
+\]
+Theo định nghĩa $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}$, nên
+$\eta^{\ps}_k\norm{g^{\ps}_k}\le\gamma_k$ và do đó
+$(\eta^{\ps}_k)^2\norm{g^{\ps}_k}^2\le\gamma_k^2$; cùng với $(1-\mu_k)^2\le 1$,
+\begin{equation}\label{eq:p6}
+\norm{d_k}^2\le(1+\zeta)\rho_{\cvx}^2\mu_k^2 T_k+(1+\zeta^{-1})\gamma_k^2 .
+\end{equation}
+Chọn $\zeta:=(2-\rho_{\cvx})/(2\rho_{\cvx})>0$. Khi đó
+$(1+\zeta)\rho_{\cvx}=(2+\rho_{\cvx})/2$, nên
+$(1+\zeta)\rho_{\cvx}^2=\rho_{\cvx}(2+\rho_{\cvx})/2$, và
+$1+\zeta^{-1}=(2+\rho_{\cvx})/(2-\rho_{\cvx})=C_0$. Kết hợp
+\eqref{eq:p1}, \eqref{eq:p2}, \eqref{eq:p4} và~\eqref{eq:p6},
+\[
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2+\bigl[-2\mu_k\rho_{\cvx}+(1+\zeta)\rho_{\cvx}^2\mu_k^2\bigr]T_k-2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k+C_0\gamma_k^2 .
+\]
+Biểu thức trong ngoặc vuông bằng
+$\mu_k\rho_{\cvx}\bigl(-2+\tfrac{2+\rho_{\cvx}}{2}\mu_k\bigr)$. Vì $\rho_{\cvx}<2$, với
+mọi $\mu_k\in[0,1]$ thừa số $-2+\tfrac{2+\rho_{\cvx}}{2}\mu_k$ không vượt quá
+$-(2-\rho_{\cvx})/2<0$ (giá trị lớn nhất trên $[0,1]$ đạt tại $\mu_k=1$); nhân với
+$\mu_k\rho_{\cvx}\ge0$ ta được biểu thức trong ngoặc $\le -c_0\mu_k$. Từ đó suy ra~\eqref{eq:fejer}.
+\end{proof}
+
+\begin{lemma}\label{lem:bounded}
+Dãy $\{x^k\}$ bị chặn. Hơn nữa, với mỗi $x^\star\in\Omega$ cố định:
+\textup{(i)} $\{\norm{x^k-x^\star}^2\}$ hội tụ trong $[0,\infty)$;
+\textup{(ii)} $\sum_{k=0}^\infty\mu_k T_k<\infty$;
+\textup{(iii)} $\sum_{k=0}^\infty(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k<\infty$.
+\end{lemma}
+\begin{proof}
+Cố định $x^\star\in\Omega$ và đặt $a_k:=\norm{x^k-x^\star}^2$. Theo Bổ đề~\ref{lem:sign-ps},
+$R^{x^\star}_k\ge0$, và $\mu_k,T_k,(1-\mu_k)\eta^{\ps}_k\ge0$, nên~\eqref{eq:fejer} cho
+$a_{k+1}\le a_k+C_0\gamma_k^2$. Vì $\sum_k C_0\gamma_k^2<\infty$ theo (A3)(iii),
+Bổ đề~\ref{lem:seq} cho (i), và suy ra $\{x^k\}$ bị chặn. Cộng
+\eqref{eq:fejer} từ $0$ tới $N-1$,
+\[
+a_N+\sum_{k=0}^{N-1}\bigl(c_0\mu_k T_k+2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k\bigr)\le a_0+C_0\sum_{k=0}^{N-1}\gamma_k^2 .
+\]
+Vế phải bị chặn đều theo $N$; cho $N\to\infty$ và dùng $c_0>0$ cùng với
+các số hạng không âm ta được (ii) và (iii).
+\end{proof}
+
+\begin{lemma}\label{lem:jcvx0}
+$\displaystyle\lim_{k\to\infty}J^{\cvx}_k=0$.
+\end{lemma}
+\begin{proof}
+Nếu $I^{\cvx}=\emptyset$ thì $J^{\cvx}_k=0$ với mọi $k$. Giả sử $I^{\cvx}\ne\emptyset$, cố định
+$x^\star\in\Omega$, và đặt $B:=\overline{\conv}\{x^k:k\ge0\}$, compact theo Bổ đề~\ref{lem:bounded} và nằm
+trong $K\subset U$. Theo (A2) và
+tính compact,
+\[
+L:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}<\infty,\qquad
+V:=\max_{i\in I}\sup_{x\in B}\abs{F_i(x)-b_i}<\infty.
+\]
+Nếu $V=0$ thì mọi $v_i(x^k)=0$ và
+$J^{\cvx}_k=0$; giả sử $V>0$. Nếu $L=0$ thì mỗi $F_i$, $i\in I^{\cvx}$, là hằng trên
+$B$, nên $g^{\cvx}_k=0$ và, theo Nhận xét~\ref{rem:grad-cvx-sum},
+$0=\inner{g^{\cvx}_k}{x^k-x^\star}\ge 2\Phi^{\cvx}_k\ge(J^{\cvx}_k)^2$, cho ta
+$J^{\cvx}_k=0$; giả sử $L>0$. Đặt $m^{\cvx}:=\abs{I^{\cvx}}\ge1$.
+
+Xét một bước với $J^{\cvx}_k>0$ và chọn $i^\star\in I^{\cvx}$ với
+$v_{i^\star}(x^k)=J^{\cvx}_k$. Vì $v_{i^\star}(x^k)\ge J^{\cvx}_k-\delta$, ta có
+$i^\star\in K^{\cvx}_k$, do đó
+\begin{equation}\label{eq:p8}
+\Phi^{\cvx}_k\ge\tfrac12 v_{i^\star}(x^k)^2=\tfrac12(J^{\cvx}_k)^2>0 .
+\end{equation}
+Nhận xét~\ref{rem:grad-cvx-sum} cho
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge2\Phi^{\cvx}_k>0$, nên $g^{\cvx}_k\ne0$; cùng với
+Bổ đề~\ref{lem:bound-cvx}, $\norm{g^{\cvx}_k}^2\le2m^{\cvx}L^2\Phi^{\cvx}_k$, và cùng với
+\eqref{eq:p8},
+\begin{equation}\label{eq:p9}
+T_k=\frac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2}\ge\frac{2\Phi^{\cvx}_k}{m^{\cvx}L^2}\ge\frac{(J^{\cvx}_k)^2}{m^{\cvx}L^2}.
+\end{equation}
+Để chặn dưới $\mu_k$: với mọi $i\in I$ và $x^k\in B$,
+$v_i(x^k)\le\abs{F_i(x^k)-b_i}\le V$, nên $J^{\cvx}_k\le V$ và $J^{\ps}_k\le V$; khi
+$J^{\cvx}_k>0$,
+\begin{equation}\label{eq:p10}
+\mu_k=\frac{J^{\cvx}_k}{J^{\cvx}_k+J^{\ps}_k}\ge\frac{J^{\cvx}_k}{2V}.
+\end{equation}
+Kết hợp~\eqref{eq:p9} và~\eqref{eq:p10}, khi $J^{\cvx}_k>0$,
+$\mu_k T_k\ge(J^{\cvx}_k)^3/(2Vm^{\cvx}L^2)$; bất đẳng thức này cũng đúng (dạng $0\ge0$) khi
+$J^{\cvx}_k=0$. Theo Bổ đề~\ref{lem:bounded}(ii),
+\begin{equation}\label{eq:p12}
+\sum_{k=0}^\infty(J^{\cvx}_k)^3\le 2Vm^{\cvx}L^2\sum_{k=0}^\infty\mu_k T_k<\infty,
+\end{equation}
+nên $(J^{\cvx}_k)^3\to0$ và do đó $J^{\cvx}_k\to0$.
+\end{proof}
+
+\begin{proposition}\label{prop:regularity}
+\[
+\sum_{k=0}^{\infty}\norm{x^{k+1}-x^k}^{2}<\infty;
+\]
+nói riêng,
+$\norm{x^{k+1}-x^k}\to0$.
+\end{proposition}
+\begin{proof}
+Vì $x^k\in K$ và $x^{k+1}=P_K(y^k)$, Bổ đề~\ref{lem:proj-nonexp} với $y=y^k$, $z=x^k$
+cho $\norm{x^{k+1}-x^k}\le\norm{y^k-x^k}=\norm{d_k}$. Theo~\eqref{eq:p6} và
+$\mu_k^2\le\mu_k$, $\norm{d_k}^2\le(1+\zeta)\rho_{\cvx}^2\mu_k T_k+C_0\gamma_k^2$.
+Lấy tổng và dùng Bổ đề~\ref{lem:bounded}(ii) cùng (A3)(iii), cả hai chuỗi đều hữu hạn.
+\end{proof}
+

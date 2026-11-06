@@ -1,0 +1,1411 @@
+% Optimization Methods and Software submission
+% Taylor & Francis Interact layout (reference style S)
+% Ported from the Elsevier cas-sc manuscript (optimization_ready.tex).
+\documentclass[]{interact}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}[SmallCapsFont={Latin Modern Roman Caps}]
+
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage[caption=false]{subfig}% Support for small, `sub' figures and tables
+
+\usepackage[numbers,sort&compress]{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}% Bibliography support using natbib.sty
+
+% --- Packages carried over from the source manuscript ---
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xcolor,url}\graphicspath{{figures/}}
+\restylefloat{figure}
+
+% --- Theorem-like environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Định lý}[section]
+\newtheorem{lemma}[theorem]{Bổ đề}
+\newtheorem{corollary}[theorem]{Hệ quả}
+\newtheorem{proposition}[theorem]{Mệnh đề}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Định nghĩa}
+\newtheorem{example}[theorem]{Ví dụ}
+\newtheorem{assumption}{Giả thiết}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Nhận xét}
+\newtheorem{notation}{Ký hiệu}
+
+% --- Author macros carried over from the source manuscript ---
+\newcommand{\algstep}[1]{\smallskip\noindent\textbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\left\langle #1,\, #2 \right\rangle}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\vecop}{vec}
+\newcommand{\cvx}{\mathrm{cvx}}
+\newcommand{\ps}{\mathrm{ps}}
+\newcommand{\dtap}{\textsc{DTAP}}
+
+% --- Vietnamese names for the class's fixed labels ---
+\renewcommand\abstractname{TÓM TẮT}
+\renewcommand\keywordsname{TỪ KHÓA}
+\renewcommand\amscodename{PHÂN LOẠI AMS}
+\renewcommand\tablename{Bảng}
+\renewcommand\figurename{Hình}
+\renewcommand\refname{Tài liệu tham khảo}
+\renewcommand\proofname{Chứng minh}
+\floatname{algorithm}{Thuật toán}
+\makeatletter
+\gdef\@history{\bfseries{BẢN DỊCH\\}\par}
+\gdef\@received{Bản dịch tiếng Việt của \texttt{DTAP Finally v2/main\_document.tex}, chỉ dùng để rà soát nội dung, không nộp. Công thức, nhãn và cách đánh số giữ nguyên như bản tiếng Anh.}
+\makeatother
+
+\begin{document}
+
+\title{Thuật toán Chiếu Thích nghi Hai Track cho một bài toán chấp nhận tách phi tuyến với các ràng buộc hỗn hợp lồi--giả lồi}
+
+\author{
+\name{Nguyen Van The\textsuperscript{a}\thanks{Email: the.nv227153@sis.hust.edu.vn}, Tran Ngoc Thang\textsuperscript{a}\thanks{Email: thang.tranngoc@hust.edu.vn} và Nguyen Hong Son\textsuperscript{a}\thanks{LIÊN HỆ Nguyen Hong Son. Email: Son.NH240066D@sis.hust.edu.vn}}
+\affil{\textsuperscript{a}Khoa Toán -- Tin, Đại học Bách khoa Hà Nội, số~1 Đại Cồ Việt, phường Bạch Mai, Hà Nội 100000, Việt Nam}
+}
+
+\maketitle
+
+\begin{abstract}
+Ta nghiên cứu một bài toán chấp nhận tách phi tuyến có tập đầu ra là hộp chuẩn và các hàm thành phần khả vi, lồi và giả lồi. Một độ đo vi phạm kiểu max xác định các ràng buộc gần hoạt động trong hai track. Thuật toán Chiếu Thích nghi Hai Track (\dtap) kết hợp một bước co theo phần dư cho track lồi với một bước giảm dần có chặn an toàn cho track giả lồi, rồi chiếu lên tập lồi cơ sở. Độ dài bước của nó không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older. Dưới giả thiết nhất quán và khả vi liên tục, ta chứng minh toàn bộ dãy hội tụ tới một điểm khả thi trong không gian Euclid hữu hạn chiều. Chứng minh dùng các cận địa phương trên miền bị chặn chứa dãy lặp. Trọng số tỉ lệ là một lựa chọn phản ứng theo phần dư, không khẳng định là tối ưu. Một mô hình chọn đặc trưng kết hợp các tiêu chí từ mô hình phân thức và mô hình tập thô mờ, và thuộc lớp con lồi. Các thực nghiệm báo cáo mức hoạt động của ràng buộc, các so sánh phân loại, và các so sánh với phương pháp dưới gradient có mô-đun được tinh chỉnh thực nghiệm. Các ví dụ có kiểm soát với một ràng buộc giả lồi không lồi kiểm tra track giả lồi. Trên các ví dụ này, DTAP nhạy với thang của bước giảm dần. Kết quả cũng cho thấy sự nhạy với điểm khởi đầu và không chứng tỏ được ưu thế tính toán đồng đều.
+\end{abstract}
+
+\begin{keywords}
+Bài toán chấp nhận tách; Tối ưu giả lồi; Vô hướng hóa Tchebyshev; Độ dài bước thích nghi; Hội tụ mạnh; Chọn đặc trưng
+\end{keywords}
+\begin{amscode}
+47J25; 90C25; 90C26; 65K05; 68T05
+\end{amscode}
+
+\section{Giới thiệu}\label{sec:intro}
+
+Bài toán chấp nhận tách (SFP) được Censor và Elfving~\citep{censor1994} đưa ra như một mô hình cho các bài toán ngược có ràng buộc. Cho các tập lồi đóng khác rỗng $C\subseteq\R^n$ và $Q\subseteq\R^m$ và một ma trận $\mathcal A\in\R^{m\times n}$, bài toán yêu cầu
+\begin{equation}\label{eq:sfp-intro}
+\text{tìm }x^\star\in C\quad\text{sao cho}\quad\mathcal A x^\star\in Q.
+\end{equation}
+Thuật toán $CQ$ của Byrne~\citep{byrne2002} lặp theo
+\begin{equation}\label{eq:cq-intro}
+x^{k+1}=P_C\bigl(x^k-\tau\mathcal A^\top(I-P_Q)\mathcal A x^k\bigr),
+\qquad 0<\tau<2/\norm{\mathcal A}^2.
+\end{equation}
+Ở đây $\norm{\mathcal A}$ là chuẩn phổ của $\mathcal A$. Các biến thể nới lỏng chiếu lên nửa không gian tựa~\citep{yang2004}; bước tự thích nghi tránh phải ước lượng $\norm{\mathcal A}$~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}; tách toán tử~\citep{zhang2012simultaneous} và phương pháp hướng luân phiên~\citep{yang2014alternating} phân rã bài toán. Các ý tưởng này đã là chuẩn mực; DTAP vận dụng chúng cho trường hợp phi tuyến.
+
+Thay $\mathcal A$ bằng một ánh xạ phi tuyến $F$ ta được SFP phi tuyến~\citep{li2013nsfp,yen2019}
+\begin{equation}\label{eq:nsfp-intro}
+\text{tìm }x^\star\in K\quad\text{sao cho}\quad F(x^\star)\in Q,
+\end{equation}
+trong đó $K\subseteq\R^n$ khác rỗng, đóng và lồi, $Q=\prod_{i=1}^m(-\infty,b_i]$ là hộp chuẩn, và mỗi $F_i$ khả vi và lồi hoặc giả lồi trên $K$. Vì hàm giả lồi có các tập mức dưới lồi, tập khả thi $\Omega=\{x\in K:F(x)\in Q\}$ là lồi. Ta tìm một điểm thuộc $\Omega$, không tìm điểm cực tiểu của $F_i$ nào.
+
+Li và cộng sự~\citep{li2013nsfp} giả thiết một hàm lân cận tổng hợp lồi, điều mà tính giả lồi của từng thành phần không bảo đảm. Yen và cộng sự~\citep{yen2019} dùng cùng độ đo vi phạm kiểu max và cùng kỹ thuật tập hoạt động, nhưng đòi các thành phần tựa tuyến tính, một lớp không so sánh được với lớp của ta. Hu và cộng sự~\citep{hu2022quasi} xét các bất đẳng thức tựa lồi, một lớp chứa lớp của ta, nhưng không dùng bất đẳng thức gradient của các thành phần lồi.
+
+Vì $Q$ là một hộp, khoảng cách $\ell_\infty$ từ $F(x)$ tới $Q$ có dạng tường minh
+\[
+J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+.
+\]
+DTAP chia các ràng buộc thành một track lồi và một track giả lồi. Trên mỗi track, nó cộng các gradient của những ràng buộc gần bị vi phạm nhiều nhất, có trọng số theo độ vi phạm. Bất đẳng thức gradient của hàm lồi biện minh cho một bước kiểu Polyak co theo phần dư trên track lồi~\citep{polyak1969,lopez2012}; tính giả lồi chỉ cho biết dấu của đạo hàm theo hướng, nên track giả lồi dùng một bước giảm dần có chặn an toàn. Một trọng số tỉ lệ kết hợp hai bước, rồi kết quả được chiếu lên $K$; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét~\ref{rem:weight-scope}). Không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older: một bất đẳng thức tựa Fej\'er cho thấy dãy lặp bị chặn, sau đó chứng minh dùng các cận địa phương, không cần gradient Lipschitz.
+
+Làm ứng dụng, các cận trên của ba tiêu chí lấy từ một mô hình phân thức~\citep{wang2021fractional} và một mô hình tập thô mờ~\citep{wang2026afrsfcv} tạo thành các ràng buộc; một vector trọng số khả thi thỏa cả ba cận nhưng không nhất thiết là nghiệm của bài toán gốc nào. Các ràng buộc này lồi (Mệnh đề~\ref{prop:fs-reg}), nên ta còn dùng các bài toán thử có một ràng buộc giả lồi không lồi để kiểm tra track giả lồi.
+
+Các đóng góp như sau.
+\begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=2.4em,itemsep=3pt]
+\item Một phương pháp hai track dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ thông tin về dấu trên các ràng buộc giả lồi, không cần giả thiết hàm lân cận lồi như~\citep{li2013nsfp}, cũng không cần mô-đun H\"older như bước động của~\citep{hu2022quasi}.
+\item Sự hội tụ của toàn bộ dãy tới một điểm khả thi dưới Giả thiết~\ref{ass:standing} (Định lý~\ref{thm:strong}).
+\item Các thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của DTAP với điểm xuất phát và thang bước.
+\end{enumerate}
+
+Mục~\ref{sec:prelim} trình bày kiến thức chuẩn bị. Mục~\ref{sec:convergence} trình bày \dtap{} và phân tích hội tụ. Mục~\ref{sec:experiments} báo cáo thực nghiệm, và Mục~\ref{sec:conclusion} kết luận.
+
+
+\section{Kiến thức chuẩn bị}\label{sec:prelim}
+Trong toàn bài, $H=\R^n$ là không gian Euclid với tích vô hướng $\inner{\cdot}{\cdot}$ và chuẩn cảm sinh $\norm{\cdot}$. Mọi phát biểu về hội tụ đều theo tô-pô chuẩn. Dãy bị chặn có dãy con hội tụ. Các kết quả chuẩn về phép chiếu và lồi suy rộng dưới đây có thể tìm trong~\citep{bauschke2011,mangasarian1994}.
+
+Với một tập lồi đóng khác rỗng $K\subseteq H$, phép chiếu mêtric $P_K(x)$ là điểm cực tiểu duy nhất của $\norm{y-x}$ trên $y\in K$.
+\begin{proposition}\label{prop:proj-char}
+Với $x\in H$ và $p\in K$, $p=P_K(x)$ khi và chỉ khi
+\begin{equation}\label{eq:proj-char}
+\inner{x-p}{y-p}\le0\qquad\text{với mọi }y\in K.
+\end{equation}
+\end{proposition}
+Đặc trưng này cho ta Bổ đề~\ref{lem:proj-nonexp} dưới đây.
+
+Một hàm $f:K\to\R$ là lồi nếu
+$f((1-t)x+ty)\le(1-t)f(x)+tf(y)$ với $x,y\in K$ và $t\in[0,1]$.
+Điều kiện đạo hàm yếu hơn sau đây do Mangasarian~\citep{mangasarian1965} đưa ra.
+\begin{definition}\label{def:pseudoconvex}
+Một hàm $f$ khả vi trên một lân cận mở của $K$ được gọi là giả lồi trên $K$ nếu, với mọi $x,y\in K$,
+\begin{equation}\label{eq:contrapositive}
+f(y)<f(x)\quad\Longrightarrow\quad\inner{\nabla f(x)}{y-x}<0.
+\end{equation}
+\end{definition}
+Mọi hàm lồi khả vi đều giả lồi. Hàm giả lồi có các tập mức dưới lồi, mặc dù bản thân hàm không nhất thiết lồi.
+
+\section{Thuật toán DTAP và phân tích hội tụ}\label{sec:convergence}
+Ta phát biểu NSFP với hộp chuẩn, nêu thuật toán DTAP, và chứng minh toàn bộ dãy hội tụ
+tới một điểm khả thi.
+
+\subsection{Phát biểu bài toán và vô hướng hóa Tchebyshev}\label{ssec:model-stmt}
+Cho $K\subseteq H$ là tập lồi đóng khác rỗng, và $U\subseteq H$ là một lân cận mở
+của $K$. Cố định số nguyên $m\ge1$, cho $F=(F_1,\dots,F_m):U\to\R^m$,
+cho $b=(b_1,\dots,b_m)\in\R^m$, và đặt hộp chuẩn
+$Q:=(-\infty,b_1]\times\cdots\times(-\infty,b_m]$. Ta nghiên cứu trường hợp sau
+của~\eqref{eq:nsfp-intro}
+\begin{equation}\label{eq:nsfp-box}
+\text{tìm } x^\star\in\Omega,\qquad
+\Omega:=\bigl\{x\in K: F_i(x)\le b_i,\ i=1,\dots,m\bigr\},
+\end{equation}
+và gọi $\Omega$ là \emph{tập khả thi}. Để biến điều kiện $F(x)\in Q$ thành một hàm đánh giá
+dễ xử lý, ta đo phần dư theo chuẩn sup. Với $z=F(x)$,
+$d_\infty(z,Q)=\inf_{q\le b}\max_{1\le i\le m}\abs{z_i-q_i}$. Nhờ cấu trúc hộp,
+cận dưới đúng tách theo từng tọa độ: nếu $z_i\le b_i$ thì
+$\inf_{q_i\le b_i}\abs{z_i-q_i}=0$ (tại $q_i=z_i$), còn nếu $z_i>b_i$ thì nó bằng
+$z_i-b_i$ (tại $q_i=b_i$). Do đó $\inf_{q_i\le b_i}\abs{z_i-q_i}=(z_i-b_i)^+$ với
+$(t)^+:=\max\{t,0\}$, nên
+\begin{equation}\label{eq:dinfty}
+d_\infty(z,Q)=\max_{1\le i\le m}(z_i-b_i)^+ .
+\end{equation}
+Định nghĩa \emph{hàm sai số}
+\begin{equation}\label{eq:Jdef}
+J(x):=d_\infty\bigl(F(x),Q\bigr)=\max_{1\le i\le m}\bigl(F_i(x)-b_i\bigr)^+ .
+\end{equation}
+Khi đó $x\in K$ khả thi khi và chỉ khi $J(x)=0$; khi $\Omega\ne\emptyset$, các điểm
+khả thi chính là các điểm cực tiểu của $J$ trên $K$. Công thức~\eqref{eq:Jdef} cho một phần dư khả thi dạng tường minh, mà các điểm
+đạt max chỉ ra những ràng buộc bị vi phạm nhiều nhất. Mục~\ref{ssec:dual-track}
+đưa vào một tập hoạt động xấp xỉ để xử lý tính không trơn của hàm max.
+
+\subsection{Phân rã thành hai track}\label{ssec:dual-track}
+Ta chia $I:=\{1,\dots,m\}$ thành \emph{track lồi} $I^{\cvx}$ và
+\emph{track giả lồi} $I^{\ps}$, mỗi track có quy tắc bước riêng. Track lồi dùng bước Polyak~\citep{polyak1969};
+track giả lồi dùng bước giảm dần có chặn an toàn.
+Một trọng số tỉ lệ kết hợp hai bước cập nhật.
+
+Cố định tham số $\delta>0$. Với $x\in U$, định nghĩa độ vi phạm từng thành phần
+\begin{equation}\label{eq:vi}
+v_i(x):=\bigl(F_i(x)-b_i\bigr)^+,
+\end{equation}
+nên $J(x)=\max_i v_i(x)$ theo~\eqref{eq:Jdef}. Giả thiết~\ref{ass:standing} phát biểu chính xác
+phép chia này. \emph{Độ vi phạm lớn nhất trên mỗi track} là
+\begin{align}
+J^{\cvx}(x)&:=\max_{i\in I^{\cvx}}v_i(x)\quad(\,{=}\,0\text{ nếu }I^{\cvx}=\emptyset),\label{eq:Jcvx}\\
+J^{\ps}(x)&:=\max_{j\in I^{\ps}}v_j(x)\quad(\,{=}\,0\text{ nếu }I^{\ps}=\emptyset),\label{eq:Jps}
+\end{align}
+nên $J(x)=\max\{J^{\cvx}(x),J^{\ps}(x)\}$. Để xử lý tính không trơn của hàm max,
+ta thay tập các chỉ số tại đó đạt giá trị lớn nhất bằng một \emph{tập hoạt động xấp xỉ}
+được nới rộng $\delta$ trên mỗi track (``hoạt động'' nghĩa là cách độ vi phạm lớn nhất
+không quá $\delta$):
+\begin{align}
+K^{\cvx}(x)&:=\begin{cases}\{i\in I^{\cvx}:v_i(x)\ge J^{\cvx}(x)-\delta\} & \text{nếu }J^{\cvx}(x)>0,\\ \emptyset & \text{nếu }J^{\cvx}(x)=0,\end{cases}\label{eq:Kcvx}\\[2pt]
+K^{\ps}(x)&:=\begin{cases}\{j\in I^{\ps}:v_j(x)\ge J^{\ps}(x)-\delta\} & \text{nếu }J^{\ps}(x)>0,\\ \emptyset & \text{nếu }J^{\ps}(x)=0.\end{cases}\label{eq:Kps}
+\end{align}
+Trên các tập này ta lập \emph{các hàm và hướng địa phương theo từng track}
+\begin{align}
+\Phi^{\cvx}(x)&:=\tfrac12\!\!\sum_{i\in K^{\cvx}(x)}\!\! v_i(x)^2, & g^{\cvx}(x)&:=\!\!\sum_{i\in K^{\cvx}(x)}\!\! v_i(x)\nabla F_i(x),\label{eq:phi-g-cvx}\\
+& & g^{\ps}(x)&:=\!\!\sum_{j\in K^{\ps}(x)}\!\! v_j(x)\nabla F_j(x).\label{eq:phi-g-ps}
+\end{align}
+Các vector $g^{\cvx}(x),g^{\ps}(x)$ là hai hướng tìm kiếm, và $\Phi^{\cvx}(x)$
+cung cấp tử số Polyak trên track lồi. Dọc theo dãy lặp ta viết tắt
+$J^{\cvx}_k:=J^{\cvx}(x^k)$, $g^{\cvx}_k:=g^{\cvx}(x^k)$, $\Phi^{\cvx}_k:=\Phi^{\cvx}(x^k)$,
+và tương tự trên track giả lồi.
+
+\subsection{Các giả thiết}\label{ssec:assumptions}
+\begin{assumption}\label{ass:standing}
+Ta giả thiết \textup{(A1)--(A3)}:
+\begin{itemize}[leftmargin=2.4em,itemsep=2pt]
+\item[\textup{(A1)}] \textup{(a)} $\Omega\ne\emptyset$ (tính nhất quán). \textup{(b)} $I=\{1,\dots,m\}$
+được chia thành $I=I^{\cvx}\cup I^{\ps}$; mỗi $F_i:U\to\R$ là lồi trên $K$ nếu
+$i\in I^{\cvx}$ và giả lồi trên $K$ nếu $i\in I^{\ps}$.
+\item[\textup{(A2)}] Mỗi $F_i:U\to\R$ khả vi liên tục trên $U$.
+\item[\textup{(A3)}] \textup{(i)} $\delta>0$ cố định. \textup{(ii)}
+$\rho_{\cvx}\in(0,2)$. \textup{(iii)} $\{\gamma_k\}\subset(0,\infty)$ với
+$\sum_{k=0}^\infty\gamma_k^2<\infty$ và $\sum_{k=0}^\infty\gamma_k=\infty$.
+\end{itemize}
+\end{assumption}
+Cách phát biểu trên lân cận mở cho phép các hàm phân thức có mẫu số
+dương trên $K$; thuật toán chỉ tính giá trị hàm và gradient tại các điểm thuộc $K$.
+Mặc dù một số hàm thành phần có thể không lồi, $\Omega$ vẫn lồi: các hàm giả lồi khả vi
+là tựa lồi trên $K$, nên mọi tập mức dưới của ràng buộc trong $K$ đều lồi.
+\begin{example}\label{ex:gamma}
+Dãy $\gamma_k:=1/(k+1)$ thỏa (A3)(iii), vì $\sum_{k\ge0}(k+1)^{-2}<\infty$
+còn $\sum_{k\ge0}(k+1)^{-1}=\infty$. Tổng quát hơn, $\gamma_k=(k+c)^{-s}$ với $c>0$
+và $s\in(1/2,1]$ đều thỏa; các thực nghiệm dùng $s=0.55$.
+\end{example}
+
+\subsection{Thuật toán DTAP}\label{ssec:algorithm}
+Thuật toán Chiếu Thích nghi Hai Track kết hợp hai độ dài bước riêng của từng track
+qua trọng số tỉ lệ $\mu_k$ và chiếu bước cập nhật kết hợp lên tập lồi cơ sở
+$K$. Thuật toán được phát biểu ở Thuật toán~\ref{alg:dtap}.
+
+\begin{algorithm}[H]
+\caption{Chiếu Thích nghi Hai Track (DTAP) cho NSFP với hộp chuẩn
+\eqref{eq:nsfp-box}.}
+\label{alg:dtap}
+\small
+\noindent\textbf{Đầu vào:} ánh xạ $F=(F_1,\dots,F_m)$, các ngưỡng $b$, tập cơ sở $K$, phép chia
+chỉ số $I^{\cvx}\cup I^{\ps}$.\\
+\textbf{Tham số:} $\delta>0$, sai số dừng $\varepsilon>0$, $\rho_{\cvx}\in(0,2)$,
+dãy $\{\gamma_k\}$ thỏa (A3)(iii).\\
+\textbf{Khởi tạo:} chọn $x^0\in K$; đặt $k\leftarrow 0$.
+
+\algstep{Bước 1 (các đại lượng theo track).} Nếu $J(x^k)\le\varepsilon$ thì dừng và trả về $x^k$; ngược lại:
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt,topsep=2pt]
+\item[(1a)] Tính $v_i(x^k)$ với mọi $i$, và $J^{\cvx}_k=\max_{i\in I^{\cvx}}v_i(x^k)$,
+$J^{\ps}_k=\max_{j\in I^{\ps}}v_j(x^k)$ (mỗi đại lượng bằng $0$ nếu track tương ứng rỗng).
+\item[(1b)] Lập các tập hoạt động xấp xỉ $K^{\cvx}_k,K^{\ps}_k$ theo
+\eqref{eq:Kcvx}--\eqref{eq:Kps}.
+\item[(1c)] Lập $\Phi^{\cvx}_k$, $g^{\cvx}_k$, $g^{\ps}_k$ theo
+\eqref{eq:phi-g-cvx}--\eqref{eq:phi-g-ps}.
+\item[(1d)] Độ dài bước theo từng track (Polyak trên track lồi, có chặn an toàn trên
+track giả lồi):
+\[
+\eta^{\cvx}_k=\begin{cases}\rho_{\cvx}\,\dfrac{2\Phi^{\cvx}_k}{\norm{g^{\cvx}_k}^2} & \text{nếu }\norm{g^{\cvx}_k}>0,\\ 0 & \text{ngược lại,}\end{cases}
+\qquad
+\eta^{\ps}_k=\frac{\gamma_k}{\max\{1,\norm{g^{\ps}_k}\}} .
+\]
+\item[(1e)] Trọng số tỉ lệ:
+$\displaystyle \mu_k=\frac{J^{\cvx}_k}{J^{\cvx}_k+J^{\ps}_k}$ nếu
+$J^{\cvx}_k+J^{\ps}_k>0$, và $\mu_k=1/2$ trong trường hợp còn lại.
+\item[(1f)] Kết hợp hai hướng:
+$\displaystyle y^k=x^k-\bigl[\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k\bigr].$
+\end{itemize}
+\algstep{Bước 2 (chiếu).}\quad $x^{k+1}=P_K(y^k)$; đặt $k\leftarrow k+1$ và quay lại Bước~1.
+\end{algorithm}
+
+\begin{remark}\label{rem:weight-scope}
+Trọng số tỉ lệ là một cách phân bổ thích nghi dựa trên hai độ vi phạm lớn nhất;
+ta không khẳng định đó là lựa chọn duy nhất khiến DTAP hội tụ, hay là tối ưu.
+Dạng cụ thể của nó được dùng trong~\eqref{eq:p10} để kiểm soát phần dư của track lồi và trong
+Khẳng định~2 của Giai đoạn~2 của Định lý~\ref{thm:strong} để bảo đảm một track giả lồi
+bị vi phạm kéo dài vẫn giữ trọng số dương. Mặc dù bất đẳng thức một bước của Bổ đề~\ref{lem:fejer} đúng
+với mọi $\mu_k\in[0,1]$, tự nó không suy ra hội tụ với mọi dãy trọng số.
+\end{remark}
+
+\begin{remark}\label{rem:regularity-scope}
+Phép lặp không cần biết trước chuẩn toán tử, hằng số Lipschitz hay
+mô-đun H\"older. Tuy vậy, chứng minh dùng các cận hữu hạn của giá trị hàm và
+gradient trên một tập compact chứa dãy lặp, sau khi đã chứng minh tính bị chặn.
+Gradient bị chặn kéo theo các hàm Lipschitz trên tập compact lồi đó,
+nhưng các cận này không phải là đầu vào của thuật toán. Giả thiết (A2) không
+kéo theo tính Lipschitz của gradient, và định lý không cần điều đó.
+Người dùng vẫn phải chọn $\rho_{\cvx}$, $\delta$ và $\{\gamma_k\}$; các tham số này không
+phụ thuộc vào hằng số nào của bài toán.
+\end{remark}
+
+Để phân tích, ta viết số gia kết hợp là
+\begin{equation}\label{eq:dk}
+d_k:=\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k,
+\end{equation}
+nên $y^k=x^k-d_k$ và $x^{k+1}=P_K(x^k-d_k)$.
+\subsection{Chi phí mỗi vòng lặp}\label{ssec:complexity}
+Mỗi vòng lặp của \dtap{} tính
+các độ vi phạm $v_i(x^k)$ và gradient trên tập hoạt động $\{\nabla F_i(x^k):i\in
+K^{\cvx}_k\cup K^{\ps}_k\}$, lập hai hướng tìm kiếm $g^{\cvx}_k,g^{\ps}_k$ như các tổng có trọng số
+của các gradient này, tính độ dài bước, và thực hiện một phép chiếu lên $K$.
+Nó không dùng ước lượng chuẩn toán tử cũng không dùng tìm kiếm theo tia. Chi phí chủ yếu nằm ở
+việc tính các ràng buộc và phép chiếu. Chi phí cho bài toán chọn đặc trưng
+được nêu ở Mục~\ref{sec:fs}
+(Nhận xét~\ref{rem:fs-cost}).
+
+\subsection{Các bổ đề bổ trợ}\label{ssec:aux}
+Hai track cần những lập luận khác nhau. Trên track lồi, Bổ đề~\ref{lem:grad-cvx} chặn dưới
+$\inner{\nabla F_i(x)}{x-x^\star}$ bởi độ vi phạm $v_i(x)$; điều này cho mức giảm của
+$\norm{x^k-x^\star}^2$ cỡ $\mu_kT_k$. Trên track giả lồi,
+định nghĩa~\eqref{eq:contrapositive} chỉ cho biết dấu của tích vô hướng này.
+Bổ đề~\ref{lem:fejer} gộp cả hai track trong một bất đẳng thức tựa Fej\'er; cách chọn
+tham số $\zeta$ trong bất đẳng thức Young giữ cho số hạng của track lồi luôn âm. Sau đó Giai đoạn~2 của
+Định lý~\ref{thm:strong} chứng minh bằng phản chứng rằng có ít nhất một điểm tụ
+khả thi, và Giai đoạn~3 chứng minh toàn bộ dãy hội tụ mạnh tới điểm đó. Hai trường hợp suy biến
+được suy ra như các hệ quả.
+
+Trong toàn bộ phần sau, $\{x^k\}$ là dãy vô hạn sinh bởi Thuật toán~\ref{alg:dtap} khi
+bỏ phép kiểm tra dừng. Như chứng minh dưới đây
+(Bổ đề~\ref{lem:jcvx0} và Định lý~\ref{thm:strong}), $J(x^k)\to 0$; do đó với mọi
+$\varepsilon>0$ có một chỉ số hữu hạn $k$ với $J(x^k)\le\varepsilon$, nên phiên bản có điều kiện dừng
+kết thúc sau hữu hạn bước với một điểm $\varepsilon$-khả thi.
+
+Ta bắt đầu với hai kết quả chuẩn bị được dùng nhiều lần dưới đây.
+
+\begin{lemma}\label{lem:proj-nonexp}
+Cho $K\subseteq H$ là tập lồi đóng khác rỗng. Với mọi $y\in H$ và $z\in K$,
+\begin{equation}\label{eq:proj-nonexp}
+\norm{P_K(y)-z}^2\le\norm{y-z}^2-\norm{y-P_K(y)}^2\le\norm{y-z}^2 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Đặt $p:=P_K(y)$. Theo Mệnh đề~\ref{prop:proj-char}, $\inner{y-p}{z-p}\le0$, nên khai triển
+$\norm{y-z}^2=\norm{y-p}^2+2\inner{y-p}{p-z}+\norm{p-z}^2$ và dùng $\inner{y-p}{p-z}\ge0$
+ta được $\norm{y-z}^2\ge\norm{y-p}^2+\norm{p-z}^2$, chính là~\eqref{eq:proj-nonexp}.
+\end{proof}
+
+\begin{lemma}\label{lem:seq}
+Cho $\{a_k\}\subset[0,\infty)$ và $\{\varepsilon_k\}\subset[0,\infty)$ thỏa
+$a_{k+1}\le a_k+\varepsilon_k$ với mọi $k$ và $\sum_{k=0}^\infty\varepsilon_k<\infty$.
+Khi đó $\{a_k\}$ hội tụ tới một giới hạn hữu hạn.
+\end{lemma}
+\begin{proof}
+Dãy $b_k:=a_k-\sum_{l<k}\varepsilon_l$ không tăng (do $a_{k+1}\le a_k+\varepsilon_k$) và
+bị chặn dưới bởi $-\sum_l\varepsilon_l>-\infty$, nên hội tụ; vì
+$\sum_{l<k}\varepsilon_l\to S<\infty$, dãy $a_k=b_k+\sum_{l<k}\varepsilon_l$ hội tụ.
+\end{proof}
+
+Trên track lồi, tính lồi cho một liên hệ định lượng giữa gradient và
+độ vi phạm.
+
+\begin{lemma}\label{lem:grad-cvx}
+Với $x^\star\in\Omega$, $i\in I^{\cvx}$ và $x\in K$,
+\[
+v_i(x)\,\inner{\nabla F_i(x)}{x-x^\star}\ge v_i(x)^2 .
+\]
+\end{lemma}
+\begin{proof}
+Nếu $v_i(x)=0$ thì cả hai vế bằng $0$. Giả sử $v_i(x)>0$, tức là $F_i(x)>b_i$. Định nghĩa
+$\varphi:[0,1]\to\R$ bởi $\varphi(t):=F_i((1-t)x+tx^\star)$; vì $K$ lồi,
+$[x,x^\star]\subset K$, nên $\varphi$ xác định, theo (A1)(b) nó lồi, và
+theo (A2) nó khả vi với $\varphi'(0^+)=\inner{\nabla F_i(x)}{x^\star-x}$. Bất đẳng thức
+gradient một chiều cho $\varphi(1)\ge\varphi(0)+\varphi'(0^+)$, tức là
+$F_i(x^\star)\ge F_i(x)+\inner{\nabla F_i(x)}{x^\star-x}$. Vì $x^\star\in\Omega$ nên
+$F_i(x^\star)\le b_i<F_i(x)$, do đó
+$\inner{\nabla F_i(x)}{x-x^\star}\ge F_i(x)-b_i=v_i(x)$. Nhân với $v_i(x)>0$ ta được
+khẳng định.
+\end{proof}
+
+\begin{remark}\label{rem:grad-cvx-sum}
+Cộng Bổ đề~\ref{lem:grad-cvx} trên tập hoạt động xấp xỉ $K^{\cvx}_k$ ta được
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge\sum_{i\in K^{\cvx}_k}v_i(x^k)^2=2\Phi^{\cvx}_k$, một cận
+được dùng trong chứng minh các Bổ đề~\ref{lem:fejer} và~\ref{lem:jcvx0}.
+\end{remark}
+
+Trên track giả lồi, ta chỉ có thông tin về dấu.
+
+\begin{lemma}\label{lem:sign-ps}
+Với $x^\star\in\Omega$, $j\in I^{\ps}$ và $x\in K$,
+$v_j(x)\,\inner{\nabla F_j(x)}{x-x^\star}\ge 0$, với bất đẳng thức chặt khi $v_j(x)>0$.
+\end{lemma}
+\begin{proof}
+Nếu $v_j(x)=0$ thì cả hai vế bằng $0$. Nếu $v_j(x)>0$ thì $F_j(x)>b_j\ge F_j(x^\star)$. Theo
+(A1)(b), $F_j|_K$ giả lồi; áp dụng~\eqref{eq:contrapositive}
+với $y=x^\star$ ta được $\inner{\nabla F_j(x)}{x^\star-x}<0$, tức là
+$\inner{\nabla F_j(x)}{x-x^\star}>0$. Nhân với $v_j(x)>0$ ta được bất đẳng thức
+chặt.
+\end{proof}
+
+Cuối cùng là hai cận chuẩn của các hướng tìm kiếm, dựa trên tính compact.
+
+\begin{lemma}\label{lem:bound-cvx}
+Giả sử $I^{\cvx}\ne\emptyset$ và $B\subset U$ compact. Với
+$L_B:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}$ (hữu hạn theo (A2)), với mọi
+$x\in B$,
+\[
+\norm{g^{\cvx}(x)}^2\le 2\,\abs{I^{\cvx}}\,L_B^2\,\Phi^{\cvx}(x).
+\]
+\end{lemma}
+\begin{proof}
+Đặt $K'=K^{\cvx}(x)$, $m'=\abs{K'}\le\abs{I^{\cvx}}$. Theo bất đẳng thức tam giác và
+Cauchy--Schwarz,
+\[
+\norm{g^{\cvx}(x)}=\Bigl\|\sum_{i\in K'}v_i(x)\nabla F_i(x)\Bigr\|
+\le\Bigl(\sum_{i\in K'}v_i(x)^2\Bigr)^{1/2}\Bigl(\sum_{i\in K'}\norm{\nabla F_i(x)}^2\Bigr)^{1/2}.
+\]
+Vì $\sum_{i\in K'}v_i(x)^2=2\Phi^{\cvx}(x)$ và
+$\sum_{i\in K'}\norm{\nabla F_i(x)}^2\le m'L_B^2\le\abs{I^{\cvx}}L_B^2$, bình phương lên ta được
+khẳng định.
+\end{proof}
+
+\begin{lemma}\label{lem:bound-ps}
+Giả sử $I^{\ps}\ne\emptyset$ và $B\subset U$ compact. Với
+$L'_B:=\max_{j\in I^{\ps}}\sup_{x\in B}\norm{\nabla F_j(x)}$ và
+$V_B:=\max_{j\in I^{\ps}}\sup_{x\in B}v_j(x)$ (cả hai hữu hạn theo (A2)), với mọi $x\in B$,
+\[
+\norm{g^{\ps}(x)}\le\abs{I^{\ps}}\,V_B\,L'_B .
+\]
+\end{lemma}
+\begin{proof}
+Theo bất đẳng thức tam giác,
+$\norm{g^{\ps}(x)}=\bigl\|\sum_{j\in K^{\ps}(x)}v_j(x)\nabla F_j(x)\bigr\|
+\le\sum_{j\in K^{\ps}(x)}v_j(x)\norm{\nabla F_j(x)}\le\abs{K^{\ps}(x)}V_BL'_B
+\le\abs{I^{\ps}}V_BL'_B$.
+\end{proof}
+
+\subsection{Tính bị chặn và sự giảm của sai số lặp}\label{ssec:bounded}
+Bất đẳng thức sau đây thuộc loại tựa Fej\'er theo nghĩa của
+Combettes~\citep{combettes2001quasifejer}. Nó cho tính bị chặn của $\{x^k\}$ và sự giảm của
+độ vi phạm trên track lồi. Đặt
+\begin{equation}\label{eq:c0C0}
+c_0:=\frac{\rho_{\cvx}(2-\rho_{\cvx})}{2}\in\Bigl(0,\tfrac12\Bigr],\qquad
+C_0:=\frac{2+\rho_{\cvx}}{2-\rho_{\cvx}}\in(1,\infty),
+\end{equation}
+và
+\begin{equation}\label{eq:Tk}
+T_k:=\begin{cases}\dfrac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2} & \text{nếu }\norm{g^{\cvx}_k}>0,\\ 0 & \text{nếu }\norm{g^{\cvx}_k}=0.\end{cases}
+\end{equation}
+Với $x^\star\in\Omega$ cố định, viết $R^{x^\star}_k:=\inner{g^{\ps}_k}{x^k-x^\star}$.
+
+\begin{lemma}\label{lem:fejer}
+Với mọi $x^\star\in\Omega$ và $k\ge 0$,
+\begin{equation}\label{eq:fejer}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-c_0\mu_k T_k-2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k+C_0\gamma_k^2 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+Áp dụng Bổ đề~\ref{lem:proj-nonexp} với $y=y^k$ và $z=x^\star\in K$, và dùng
+$y^k=x^k-d_k$ từ~\eqref{eq:dk}:
+\begin{equation}\label{eq:p1}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\inner{d_k}{x^k-x^\star}+\norm{d_k}^2 .
+\end{equation}
+\emph{Số hạng chéo.} Khai triển $d_k$,
+\begin{equation}\label{eq:p2}
+\inner{d_k}{x^k-x^\star}=\mu_k\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}+(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k .
+\end{equation}
+Nếu $\norm{g^{\cvx}_k}=0$ thì $\eta^{\cvx}_k=0$ và số hạng đầu bằng $0$. Nếu
+$\norm{g^{\cvx}_k}>0$, Nhận xét~\ref{rem:grad-cvx-sum} cho
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge 2\Phi^{\cvx}_k$; nhân với
+$\mu_k\eta^{\cvx}_k\ge 0$ và thay
+$\eta^{\cvx}_k=2\rho_{\cvx}\Phi^{\cvx}_k/\norm{g^{\cvx}_k}^2$,
+\begin{equation}\label{eq:p4}
+\mu_k\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}\ge\mu_k\rho_{\cvx}\frac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2}=\mu_k\rho_{\cvx}T_k .
+\end{equation}
+\emph{Số hạng bậc hai.} Theo bất đẳng thức Young
+$\norm{u+v}^2\le(1+\zeta)\norm{u}^2+(1+\zeta^{-1})\norm{v}^2$ với
+$u=\mu_k\eta^{\cvx}_k g^{\cvx}_k$, $v=(1-\mu_k)\eta^{\ps}_k g^{\ps}_k$,
+\[
+\norm{d_k}^2\le(1+\zeta)\rho_{\cvx}^2\mu_k^2 T_k+(1+\zeta^{-1})(1-\mu_k)^2(\eta^{\ps}_k)^2\norm{g^{\ps}_k}^2 .
+\]
+Theo định nghĩa $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}$, nên
+$\eta^{\ps}_k\norm{g^{\ps}_k}\le\gamma_k$ và do đó
+$(\eta^{\ps}_k)^2\norm{g^{\ps}_k}^2\le\gamma_k^2$; cùng với $(1-\mu_k)^2\le 1$,
+\begin{equation}\label{eq:p6}
+\norm{d_k}^2\le(1+\zeta)\rho_{\cvx}^2\mu_k^2 T_k+(1+\zeta^{-1})\gamma_k^2 .
+\end{equation}
+Chọn $\zeta:=(2-\rho_{\cvx})/(2\rho_{\cvx})>0$. Khi đó
+$(1+\zeta)\rho_{\cvx}=(2+\rho_{\cvx})/2$, nên
+$(1+\zeta)\rho_{\cvx}^2=\rho_{\cvx}(2+\rho_{\cvx})/2$, và
+$1+\zeta^{-1}=(2+\rho_{\cvx})/(2-\rho_{\cvx})=C_0$. Kết hợp
+\eqref{eq:p1}, \eqref{eq:p2}, \eqref{eq:p4} và~\eqref{eq:p6},
+\[
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2+\bigl[-2\mu_k\rho_{\cvx}+(1+\zeta)\rho_{\cvx}^2\mu_k^2\bigr]T_k-2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k+C_0\gamma_k^2 .
+\]
+Biểu thức trong ngoặc vuông bằng
+$\mu_k\rho_{\cvx}\bigl(-2+\tfrac{2+\rho_{\cvx}}{2}\mu_k\bigr)$. Vì $\rho_{\cvx}<2$, với
+mọi $\mu_k\in[0,1]$ thừa số $-2+\tfrac{2+\rho_{\cvx}}{2}\mu_k$ không vượt quá
+$-(2-\rho_{\cvx})/2<0$ (giá trị lớn nhất trên $[0,1]$ đạt tại $\mu_k=1$); nhân với
+$\mu_k\rho_{\cvx}\ge0$ ta được biểu thức trong ngoặc $\le -c_0\mu_k$. Từ đó suy ra~\eqref{eq:fejer}.
+\end{proof}
+
+\begin{lemma}\label{lem:bounded}
+Dãy $\{x^k\}$ bị chặn. Hơn nữa, với mỗi $x^\star\in\Omega$ cố định:
+\textup{(i)} $\{\norm{x^k-x^\star}^2\}$ hội tụ trong $[0,\infty)$;
+\textup{(ii)} $\sum_{k=0}^\infty\mu_k T_k<\infty$;
+\textup{(iii)} $\sum_{k=0}^\infty(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k<\infty$.
+\end{lemma}
+\begin{proof}
+Cố định $x^\star\in\Omega$ và đặt $a_k:=\norm{x^k-x^\star}^2$. Theo Bổ đề~\ref{lem:sign-ps},
+$R^{x^\star}_k\ge0$, và $\mu_k,T_k,(1-\mu_k)\eta^{\ps}_k\ge0$, nên~\eqref{eq:fejer} cho
+$a_{k+1}\le a_k+C_0\gamma_k^2$. Vì $\sum_k C_0\gamma_k^2<\infty$ theo (A3)(iii),
+Bổ đề~\ref{lem:seq} cho (i), và suy ra $\{x^k\}$ bị chặn. Cộng
+\eqref{eq:fejer} từ $0$ tới $N-1$,
+\[
+a_N+\sum_{k=0}^{N-1}\bigl(c_0\mu_k T_k+2(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k\bigr)\le a_0+C_0\sum_{k=0}^{N-1}\gamma_k^2 .
+\]
+Vế phải bị chặn đều theo $N$; cho $N\to\infty$ và dùng $c_0>0$ cùng với
+các số hạng không âm ta được (ii) và (iii).
+\end{proof}
+
+\begin{lemma}\label{lem:jcvx0}
+$\displaystyle\lim_{k\to\infty}J^{\cvx}_k=0$.
+\end{lemma}
+\begin{proof}
+Nếu $I^{\cvx}=\emptyset$ thì $J^{\cvx}_k=0$ với mọi $k$. Giả sử $I^{\cvx}\ne\emptyset$, cố định
+$x^\star\in\Omega$, và đặt $B:=\overline{\conv}\{x^k:k\ge0\}$, compact theo Bổ đề~\ref{lem:bounded} và nằm
+trong $K\subset U$. Theo (A2) và
+tính compact,
+\[
+L:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}<\infty,\qquad
+V:=\max_{i\in I}\sup_{x\in B}\abs{F_i(x)-b_i}<\infty.
+\]
+Nếu $V=0$ thì mọi $v_i(x^k)=0$ và
+$J^{\cvx}_k=0$; giả sử $V>0$. Nếu $L=0$ thì mỗi $F_i$, $i\in I^{\cvx}$, là hằng trên
+$B$, nên $g^{\cvx}_k=0$ và, theo Nhận xét~\ref{rem:grad-cvx-sum},
+$0=\inner{g^{\cvx}_k}{x^k-x^\star}\ge 2\Phi^{\cvx}_k\ge(J^{\cvx}_k)^2$, cho ta
+$J^{\cvx}_k=0$; giả sử $L>0$. Đặt $m^{\cvx}:=\abs{I^{\cvx}}\ge1$.
+
+Xét một bước với $J^{\cvx}_k>0$ và chọn $i^\star\in I^{\cvx}$ với
+$v_{i^\star}(x^k)=J^{\cvx}_k$. Vì $v_{i^\star}(x^k)\ge J^{\cvx}_k-\delta$, ta có
+$i^\star\in K^{\cvx}_k$, do đó
+\begin{equation}\label{eq:p8}
+\Phi^{\cvx}_k\ge\tfrac12 v_{i^\star}(x^k)^2=\tfrac12(J^{\cvx}_k)^2>0 .
+\end{equation}
+Nhận xét~\ref{rem:grad-cvx-sum} cho
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge2\Phi^{\cvx}_k>0$, nên $g^{\cvx}_k\ne0$; cùng với
+Bổ đề~\ref{lem:bound-cvx}, $\norm{g^{\cvx}_k}^2\le2m^{\cvx}L^2\Phi^{\cvx}_k$, và cùng với
+\eqref{eq:p8},
+\begin{equation}\label{eq:p9}
+T_k=\frac{(2\Phi^{\cvx}_k)^2}{\norm{g^{\cvx}_k}^2}\ge\frac{2\Phi^{\cvx}_k}{m^{\cvx}L^2}\ge\frac{(J^{\cvx}_k)^2}{m^{\cvx}L^2}.
+\end{equation}
+Để chặn dưới $\mu_k$: với mọi $i\in I$ và $x^k\in B$,
+$v_i(x^k)\le\abs{F_i(x^k)-b_i}\le V$, nên $J^{\cvx}_k\le V$ và $J^{\ps}_k\le V$; khi
+$J^{\cvx}_k>0$,
+\begin{equation}\label{eq:p10}
+\mu_k=\frac{J^{\cvx}_k}{J^{\cvx}_k+J^{\ps}_k}\ge\frac{J^{\cvx}_k}{2V}.
+\end{equation}
+Kết hợp~\eqref{eq:p9} và~\eqref{eq:p10}, khi $J^{\cvx}_k>0$,
+$\mu_k T_k\ge(J^{\cvx}_k)^3/(2Vm^{\cvx}L^2)$; bất đẳng thức này cũng đúng (dạng $0\ge0$) khi
+$J^{\cvx}_k=0$. Theo Bổ đề~\ref{lem:bounded}(ii),
+\begin{equation}\label{eq:p12}
+\sum_{k=0}^\infty(J^{\cvx}_k)^3\le 2Vm^{\cvx}L^2\sum_{k=0}^\infty\mu_k T_k<\infty,
+\end{equation}
+nên $(J^{\cvx}_k)^3\to0$ và do đó $J^{\cvx}_k\to0$.
+\end{proof}
+
+\begin{proposition}\label{prop:regularity}
+\[
+\sum_{k=0}^{\infty}\norm{x^{k+1}-x^k}^{2}<\infty;
+\]
+nói riêng,
+$\norm{x^{k+1}-x^k}\to0$.
+\end{proposition}
+\begin{proof}
+Vì $x^k\in K$ và $x^{k+1}=P_K(y^k)$, Bổ đề~\ref{lem:proj-nonexp} với $y=y^k$, $z=x^k$
+cho $\norm{x^{k+1}-x^k}\le\norm{y^k-x^k}=\norm{d_k}$. Theo~\eqref{eq:p6} và
+$\mu_k^2\le\mu_k$, $\norm{d_k}^2\le(1+\zeta)\rho_{\cvx}^2\mu_k T_k+C_0\gamma_k^2$.
+Lấy tổng và dùng Bổ đề~\ref{lem:bounded}(ii) cùng (A3)(iii), cả hai chuỗi đều hữu hạn.
+\end{proof}
+
+\subsection{Hội tụ mạnh tới một điểm khả thi}\label{ssec:strong}
+Bây giờ ta chứng minh toàn bộ dãy hội tụ mạnh tới một điểm khả thi. Chứng minh có ba
+giai đoạn. Giai đoạn~1 dùng Bổ đề~\ref{lem:jcvx0} để chứng minh mọi điểm tụ thỏa các
+ràng buộc lồi. Giai đoạn~2 chứng minh, bằng phản chứng và tính giả lồi, rằng có ít nhất một
+điểm tụ khả thi. Giai đoạn~3 dùng sự hội tụ của $\norm{x^k-\bar x}$ để chứng minh
+toàn bộ dãy hội tụ tới điểm đó.
+
+\begin{theorem}\label{thm:strong}
+Dưới Giả thiết~\ref{ass:standing}, dãy $\{x^k\}$ sinh bởi
+Thuật toán~\ref{alg:dtap} hội tụ mạnh tới một điểm $x^\infty\in\Omega$.
+\end{theorem}
+\begin{proof}
+Theo Bổ đề~\ref{lem:bounded}, $\{x^k\}$ bị chặn; gọi
+$C:=\{\bar x\in H:\exists\,k_l\to\infty,\ x^{k_l}\to\bar x\}$ là tập điểm tụ (khác rỗng, compact)
+của nó. Vì $K$ đóng và $x^k\in K$, ta có $C\subseteq K$.
+
+\emph{Giai đoạn 1 (các ràng buộc lồi).} Cố định $\bar x\in C$ và $x^{k_l}\to\bar x$. Theo (A2) mỗi
+$F_i$ liên tục, nên $v_i(x^{k_l})\to v_i(\bar x)$; với $i\in I^{\cvx}$,
+$v_i(x^{k_l})\le J^{\cvx}_{k_l}\to0$ theo Bổ đề~\ref{lem:jcvx0}, nên theo nguyên lý kẹp
+$v_i(\bar x)=0$, tức là $F_i(\bar x)\le b_i$. Do đó
+\begin{equation}\label{eq:p13}
+C\subseteq\bigcap_{i\in I^{\cvx}}\{x\in K:F_i(x)\le b_i\}.
+\end{equation}
+Nếu $I^{\ps}=\emptyset$ thì~\eqref{eq:p13} cho $C\subseteq\Omega$,
+nên $C\cap\Omega=C\ne\emptyset$.
+Từ đây giả sử $I^{\ps}\ne\emptyset$.
+
+\emph{Giai đoạn 2 (một điểm tụ khả thi).} Giả sử phản chứng rằng
+$C\cap\Omega=\emptyset$. Theo~\eqref{eq:p13} và phép chia $I=I^{\cvx}\cup I^{\ps}$, với
+mỗi $\bar x\in C$ có $j\in I^{\ps}$ với $F_j(\bar x)>b_j$, tức là
+$J^{\ps}(\bar x)>0$. Là max của hữu hạn hàm liên tục, $J^{\ps}$
+liên tục và dương trên tập compact $C$, nên $\alpha:=\min_{x\in C}J^{\ps}(x)>0$.
+
+\smallskip
+\emph{Khẳng định 1 (cận dưới đều cho $J^{\ps}_k$).} Tồn tại $\tau_0>0$ và $k_0$
+sao cho $J^{\ps}_k\ge\tau_0$ với mọi $k\ge k_0$. Thật vậy, đặt $\tau_0:=\alpha/2$. Nếu khẳng định
+sai thì có $k_l\to\infty$ với $J^{\ps}_{k_l}<\tau_0$; trích dãy con (giữ nguyên
+ký hiệu) $x^{k_l}\to\tilde x\in C$, tính liên tục cho $J^{\ps}(\tilde x)\le\tau_0<\alpha$,
+mâu thuẫn với định nghĩa của $\alpha$.
+
+\smallskip
+\emph{Khẳng định 2 ($\mu_k\to0$).} Với $k\ge k_0$,
+$\mu_k=J^{\cvx}_k/(J^{\cvx}_k+J^{\ps}_k)\le J^{\cvx}_k/\tau_0\to0$ theo
+Bổ đề~\ref{lem:jcvx0}. Do đó có $k_1\ge k_0$ với $1-\mu_k\ge1/2$ với mọi $k\ge k_1$.
+
+\smallskip
+\emph{Khẳng định 3 (cận dưới đều cho $R^{x^\star}_k$).} Cố định $x^\star\in\Omega$. Tồn tại
+$\xi_0>0$ và $k_2\ge k_1$ với $R^{x^\star}_k\ge\xi_0$ với mọi $k\ge k_2$. Giả sử
+không: có $k_l\to\infty$ với $R^{x^\star}_{k_l}\to0$. Vì $\{x^{k_l}\}$ bị chặn,
+trích $x^{k_l}\to\bar x\in C$; vì $I^{\ps}$ chỉ có hữu hạn tập con, trích tiếp
+để $K^{\ps}_{k_l}\equiv K^\star$ là hằng. Theo giả thiết phản chứng
+$J^{\ps}(\bar x)>0$; chọn $j^\star\in\argmax_{j\in I^{\ps}}v_j(\bar x)$, nên
+$v_{j^\star}(\bar x)=J^{\ps}(\bar x)>0$. Theo tính liên tục $v_{j^\star}(x^{k_l})\to
+v_{j^\star}(\bar x)$ và $J^{\ps}_{k_l}\to J^{\ps}(\bar x)$, nên
+$J^{\ps}_{k_l}-v_{j^\star}(x^{k_l})\to0$; với $\delta>0$ từ (A3)(i), khi $l$ đủ lớn ta
+có $v_{j^\star}(x^{k_l})\ge J^{\ps}_{k_l}-\delta$, do đó $j^\star\in K^{\ps}_{k_l}=K^\star$.
+Mỗi số hạng của
+$R^{x^\star}_{k_l}=\sum_{j\in K^\star}v_j(x^{k_l})\inner{\nabla F_j(x^{k_l})}{x^{k_l}-x^\star}$
+không âm theo Bổ đề~\ref{lem:sign-ps}, nên chỉ giữ lại $j^\star$,
+\[
+R^{x^\star}_{k_l}\ge v_{j^\star}(x^{k_l})\inner{\nabla F_{j^\star}(x^{k_l})}{x^{k_l}-x^\star}.
+\]
+Cho $l\to\infty$ và dùng tính liên tục của $v_{j^\star}$ và $\nabla F_{j^\star}$,
+\[
+\liminf_{l\to\infty}R^{x^\star}_{k_l}\ge v_{j^\star}(\bar x)\inner{\nabla F_{j^\star}(\bar x)}{\bar x-x^\star}=:\Lambda .
+\]
+Vì $j^\star\in I^{\ps}$ và $x^\star\in\Omega$, $F_{j^\star}(x^\star)\le b_{j^\star}<F_{j^\star}(\bar x)$;
+định nghĩa~\eqref{eq:contrapositive} với $x=\bar x$, $y=x^\star$ cho
+$\inner{\nabla F_{j^\star}(\bar x)}{\bar x-x^\star}>0$, và cùng với $v_{j^\star}(\bar x)>0$ ta
+được $\Lambda>0$, mâu thuẫn với $R^{x^\star}_{k_l}\to0$. Khẳng định~3 được chứng minh.
+
+\smallskip
+\emph{Đi đến mâu thuẫn.} Theo Bổ đề~\ref{lem:bound-ps} trên
+$B:=\overline{\conv}\{x^k\}$, $\norm{g^{\ps}_k}\le\abs{I^{\ps}}V_B L'_B$ với
+$L'_B:=\max_{j\in I^{\ps}}\sup_B\norm{\nabla F_j}<\infty$. Đặt
+$G':=\max\{1,\abs{I^{\ps}}V_B L'_B\}$; khi đó $\max\{1,\norm{g^{\ps}_k}\}\le G'$ với mọi $k$,
+nên $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}\ge\gamma_k/G'$. Với $k\ge k_2$,
+kết hợp với $1-\mu_k\ge1/2$ và $R^{x^\star}_k\ge\xi_0$,
+\[
+\sum_{k=0}^\infty(1-\mu_k)\eta^{\ps}_k R^{x^\star}_k\ge\sum_{k\ge k_2}\frac12\cdot\frac{\gamma_k}{G'}\cdot\xi_0=\frac{\xi_0}{2G'}\sum_{k\ge k_2}\gamma_k=+\infty
+\]
+theo (A3)(iii), mâu thuẫn với Bổ đề~\ref{lem:bounded}(iii). Do đó $C\cap\Omega\ne\emptyset$.
+
+\emph{Giai đoạn 3 (hội tụ của toàn bộ dãy).} Cố định $\bar x\in C\cap\Omega$.
+Bổ đề~\ref{lem:bounded}(i), áp dụng với $x^\star=\bar x$, bảo đảm
+$\lim_{k\to\infty}\norm{x^k-\bar x}^2$ tồn tại. Vì $\bar x\in C$, có một dãy con
+$x^{k_l}$ hội tụ tới $\bar x$. Do đó
+\[
+\lim_{k\to\infty}\norm{x^k-\bar x}^2
+=\lim_{l\to\infty}\norm{x^{k_l}-\bar x}^2=0.
+\]
+Vậy toàn bộ dãy hội tụ tới $\bar x$, và ta đặt $x^\infty:=\bar x\in\Omega$.
+Lập luận không cần $\Omega$ chỉ có một điểm: một điểm tụ khả thi và
+sự hội tụ của khoảng cách tới nó là đủ.
+\end{proof}
+
+\begin{remark}\label{rem:delta-role}
+Tham số $\delta>0$ không cần thiết cho sự hội tụ. Khi $\delta=0$, ta lập luận theo
+dãy con: dọc theo $x^{k_l}\to\bar x\in C$, chọn
+$j_l\in\argmax_{j\in I^{\ps}}v_j(x^{k_l})$; vì $I^{\ps}$ hữu hạn, trích
+$j_l\equiv j^\star$, và $v_{j^\star}(x^{k_l})=J^{\ps}(x^{k_l})\to J^{\ps}(\bar x)>0$, nên
+$j^\star$ đạt độ vi phạm lớn nhất tại $\bar x$ và lập luận giả lồi
+vẫn đúng. Vai trò của $\delta>0$ là làm đơn giản: một chỉ số đạt max tại $\bar x$ tự động
+nằm trong $K^{\ps}_{k_l}$ khi $l$ đủ lớn, tránh phải trích dãy con theo ``hữu hạn chỉ số''.
+$\delta$ lớn hơn làm rộng $K^{\cvx}_k$ và $K^{\ps}_k$, điều này có thể cải thiện độ ổn định
+số khi nhiều $v_i(x^k)$ gần bằng nhau.
+\end{remark}
+
+\begin{remark}\label{rem:rate}
+Từ~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, suy ra
+$\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. Đây là cận cho độ vi phạm \emph{tốt nhất} của track lồi
+trong $N$ điểm lặp đầu tiên. Nó không phải là cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư
+$J(x^k)$, cũng không phải tốc độ cho khoảng cách tới một điểm khả thi. Với các đại lượng sau này,
+chỉ dưới (A1)--(A3) ta chỉ khẳng định sự hội tụ định tính.
+\end{remark}
+
+\subsection{Các cấu trúc ràng buộc suy biến}\label{ssec:degenerate}
+Khi cấu trúc ràng buộc suy biến (chỉ có track lồi hoặc chỉ có track giả lồi),
+\dtap{} và phân tích của nó đơn giản đi, cho hai hệ quả của
+Định lý~\ref{thm:strong}.
+
+\begin{corollary}\label{cor:cvx}
+Nếu $I^{\ps}=\emptyset$ thì $J^{\ps}_k\equiv0$, $g^{\ps}_k\equiv0$, và $\mu_k\equiv1$
+mỗi khi $J^{\cvx}_k>0$, nên Thuật toán~\ref{alg:dtap} trở thành
+$x^{k+1}=P_K(x^k-\eta^{\cvx}_k g^{\cvx}_k)$. Dãy hội tụ mạnh tới một điểm
+$x^\infty\in\Omega=\{x\in K:F_i(x)\le b_i\text{ với mọi }i\in I^{\cvx}\}$.
+\end{corollary}
+\begin{proof}
+Ở đây $d_k=\eta^{\cvx}_k g^{\cvx}_k$, và~\eqref{eq:p1} cho trực tiếp
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}+(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2$.
+Nếu $\norm{g^{\cvx}_k}=0$ thì $\eta^{\cvx}_k=0$, $T_k=0$, và cận trở thành
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2$. Ngược lại, Bổ đề~\ref{lem:grad-cvx} cho
+$\inner{g^{\cvx}_k}{x^k-x^\star}\ge2\Phi^{\cvx}_k$, và thay
+$\eta^{\cvx}_k=2\rho_{\cvx}\Phi^{\cvx}_k/\norm{g^{\cvx}_k}^2$ cùng với
+$(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2=\eta^{\cvx}_k\cdot2\rho_{\cvx}\Phi^{\cvx}_k$ ta được, sau khi
+rút gọn,
+$2\eta^{\cvx}_k\inner{g^{\cvx}_k}{x^k-x^\star}-(\eta^{\cvx}_k)^2\norm{g^{\cvx}_k}^2\ge\rho_{\cvx}(2-\rho_{\cvx})(2\Phi^{\cvx}_k)^2/\norm{g^{\cvx}_k}^2=2c_0T_k$.
+Do đó
+\begin{equation}\label{eq:p15}
+\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2c_0T_k ,
+\end{equation}
+đúng với mọi $k$. Như vậy $\{\norm{x^k-x^\star}^2\}$ không tăng và hội tụ, và
+lấy tổng ta được $\sum_k T_k<\infty$. Như trong Bổ đề~\ref{lem:jcvx0}, khi $J^{\cvx}_k>0$ ta có
+$T_k\ge(J^{\cvx}_k)^2/(m^{\cvx}L^2)$ (để ý số mũ $2$ ở đây, so với $3$
+trong~\eqref{eq:p12}, vì không có thừa số $\mu_k$), nên $\sum_k(J^{\cvx}_k)^2<\infty$ và
+$J^{\cvx}_k\to0$. Cuối cùng, $I^{\ps}=\emptyset$ khiến Giai đoạn~2 của
+Định lý~\ref{thm:strong} trở nên hiển nhiên (thật vậy $C\subseteq\Omega$ đã có
+từ~\eqref{eq:p13}), và Giai đoạn~3 cho $x^k\to x^\infty\in\Omega$.
+\end{proof}
+
+\begin{corollary}\label{cor:ps}
+Nếu $I^{\cvx}=\emptyset$ thì $J^{\cvx}_k\equiv0$, $g^{\cvx}_k\equiv0$, và $\mu_k\equiv0$
+mỗi khi $J^{\ps}_k>0$, nên Thuật toán~\ref{alg:dtap} trở thành
+$x^{k+1}=P_K(x^k-\eta^{\ps}_k g^{\ps}_k)$ với $\eta^{\ps}_k=\gamma_k/\max\{1,\norm{g^{\ps}_k}\}$.
+Dãy hội tụ mạnh tới một điểm $x^\infty\in\Omega$.
+\end{corollary}
+\begin{proof}
+Lúc này $d_k=\eta^{\ps}_k g^{\ps}_k$ với $\norm{d_k}^2\le\gamma_k^2$, nên~\eqref{eq:p1} cho
+$\norm{x^{k+1}-x^\star}^2\le\norm{x^k-x^\star}^2-2\eta^{\ps}_k R^{x^\star}_k+\gamma_k^2$,
+chính là~\eqref{eq:fejer} trong trường hợp suy biến này ($T_k=0$, $1-\mu_k=1$). Vì
+$R^{x^\star}_k\ge0$ (Bổ đề~\ref{lem:sign-ps}), $a_{k+1}\le a_k+\gamma_k^2$, và
+Bổ đề~\ref{lem:seq} cho sự hội tụ của $\{\norm{x^k-x^\star}^2\}$ và tính bị chặn;
+lấy tổng ta được $\sum_k\eta^{\ps}_k R^{x^\star}_k<\infty$. Giai đoạn~1 của
+Định lý~\ref{thm:strong} cho $C\subseteq K$ (phần lồi là hiển nhiên); Giai đoạn~2 với
+$\mu_k=0$ (nên $1-\mu_k=1$) cho cùng mâu thuẫn $\sum\eta^{\ps}_k R^{x^\star}_k=+\infty$,
+nên $C\cap\Omega\ne\emptyset$; Giai đoạn~3 cho $x^k\to x^\infty\in\Omega$.
+\end{proof}
+
+
+\section{Thực nghiệm số}\label{sec:experiments}
+Ta tách hiệu quả dự đoán khỏi việc giải số hệ chấp nhận. Phép so sánh phân loại dùng tám bộ dữ liệu. Phần chẩn đoán bộ giải còn dùng thêm Movement Libras và các bài toán giả lồi không lồi có kiểm soát.
+
+\subsection{Mô hình chọn đặc trưng}\label{sec:fs}
+Ta áp dụng NSFP với hộp chuẩn cho bài toán chọn đặc trưng bằng cách kết hợp các tiêu chí từ mô hình quy hoạch phân thức của Wang và cộng sự~\citep{wang2021fractional} và mô hình tập thô mờ AFRSFCV~\citep{wang2026afrsfcv}. Cho $\mathcal{X}=\{x_1,\ldots,x_n\}$ là các mẫu huấn luyện, $A=\{a_1,\ldots,a_p\}$ là các đặc trưng, $X\in\R^{n\times p}$ là ma trận dữ liệu, và $y\in\{1,\ldots,r\}^n$ là nhãn lớp. Ở đây $n$ là số mẫu; chỉ số dưới đánh số đặc trưng, chỉ số trên đánh số vòng lặp. Các trọng số đặc trưng thuộc đơn hình lồi compact $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. Mọi đại lượng có giám sát dưới đây được ước lượng từ dữ liệu huấn luyện.
+
+\subsubsection{Tiêu chí phân thức và N-Fscore}\label{ssec:wang}\label{sssec:wang-inputs}\label{sssec:nfscore}
+Ma trận tương đồng có giám sát $S\in\R^{p\times p}$ có các phần tử
+\begin{equation}\label{eq:simMI}
+s_{ij}=\max\left\{0,\frac{I(Z_i;Z_j;C)}{H(Z_i)+H(Z_j)}\right\},\qquad i,j=1,\ldots,p,
+\end{equation}
+trong đó $Z_i$ là đặc trưng $a_i$ đã rời rạc hóa, $C$ là biến lớp, và $I(Z_i;Z_j;C)=I(Z_i;C)+I(Z_j;C)-I((Z_i,Z_j);C)$ là thông tin tương tác của chúng. Entropy và thông tin tương hỗ được ước lượng từ histogram độ rộng đều với mười khoảng cho mỗi đặc trưng~\citep{brown2012}. Ta đặt $s_{ij}=0$ nếu mẫu số bằng không. Ma trận dư thừa là
+\begin{equation}\label{eq:matrixQ}
+Q_R=S+\delta_QI_p,\qquad \delta_Q\ge-\min\{0,\lambda_{\min}(S)\},
+\end{equation}
+nên $Q_R\succeq0$. Mã cài đặt dùng $\delta_Q=\max\{0,-\lambda_{\min}(S)\}+10^{-10}$. Cho $n_t$, $\bar a_{kt}$ và $\sigma_{kt}^2$ là cỡ lớp, trung bình và phương sai tổng thể của đặc trưng $a_k$ trong lớp $t$, và $\bar a_k$ là trung bình chung của nó. Điểm Fisher là
+\begin{equation}\label{eq:rhoFisher}
+\rho_k=\frac{\sum_{t=1}^r n_t(\bar a_{kt}-\bar a_k)^2}{\sum_{t=1}^r n_t\sigma_{kt}^2+\varepsilon_\rho},\qquad \varepsilon_\rho=10^{-12}.
+\end{equation}
+Các điểm này không âm. Số hạng hiệu chỉnh ở mẫu số tránh chia cho không nhưng không bảo đảm $\rho_k>0$, vì tử số có thể bằng không.
+
+Bài toán quy hoạch phân thức nằm sau N-Fscore là
+\begin{equation}\label{eq:wangOrig}
+\min_{w\in K}\ \frac{w^{\top}Q_Rw}{\rho^{\top}w},
+\end{equation}
+với giả thiết mẫu số dương trên $K$. Tử số đo độ dư thừa và mẫu số đo độ liên quan. Phương pháp cơ sở N-Fscore của ta dùng giai đoạn mạng nơ-ron chiếu của~\citep{wang2021fractional}, với điểm Fisher trong~\eqref{eq:rhoFisher}. Sau đó nó áp dụng quy tắc chọn chung~\eqref{eq:thetaRule}, thay cho giai đoạn $k$-winners-take-all của phương pháp gốc. Động lực học và cách cài đặt Euler hiện của nó được nêu ở Mục~\ref{sssec:baselines}.
+
+\subsubsection{Tiêu chí tập thô mờ và AFRSFCV}\label{ssec:afrsfcv}\label{sssec:afrsfcv-inputs}\label{sssec:afrsfcv-model}
+Với mỗi lớp, viết $D_t=\{x_i:y_i=t\}$ và $D_t(x_j)=\mathbf1_{\{y_j=t\}}$. AFRSFCV đưa phương sai lớp vào một quan hệ mờ. Với $a_k(x_i)=X_{ik}$, quan hệ được cài đặt là
+\begin{equation}\label{eq:simRel}
+R_k(x_i,x_j)=\exp\!\left(-\frac{[a_k(x_i)-a_k(x_j)]^2}{2\widetilde\sigma_{k,y_i}^2}\right),
+\qquad \widetilde\sigma_{kt}^2=\max\{\sigma_{kt}^2,10^{-10}\}.
+\end{equation}
+Chặn dưới của phương sai làm công thức xác định khi một đặc trưng là hằng trong một lớp. Xấp xỉ dưới mờ là
+\begin{equation}\label{eq:lower}
+\underline{R_k}(D_t)(x_i)=\min_{x_j\in\mathcal{X}}\max\{1-R_k(x_i,x_j),D_t(x_j)\}.
+\end{equation}
+Các giá trị này tạo thành ma trận $\underline{R_k}(D)\in[0,1]^{n\times r}$. Cho $Y_{it}=\mathbf1_{\{y_i=t\}}$ là ma trận nhãn và định nghĩa ma trận quyết định bởi
+\begin{equation}\label{eq:Pmat}
+P_{ik}=\mathbf1_{\{\argmax_{1\le t\le r}\underline{R_k}(D_t)(x_i)=y_i\}}.
+\end{equation}
+Trường hợp bằng nhau được phân định bằng chỉ số lớp nhỏ nhất. Như vậy $P_{ik}=1$ đúng khi đặc trưng $a_k$ dự đoán đúng mẫu $x_i$ theo quy tắc này.
+
+Phương pháp cơ sở AFRSFCV~\citep{wang2026afrsfcv} cực tiểu hóa
+\begin{equation}\label{eq:afrsfcvLoss}
+\begin{split}
+\min_{\tau\in\R^p}\ L(\tau)
+&=\frac12\left\|Y-\sum_{k=1}^{p}w_k(\tau)\underline{R_k}(D)\right\|_F^2\\
+&\quad+\frac{\lambda_1}{2}\|\mathbf1_n-Pw(\tau)\|^2+\frac{\lambda_2}{2}\|w(\tau)\|^2,
+\end{split}
+\end{equation}
+trong đó $w_k(\tau)=e^{\tau_k}/\sum_{l=1}^{p}e^{\tau_l}$ bảo đảm $w(\tau)\in K$. Ba số hạng là sai số xấp xỉ nhãn, trọng số của các đặc trưng phân loại sai trên mỗi mẫu, và một số hạng Tikhonov. Phương pháp cơ sở dùng hạ gradient với số vòng lặp cố định, rồi áp dụng~\eqref{eq:thetaRule}. Gradient và bước cập nhật được nêu ở Mục~\ref{sssec:baselines}.
+
+\subsubsection{Bài toán chấp nhận và chọn đặc trưng}\label{ssec:reduction}\label{ssec:selection}
+Ta đặt các cận riêng rẽ lên ba tiêu chí,
+\begin{align}
+F_1(w)&=\left\|Y-\sum_{k=1}^{p}w_k\underline{R_k}(D)\right\|_F^2,\label{eq:fsF1}\\
+F_2(w)&=\|\mathbf1_n-Pw\|^2,\label{eq:fsF2}\\
+F_3(w)&=\frac{w^{\top}Q_Rw}{\rho^{\top}w},\qquad U_\rho=\{w:\rho^{\top}w>0\}.\label{eq:fsF3}
+\end{align}
+Ở đây $F_1,F_2$ là hai số hạng đầu của~\eqref{eq:afrsfcvLoss}, bỏ hệ số, và $F_3$ là hàm mục tiêu trong~\eqref{eq:wangOrig}. Với các ngưỡng $b_i>0$, bài toán thu được là
+\begin{equation}\label{eq:nsfp-fs}
+\text{tìm }w^\star\in\Omega,\qquad \Omega=\{w\in K:F_i(w)\le b_i,\ i=1,2,3\}.
+\end{equation}
+Cách phát biểu này đòi hỏi ba tiêu chí đồng thời ở mức chấp nhận được. Nó bỏ số hạng Tikhonov và không bảo toàn bài toán tối ưu gốc nào cũng như các nghiệm của chúng.
+
+\begin{proposition}\label{prop:fs-reg}
+Nếu $Q_R\succeq0$ và $\min_k\rho_k>0$ thì cả ba hàm trong~\eqref{eq:fsF1}--\eqref{eq:fsF3} trơn và lồi trên một lân cận mở lồi của $K$. Do đó~\eqref{eq:nsfp-fs} là một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Vì vậy~\eqref{eq:nsfp-fs} thỏa (A1) và (A2) của Giả thiết~\ref{ass:standing}, với $U=U_\rho$, bất cứ khi nào $\Omega\ne\varnothing$.
+\end{proposition}
+\begin{proof}
+Hai hàm đầu là bình phương chuẩn của các ánh xạ affine. Với $w\in U_\rho$ và một hướng $h$ bất kỳ, đặt $t=\rho^{\top}w$ và $a=\rho^{\top}h$. Lấy đạo hàm trực tiếp ta được
+\begin{equation}\label{eq:fsF3-curvature}
+D^2F_3(w)[h,h]=\frac2t\left(h-\frac atw\right)^{\!\top}Q_R\left(h-\frac atw\right)\ge0.
+\end{equation}
+Vậy $F_3$ lồi và trơn trên nửa không gian mở $U_\rho$. Vì $\rho^{\top}w\ge\min_k\rho_k>0$ với $w\in K$, nửa không gian này chứa $K$.
+\end{proof}
+
+Thực nghiệm dùng $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$; cách gán này hợp lệ vì hàm lồi là giả lồi; khi đó DTAP chỉ dùng thông tin về dấu cho $F_3$, nên không có ràng buộc thực sự không lồi nào được kiểm tra. Cách gán toàn lồi $I^{\cvx}=\{1,2,3\}$ cũng hợp lệ, và Định lý~\ref{thm:strong} áp dụng cho cả hai. Mệnh đề~\ref{prop:fs-reg} cần $\min_k\rho_k>0$; trên mọi bài toán dùng ở đây, điểm số nhỏ nhất là $4.77\times10^{-5}$. Do đó chặn an toàn $\max\{\rho^\top w,10^{-15}\}$ trong mã cài đặt không bao giờ có tác dụng, và $F_3$ được cài đặt đúng là~\eqref{eq:fsF3}.
+
+Các ngưỡng được hiệu chỉnh trên dữ liệu huấn luyện: $b_i$ là phân vị thứ $q_i$ của $F_i$ trên $3\,000$ điểm Dirichlet (seed $42$) và $p$ đỉnh của $K$, trong đó một quy tắc cố định chọn $q_i$ theo cỡ mẫu, số đặc trưng, số lớp và mức mất cân bằng lớp (siêu dữ liệu bổ sung). Mọi bộ giải dùng chung các ngưỡng này. Hiệu chỉnh riêng từng $b_i$ không bảo đảm $\Omega\ne\varnothing$; Mục~\ref{ssec:feasibility-audit} kiểm tra tính khả thi bằng số. Nếu ngưỡng được cho trước thì sẽ được dùng nguyên như vậy.
+
+Với mọi phương pháp, sắp xếp các trọng số tính được thành $w^\star_{(1)}\ge\cdots\ge w^\star_{(p)}$ và giữ lại $s$ đặc trưng đầu, trong đó
+\begin{equation}\label{eq:thetaRule}
+s=\min\left\{s'\in\{1,\ldots,p\}:\sum_{j=1}^{s'}w^\star_{(j)}\ge\theta\right\},\qquad 0<\theta<1.
+\end{equation}
+Quy tắc trọng số tích lũy này không áp đặt một số lượng đặc trưng cho trước. Việc cắt bớt các trọng số không bảo toàn bảo đảm khả thi của vector đầy đủ.
+
+\begin{remark}\label{rem:fs-cost}
+Với các ma trận đã tính sẵn, tính $F_1,\nabla F_1$ tốn $O(nrp)$, tính $F_2,\nabla F_2$ tốn $O(np)$, và tính $F_3,\nabla F_3$ tốn $O(p^2)$. Phép chiếu lên $K=\Delta_{p-1}$ bằng sắp xếp tốn $O(p\log p)$ phép toán~\citep{condat2016simplex}. Vì vậy một vòng lặp dày tốn $O(nrp+p^2)$ phép toán và cần $O(nrp+p^2)$ bộ nhớ, kể cả $Q_R$. Tiền xử lý và huấn luyện bộ phân loại là các chi phí riêng.
+\end{remark}
+
+\subsection{Thiết lập thực nghiệm}\label{ssec:setup}
+Nghiên cứu phân loại chính dùng tám bộ dữ liệu UCI~\citep{kelly2023uci} trong Bảng~\ref{tab:datasets}. Các lần chạy DTAP báo cáo ở đây xuất phát từ vector trọng số đều và dùng $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, sai số dừng $10^{-6}$, và ngân sách $1000$ vòng lặp. SG-const dùng bước $\nu_k=10^{-3}$ và SG-dyn dùng mô-đun lấy mẫu $\widehat L$ (Mục~\ref{sssec:baselines}); mô-đun tinh chỉnh chỉ được xét ở Mục~\ref{ssec:feasibility-audit}. N-Fscore dùng $\varepsilon_{\mathrm{PNN}}=10^{-3}$ và $1000$ điểm lưới Euler trên $[0,0.2]$. AFRSFCV dùng tốc độ học $10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, và $1000$ bước. Ngưỡng tích lũy dùng chung là $\theta=0.9$.
+
+\begin{table}[htbp]
+\centering
+\caption{Các bộ dữ liệu dùng cho phép so sánh phân loại chính. Bộ Movement Libras bổ sung chỉ được dùng trong phần chẩn đoán bộ giải.}\label{tab:datasets}
+\begin{tabular}{lrrrl}
+\toprule
+Bộ dữ liệu   & Số mẫu $n$ & Số đặc trưng $p$ & Số lớp $r$ & Cân bằng    \\
+\midrule
+Glass        & $214$       & $9$          & $6$         & Mất cân bằng \\
+Diabetes     & $768$       & $8$          & $2$         & Mất cân bằng \\
+Segmentation & $2\,310$    & $18$         & $7$         & Cân bằng   \\
+Abalone      & $4\,177$    & $8$          & $3$         & Cân bằng   \\
+Satimage     & $6\,435$    & $36$         & $6$         & Mất cân bằng \\
+Yeast        & $1\,484$    & $7$          & $10$        & Mất cân bằng \\
+Spambase     & $4\,601$    & $57$         & $2$         & Mất cân bằng \\
+Pendigits    & $10\,992$   & $16$         & $10$        & Cân bằng   \\
+\bottomrule
+\end{tabular}
+\end{table}
+\subsubsection{Các bộ giải cơ sở}\label{sssec:baselines}
+Các đoạn sau mô tả các bộ giải cơ sở: N-Fscore và AFRSFCV cho các mô hình ở Mục~\ref{sssec:nfscore} và~\ref{sssec:afrsfcv-model}, và các phương pháp dưới gradient SG-const và SG-dyn.
+
+\paragraph*{N-Fscore: mạng nơ-ron chiếu}
+Để giải bài toán quy hoạch phân thức~\eqref{eq:wangOrig}, Wang và cộng sự~\citep{wang2021fractional} đề xuất một phương pháp động lực học nơ-ron ghép một mạng nơ-ron chiếu (PNN) với một mạng $k$-winners-take-all. PNN là hệ vi phân
+\begin{equation}\label{eq:pnn}
+\begin{split}\varepsilon_{\mathrm{PNN}}\frac{du}{dt}={}&-\Pi g(u)+\tfrac1p\mathbf{1}_p\\&-(I-\Pi)\bigl(u-g(u)+\nabla f((I-\Pi)g(u)+\tfrac1p\mathbf{1}_p)\bigr).\end{split}
+\end{equation}
+với đầu ra $w=g(u)$, trong đó $g(u)=\max\{0,u\}$ là hàm ReLU theo từng thành phần, $\Pi=\tfrac1p\mathbf{1}_p\mathbf{1}_p^{\top}$, $\nabla f$ là gradient của hàm mục tiêu trong~\eqref{eq:wangOrig}, và $\varepsilon_{\mathrm{PNN}}>0$ là một hằng số thời gian. Ta tích phân~\eqref{eq:pnn} bằng phương pháp Euler hiện trên một lưới đều gồm $N_{\mathrm{grid}}$ điểm trong $[0,T]$, không có quy tắc dừng, với các tham số ở Mục~\ref{ssec:setup}. Vector trọng số là hình chiếu $P_K\bigl(g(u(T))\bigr)$ của đầu ra cuối cùng của mạng lên $K$. Để so sánh đồng nhất, ta chỉ dùng phần PNN để thu được $w^\star$; giai đoạn $k$-WTA được thay bằng quy tắc ngưỡng tích lũy dùng chung ở Mục~\ref{ssec:selection}.
+
+\paragraph*{AFRSFCV: gradient và bước cập nhật}
+Hàm mất mát softmax~\eqref{eq:afrsfcvLoss} được cực tiểu hóa theo $\tau\in\R^p$ bằng hạ gradient. Gradient của nó là
+\begin{equation}\label{eq:gradTau}
+\nabla_\tau L(\tau)=\bigl(\diag(w(\tau))-w(\tau)w(\tau)^{\top}\bigr)\nabla_w L(w(\tau)),
+\end{equation}
+với $\nabla_w L=-\mathbf{M}^{\top}(\vecop(Y)-\mathbf{M}w)+\lambda_1(P^{\top}Pw-P^{\top}\mathbf{1}_n)+\lambda_2 w$, trong đó $\mathbf{M}\in\R^{nr\times p}$ có cột thứ $k$ là $\vecop(\underline{R_k}(D))$. Bước cập nhật $\tau^{t+1}=\tau^t-\eta\,\nabla_\tau L(\tau^t)$ chạy với ngân sách cố định $T$ bước; trọng số cuối $w^\star=w(\tau^T)\in K$ được đưa vào quy tắc chọn dùng chung ở Mục~\ref{ssec:selection}.
+
+\paragraph*{SG-const và SG-dyn}
+Các phương pháp dưới gradient cho bài toán chấp nhận tựa lồi này~\citep{hu2022quasi} theo
+chiến lược ràng buộc bị vi phạm nhiều nhất của bài báo đó: với $\mathcal I_k=\argmax_i v_i(w^k)$,
+\[
+w^{k+1}=P_K(w^k-\nu_k\bar h_k),\qquad
+\bar h_k=\frac1{|\mathcal I_k|}\sum_{i\in\mathcal I_k}\frac{\nabla F_i(w^k)}{\|\nabla F_i(w^k)\|}.
+\]
+SG-const dùng $\nu_k=10^{-3}$; SG-dyn dùng bước động $\nu_k=J(w^k)/L$ (số mũ H\"older
+bằng $1$), với $L=\widehat L$ là chuẩn gradient lớn nhất tại $500$ điểm lấy mẫu trong $K$.
+
+
+
+\subsubsection{Quy trình đánh giá}\label{sssec:protocol}
+Mỗi bộ dữ liệu dùng một phép chia phân tầng duy nhất $80/20$ thành tập huấn luyện và tập kiểm tra
+(seed $42$). Chuẩn hóa min--max được khớp một lần trên toàn bộ tập huấn luyện, không
+khớp riêng trong từng fold chọn đặc trưng, rồi áp dụng cho dữ liệu kiểm tra.
+Các fold phân tầng (seed $42$) trong tập huấn luyện dùng $N_f=10$, giảm còn $7$ trên Glass
+và $4$ trên Yeast. Mặt nạ của mỗi fold dùng $\theta=0.9$ trong~\eqref{eq:thetaRule};
+quy tắc đa số chặt cố định giữ lại các đặc trưng được chọn trong ít nhất
+$\lfloor N_f/2\rfloor+1$ fold. Ta ký hiệu tập đặc trưng được bỏ phiếu chọn là $A^\star$. Các bộ phân loại cuối dùng toàn bộ tập huấn luyện với các
+đặc trưng được chọn này: RBF-SVM ($C=1$, \texttt{gamma=scale}) và $5$-NN, với tập
+đặc trưng đầy đủ làm đối chứng. Ta báo cáo độ chính xác và AUC một-chọi-còn-lại trung bình macro.
+
+Các mặt nạ bỏ phiếu được tính một lần rồi dùng lại: giai đoạn đánh giá chỉ huấn luyện
+các bộ phân loại phía sau trên các mặt nạ cố định này, với seed hiệu chỉnh xác suất của SVM
+bằng $42$; các mặt nạ giống nhau cho cùng dự đoán. Dữ liệu kiểm tra không được dùng để chọn đặc trưng hay chọn bất kỳ tham số hoặc ngưỡng bỏ phiếu nào.
+Phép chia huấn luyện/kiểm tra được cố định trước khi tính các tập đặc trưng, và quy tắc chọn
+mức ngưỡng chỉ dùng cỡ mẫu, số đặc trưng, số lớp
+và kích thước các lớp của toàn bộ dữ liệu, không dùng giá trị đặc trưng nào. Vì chỉ dùng một phép chia,
+đây là một đánh giá khám phá, không phải một nghiên cứu đầu-cuối hay kiểm định lồng.
+Với ma trận chọn theo fold $Z\in\{0,1\}^{N_f\times p}$, chỉ số Nogueira~\citep{nogueira2018}
+được tính bởi
+\[
+\Psi=1-\frac{p^{-1}\sum_{j=1}^{p}s_j^2}{\bar q(1-\bar q)},\quad
+s_j^2=\frac{1}{N_f-1}\sum_{b=1}^{N_f}(Z_{bj}-\bar Z_j)^2,\quad
+\bar q=\frac{1}{N_f p}\sum_{b,j}Z_{bj}.
+\]
+Ở đây $\bar Z_j=N_f^{-1}\sum_b Z_{bj}$, và $s_j^2$ là phương sai không chệch trên $N_f$
+fold.
+Vì các fold huấn luyện chồng lên nhau, độ ổn định chỉ được báo cáo ở mức mô tả.
+Với mỗi độ đo phân loại, ta dùng kiểm định hạng có dấu hai phía trên
+tám bộ dữ liệu, bỏ các hiệu bằng không, gán hạng trung bình cho các giá trị bằng nhau, và
+liệt kê mọi cách đặt dấu của các hiệu khác không; các cặp toàn số 0 nhận giá trị $p$ bằng $1$.
+Hiệu chỉnh Holm áp dụng riêng cho bốn phép so sánh DTAP với phương pháp cơ sở trong
+mỗi độ đo. Kiểm định Friedman so sánh năm phương pháp chọn đặc trưng.
+
+\subsection{Kết quả phân loại}\label{ssec:results}
+Các Bảng~\ref{tab:nfeat}--\ref{tab:perf-summary} báo cáo kích thước tập được chọn,
+độ ổn định và hiệu quả dự đoán. Trung bình DTAP giữ lại $84.2\%$ số đặc trưng,
+trong đó $33/36$ trên Satimage và $49/57$ trên Spambase.
+Độ ổn định trung bình của nó là $0.786$, so với $0.822$ của N-Fscore.
+Như vậy DTAP giảm số đặc trưng ở mức vừa phải; nó không chọn được các tập thưa hơn hay
+ổn định hơn các mô hình gốc. AFRSFCV chọn các tập nhỏ hơn nhiều trên một số bộ dữ liệu,
+với độ chính xác trung bình thấp hơn trong cấu hình cố định.
+
+Độ chính xác trung bình của DTAP cách đối chứng dùng toàn bộ đặc trưng không quá $0.44$ điểm phần trăm
+với cả hai bộ phân loại. Nó cao hơn N-Fscore và AFRSFCV lần lượt $3.12$
+và $4.83$ điểm về độ chính xác SVM, trong khi giữ lại nhiều đặc trưng hơn.
+Đây là sự đánh đổi giữa kích thước và khả năng dự đoán, không phải một phép so sánh cùng số lượng đặc trưng.
+Cả hai biến thể SG có mặt nạ bỏ phiếu giống hệt DTAP trên bảy bộ dữ liệu;
+chỉ Spambase khác ($48$ so với $49$ đặc trưng).
+SG-dyn dùng hết ngân sách 1000 vòng lặp ở 6/7 fold chọn trên Glass,
+7/10 trên Diabetes và 10/10 trên Abalone, còn SG-const ở 1/10 trên Abalone
+(DTAP không có fold nào); trọng số bỏ phiếu của cả hai biến thể SG là các điểm lặp tốt nhất
+tìm được trong ngân sách. Kết quả SG trên Spambase, bộ dữ liệu duy nhất
+mà chúng khác DTAP, được ghi dưới Bảng~\ref{tab:acc};
+Bảng~\ref{tab:perf-summary} gồm cả năm phương pháp.
+Độ ổn định theo fold có thể khác nhau ngay cả khi mặt nạ bỏ phiếu cuối cùng giống hệt.
+
+Bảng~\ref{tab:wilcoxon} báo cáo các kiểm định hạng có dấu. Không phép so sánh từng cặp nào
+bác bỏ ở mức $0.05$ sau hiệu chỉnh Holm; các phép so sánh SVM với
+hai mô hình gốc có giá trị $p$ hiệu chỉnh trong khoảng $0.0625$ đến $0.0938$.
+Các kiểm định Friedman tiệm cận bác bỏ giả thuyết bằng nhau trên tổng thể, nhưng điều này không xác lập
+ưu thế của một cặp cụ thể nào. Mọi giá trị $p$ của các cặp DTAP--SG đều bằng $1$;
+điều này phản ánh các giá trị bằng nhau và bằng chứng hạn chế, không phải một khẳng định tương đương thống kê.
+Các phép so sánh trên mẫu nhỏ này liên quan đến tám bộ dữ liệu không đồng nhất và không
+đo sự biến động khi lặp lại phép chia huấn luyện/kiểm tra.
+
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{Số đặc trưng được chọn $|A^\star|$ / độ ổn định Nogueira $\Psi$; $p$ là số chiều gốc. Cả năm phương pháp chọn đặc trưng đều được trình bày.}\label{tab:nfeat}
+\begin{tabular}{lrrrrrr}
+\toprule
+Bộ dữ liệu & $p$ & N-Fscore & AFRSFCV & DTAP & SG-const & SG-dyn \\
+\midrule
+Glass & $9$ & $7/0.816$ & $7/0.609$ & $7/0.633$ & $7/0.633$ & $7/0.633$ \\
+Diabetes & $8$ & $7/0.290$ & $3/0.810$ & $7/0.707$ & $7/0.707$ & $7/0.707$ \\
+Segmentation & $18$ & $8/0.885$ & $2/1.000$ & $16/0.800$ & $16/0.888$ & $16/0.888$ \\
+Abalone & $8$ & $4/0.950$ & $2/1.000$ & $5/1.000$ & $5/1.000$ & $5/0.870$ \\
+Satimage & $36$ & $10/0.871$ & $3/0.685$ & $33/0.563$ & $33/0.563$ & $33/0.563$ \\
+Yeast & $7$ & $6/1.000$ & $5/1.000$ & $6/0.757$ & $6/0.757$ & $6/0.757$ \\
+Spambase & $57$ & $26/0.910$ & $4/0.885$ & $49/0.832$ & $48/0.851$ & $48/0.851$ \\
+Pendigits & $16$ & $13/0.854$ & $12/0.063$ & $15/1.000$ & $15/1.000$ & $15/1.000$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{Độ chính xác (\%) / AUC một-chọi-còn-lại trung bình macro theo từng bộ dữ liệu trên tập giữ lại duy nhất. Các mặt nạ bỏ phiếu giống nhau dùng chung dự đoán; các ngoại lệ của SG được ghi bên dưới.}\label{tab:acc}
+\begin{tabular}{llrrrr}
+\toprule
+Bộ dữ liệu & Bộ phân loại & Đầy đủ & N-Fscore & AFRSFCV & DTAP \\
+\midrule
+Glass & SVM & $76.74/0.9222$ & $69.77/0.9073$ & $72.09/0.9174$ & $72.09/0.9174$ \\
+ & $5$-NN & $72.09/0.9097$ & $74.42/0.8933$ & $69.77/0.9371$ & $69.77/0.9371$ \\
+Diabetes & SVM & $74.68/0.8089$ & $71.43/0.7957$ & $65.58/0.6617$ & $74.68/0.8098$ \\
+ & $5$-NN & $71.43/0.7356$ & $70.78/0.7154$ & $67.53/0.7145$ & $73.38/0.7766$ \\
+Segmentation & SVM & $93.29/0.9936$ & $80.52/0.9714$ & $78.79/0.9668$ & $93.29/0.9940$ \\
+ & $5$-NN & $94.37/0.9880$ & $87.01/0.9801$ & $86.58/0.9646$ & $94.59/0.9897$ \\
+Abalone & SVM & $61.60/0.8102$ & $61.36/0.8065$ & $62.56/0.8114$ & $62.68/0.8123$ \\
+ & $5$-NN & $59.81/0.7742$ & $61.00/0.7605$ & $58.73/0.7752$ & $60.29/0.7695$ \\
+Satimage & SVM & $89.12/0.9796$ & $87.10/0.9756$ & $80.42/0.9611$ & $89.12/0.9797$ \\
+ & $5$-NN & $91.14/0.9792$ & $87.80/0.9705$ & $80.96/0.9306$ & $91.22/0.9766$ \\
+Yeast & SVM & $58.25/0.8561$ & $58.92/0.8241$ & $57.91/0.8207$ & $58.59/0.8426$ \\
+ & $5$-NN & $51.52/0.7667$ & $51.52/0.7763$ & $51.52/0.7681$ & $51.52/0.7585$ \\
+Spambase & SVM & $92.07/0.9662$ & $88.38/0.9392$ & $87.62/0.9155$ & $91.97/0.9616$ \\
+ & $5$-NN & $90.34/0.9443$ & $85.78/0.9214$ & $88.49/0.9206$ & $89.25/0.9437$ \\
+Pendigits & SVM & $99.09/0.9995$ & $98.95/0.9996$ & $97.77/0.9996$ & $98.95/0.9995$ \\
+ & $5$-NN & $98.95/0.9982$ & $98.64/0.9982$ & $97.73/0.9965$ & $99.05/0.9987$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.97\textwidth}\footnotesize Trên bảy bộ dữ liệu còn lại, cả hai biến thể SG cho kết quả đúng bằng DTAP. Trên Spambase, cả hai cho $91.86/0.9628$ (SVM) và $89.14/0.9441$ ($5$-NN). \end{minipage}
+\end{table}
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{Hiệu quả phân loại trung bình không trọng số trên tám bộ dữ liệu phân loại. Gồm cả năm phương pháp chọn đặc trưng và đối chứng dùng toàn bộ đặc trưng.}\label{tab:perf-summary}
+\begin{tabular}{lrrrr}
+\toprule
+Phương pháp & Độ chính xác SVM & Độ chính xác $5$-NN & AUC SVM & AUC $5$-NN \\
+\midrule
+Đầy đủ & $80.61$ & $78.71$ & $0.9170$ & $0.8870$ \\
+N-Fscore & $77.05$ & $77.12$ & $0.9024$ & $0.8770$ \\
+AFRSFCV & $75.34$ & $75.16$ & $0.8818$ & $0.8759$ \\
+DTAP & $80.17$ & $78.63$ & $0.9146$ & $0.8938$ \\
+SG-const & $80.16$ & $78.62$ & $0.9148$ & $0.8939$ \\
+SG-dyn & $80.16$ & $78.62$ & $0.9148$ & $0.8939$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+\begin{table}[htbp]
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\caption{DTAP so với từng phương pháp cơ sở: giá trị $p$ của kiểm định hạng có dấu, gốc / sau hiệu chỉnh Holm. Mỗi độ đo có bốn phép so sánh trên tám bộ dữ liệu. Cột cuối là giá trị $p$ tiệm cận của kiểm định Friedman (đã hiệu chỉnh cho giá trị bằng nhau) cho cả năm phương pháp.}\label{tab:wilcoxon}
+\begin{tabular}{lrrrrr}
+\toprule
+Độ đo & N-Fscore & AFRSFCV & SG-const & SG-dyn & Friedman \\
+\midrule
+Độ chính xác, SVM & $0.0312/0.0938$ & $0.0156/0.0625$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0005$ \\
+Độ chính xác, $5$-NN & $0.3750/1.0000$ & $0.0312/0.1250$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0057$ \\
+AUC, SVM & $0.0156/0.0625$ & $0.0312/0.0938$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0055$ \\
+AUC, $5$-NN & $0.0781/0.3125$ & $0.1562/0.4688$ & $1.0000/1.0000$ & $1.0000/1.0000$ & $0.0435$ \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\subsection{Mức hoạt động của ràng buộc và một phép so sánh với phương pháp dưới gradient đã tinh chỉnh}
+\label{ssec:feasibility-audit}
+
+Như đã nêu ở Mục~\ref{ssec:reduction}, các ngưỡng đã hiệu chỉnh không nhất thiết cho
+$\Omega\ne\varnothing$. Với mỗi bài toán dữ liệu đầy đủ dưới đây, ta giữ lại điểm được đánh giá có độ dôi
+$\min_i(b_i-F_i(w))$ lớn nhất trên mọi lần chạy. Khi tính lại trên các ma trận dựng lại từ dữ liệu, mỗi
+điểm này thỏa chặt cả ba bất đẳng thức; độ dôi nhỏ nhất là
+$4.33\times10^{-4}$. Đây là một phép kiểm tra số, không phải chứng nhận chính xác về tính khả thi.
+
+Ta đếm các điểm lặp của một lần chạy, kể cả điểm cuối (các điểm được đánh giá của nó), tại đó
+$F_3(w^k)-b_3>10^{-6}$. Đại lượng này đo sự vi phạm dọc theo quỹ đạo, chứ không đo việc
+ràng buộc có chặt tại giới hạn hay không. Bảng~\ref{tab:activation-tuning} cho thấy, từ
+điểm xuất phát chuẩn, $F_3$ không bị vi phạm tại điểm được đánh giá nào trên bảy trong tám bộ dữ liệu
+phân loại, và bị vi phạm tại một trong $48$ điểm được đánh giá trên Abalone. Vì $F_3$ lồi
+(Mệnh đề~\ref{prop:fs-reg}), các bài toán chọn đặc trưng này kiểm tra một lớp con lồi và
+không cho thấy cần đến phần mở rộng không lồi. Ta cũng báo cáo phương án so sánh toàn lồi
+(AC), gán cả ba ràng buộc vào track lồi.
+
+\paragraph*{Quy trình và chi phí tinh chỉnh.}
+Đây là các phép thử chỉ về tối ưu trên các bài toán chấp nhận với dữ liệu đầy đủ.
+Chúng dùng $J\le10^{-6}$, tối đa $1\,000$ điểm được đánh giá, và cùng
+điểm xuất phát cho mọi phương pháp. SG-const và SG-dyn được định nghĩa ở Mục~\ref{sssec:baselines}. Bên cạnh SG-dyn với
+mô-đun lấy mẫu $\widehat L$, một biến thể tinh chỉnh chọn $L=c\widehat L$ từ lưới đặt thủ công
+$c\in\{10^{-3},10^{-2.5},\ldots,10^1\}$ bằng ba điểm xuất phát
+ngẫu nhiên (seed $1101$--$1103$). Việc chọn trước hết cực đại hóa số
+lần chạy thành công, sau đó cực tiểu hóa tổng số lần đánh giá, rồi tổng phần dư tốt nhất.
+Đánh giá dùng điểm xuất phát chuẩn và ba điểm xuất phát ngẫu nhiên khác
+(seed $2101$--$2103$). Các điểm xuất phát cho bài toán đặc trưng là các mẫu Dirichlet.
+Chỉ các điểm xuất phát được tách riêng: tinh chỉnh và đánh giá dùng cùng
+bài toán dữ liệu đầy đủ, và không dùng điểm phân loại nào. Cả
+$\widehat L$ lẫn giá trị đã tinh chỉnh đều không phải là một mô-đun H\"older toàn cục đã được chứng nhận.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{Số lần đánh giá trong tối ưu, xuất phát từ điểm đều trên đơn hình.
+AC là phương án so sánh toàn lồi; ``lấy mẫu'' và ``tinh chỉnh'' là hai biến thể của SG-dyn.
+$\dagger$ nghĩa là không đạt sai số dừng trong ngân sách.
+Cột cuối là số điểm mà DTAP vi phạm ràng buộc thứ ba, chia cho
+số điểm được đánh giá của nó.}
+\label{tab:activation-tuning}
+\begin{tabular}{@{}lrrrrrl@{}}
+\toprule
+Bộ dữ liệu & DTAP & AC & SG-const & Lấy mẫu & Tinh chỉnh & Hoạt động của $F_3$\\
+\midrule
+Glass        & 89 & 89 & 520 & $1000^\dagger$ & 100 & $0/89$\\
+Diabetes     & 14 & 14 & 350 & $1000^\dagger$ & 51 & $0/14$\\
+Segmentation & 3 & 3 & 124 & 170 & 3 & $0/3$\\
+Abalone      & 48 & 48 & 638 & $1000^\dagger$ & 3 & $1/48$\\
+Satimage     & 2 & 2 & 60 & 102 & 2 & $0/2$\\
+Yeast        & 4 & 4 & 324 & 305 & 3 & $0/4$\\
+Spambase     & 5 & 5 & 93 & 295 & 56 & $0/5$\\
+Pendigits    & 2 & 2 & 49 & 10 & 31 & $0/2$\\
+\midrule
+Movement Libras & 637 & 637 & 62 & $1000^\dagger$ & 144 & $0/637$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Mỗi khi $F_3(w^k)\le b_3$ dọc theo một lần chạy, track giả lồi rỗng,
+$\mu_k=1$ và DTAP trùng từng bước với phương án so sánh toàn lồi;
+trên tám bài toán có mức hoạt động của $F_3$ bằng không, hai cột DTAP và AC giống hệt nhau
+phản ánh sự trùng khớp này. Trên Abalone, $F_3$ chỉ bị vi phạm tại điểm xuất phát
+đều ($1/48$), nơi $J^{\ps}_0\approx1.56\times10^{-3}$ rất nhỏ so với
+$J^{\cvx}_0\approx366.3$, nên $1-\mu_0\approx4.27\times10^{-6}$; các giá trị của $J$
+dọc hai quỹ đạo thỏa $|J_{\rm DTAP}-J_{\rm AC}|\le3.18\times10^{-5}\,J_{\rm AC}$ tại
+mọi điểm được đánh giá,
+và cả hai lần chạy dừng sau $48$ điểm được đánh giá. Vì vậy các cột này
+không phải là phép so sánh hai cách gán, mà số lần thành công của chúng
+chỉ khác nhau trên các điểm xuất phát ngẫu nhiên ($26/36$ so với $36/36$).
+
+Tinh chỉnh nâng số lần thành công của SG-dyn từ điểm xuất phát chuẩn từ $5/9$ lên $9/9$.
+Nó có thể tốt hơn DTAP, chẳng hạn trên Abalone, và SG-const nhanh hơn
+trên Movement Libras. Trên cả bốn điểm xuất phát của cả chín bài toán đặc trưng,
+số lần thành công là $26/36$ cho DTAP, $36/36$ cho phương án so sánh toàn lồi,
+$33/36$ cho SG-const, $15/36$ cho SG-dyn lấy mẫu, và $28/36$
+cho SG-dyn tinh chỉnh. Một biến thể DTAP cân bằng cũng đạt $26/36$; nó gán
+trọng số bằng nhau khi cả hai track bị vi phạm, và ngược lại gán toàn bộ trọng số cho track duy nhất bị vi phạm.
+Như vậy các phép thử này không chứng tỏ được ưu thế đồng đều của trọng số tỉ lệ,
+cũng như độ bền đối với điểm khởi đầu.
+
+Chín lần tìm kiếm tham số trên các bài toán đặc trưng cần tổng cộng $179\,744$ lần đánh giá trong tối ưu
+và $10.80$ giây thời gian giải cho việc tinh chỉnh. Các chi phí này
+là phần thêm vào so với Bảng~\ref{tab:activation-tuning}; DTAP không được tinh chỉnh.
+Việc lấy mẫu mô-đun ban đầu, tiền xử lý và chi phí phụ của việc tìm kiếm không được tính
+vào tổng thời gian giải này. Hồ sơ bổ sung ghi chi phí của
+từng lần tìm kiếm.
+
+\paragraph*{Một ràng buộc giả lồi thực sự không lồi.}
+Để kiểm tra trực tiếp track giả lồi, xét $K=[-2,2]^d$ và
+\begin{equation}\label{eq:logball-test}
+\begin{aligned}
+ F_1(x)&=\|x+e_1\|^2\le1,\qquad
+ F_2(x)=\|x-e_2\|^2\le\tfrac94,\\
+ F_3(x)&=\kappa\log(1+\|x-e_1\|^2)\le \kappa\log3.
+\end{aligned}
+\end{equation}
+Ở đây $d\in\{2,10,50\}$ và $\kappa\in\{0.3,1,3\}$ cho chín cấu hình.
+Hàm thứ ba là giả lồi: nó là một phép biến đổi khả vi tăng, có đạo hàm dương,
+của một hàm bậc hai lồi. Nó không
+lồi, vì giá trị riêng theo phương bán kính của ma trận Hesse là
+$2\kappa(1-r^2)/(1+r^2)^2<0$ với $r=\|x-e_1\|>1$.
+Điểm chứng chính xác $x=-e_1/10$ có các độ dôi dương
+$19/100$, $31/25$ và $\kappa\log(300/221)$.
+Điểm xuất phát chuẩn là $1.5\mathbf1$; ba điểm xuất phát đánh giá và ba
+điểm xuất phát tinh chỉnh được lấy đều trên $[0.8,1.8]^d$ với các seed nêu trên
+(NumPy \texttt{default\_rng}).
+Để lấy mẫu mô-đun, ta dùng $500$ điểm đều trong $K$ (seed $42$).
+SG-const dùng cùng bước $\nu_k=10^{-3}$ như trên các bài toán đặc trưng. SG-const
+tinh chỉnh dùng một bước hằng $\nu$ chọn từ lưới
+$\{10^{-3},10^{-2.5},\ldots,10^1\}$ với các điểm xuất phát tinh chỉnh và quy tắc chọn của
+SG-dyn tinh chỉnh; nó chọn $\nu=10^{-0.5}$ ở cả chín cấu hình. Biến thể cân bằng
+là biến thể đã mô tả ở trên.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\caption{Các phép thử giả lồi không lồi, nhóm theo $\kappa$.
+Mỗi ô là số lần thành công trên $12$ lần chạy, kèm trung vị số
+điểm được đánh giá trong ngoặc, kể cả các lần chạy chạm ngân sách. Mỗi nhóm
+gồm cả ba số chiều và bốn điểm xuất phát. SG-const tinh chỉnh dùng bước
+được chọn như mô tả trong bài.}
+\label{tab:synthetic-scale}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+$\kappa$ & DTAP & Cân bằng & SG-const & SG-const tinh chỉnh & SG-dyn lấy mẫu & SG-dyn tinh chỉnh\\
+\midrule
+$0.3$ & $0\ (1000)$ & $0\ (1000)$ & $0\ (1000)$ & $12\ (15)$ & $8\ (725.5)$ & $12\ (142.5)$\\
+$1$   & $12\ (70)$ & $12\ (395.5)$ & $0\ (1000)$ & $12\ (15)$ & $12\ (301.5)$ & $12\ (44)$\\
+$3$   & $12\ (4)$ & $12\ (4)$ & $0\ (1000)$ & $12\ (16)$ & $12\ (167)$ & $12\ (11)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+DTAP gặp vi phạm ràng buộc thứ ba ở mọi lần trong $36$
+lần chạy này. Mức hoạt động gộp của nó là $12\,835/12\,877$ điểm được đánh giá.
+Tuy vậy, nó chỉ đạt sai số dừng ở $24/36$ lần chạy, so
+với $32/36$ của SG-dyn lấy mẫu, $36/36$ của SG-dyn tinh chỉnh và $36/36$ của SG-const
+tinh chỉnh (Bảng~\ref{tab:synthetic-scale}).
+SG-const tinh chỉnh đạt sai số dừng ở mọi lần chạy với trung vị $15$--$16$
+điểm được đánh giá, ít hơn mọi phương pháp khác tại $\kappa=0.3$ và $\kappa=1$; tại
+$\kappa=3$, DTAP và biến thể cân bằng cần trung vị $4$. Các số đếm này
+không gồm $147\,331$ lần đánh giá trong việc tìm kiếm tham số của nó.
+
+Với $\nu_k=10^{-3}$, SG-const di chuyển nhiều nhất $999\times10^{-3}=0.999$ so với điểm xuất phát
+trong ngân sách, trong khi mọi điểm xuất phát cách
+$\Omega$ ít nhất $1.11$; vì vậy các số đếm bằng không của nó do độ dài bước và ngân sách quyết định.
+Với $\kappa\le1$, track lồi được thỏa từ điểm đánh giá thứ hai trở đi,
+nên sau đó DTAP đi theo phép lặp một track của Hệ quả~\ref{cor:ps}; cả hai track
+cùng bị vi phạm chỉ tại $32$ trong $12\,877$ điểm được đánh giá này.
+
+Mọi thất bại của DTAP đều xảy ra tại $\kappa=0.3$. Thay đổi $\kappa$ không làm thay đổi tập khả thi,
+nhưng $v_3$ và $\nabla F_3$ đều tỉ lệ với $\kappa$, nên khi
+$\|g^{\ps}_k\|\le1$ bước giả lồi $(1-\mu_k)\gamma_k g^{\ps}_k$ tỉ lệ với
+$\gamma_k\kappa^2$. Bảng~\ref{tab:dtap-sweep} thay đổi từng tham số của DTAP một
+với $\kappa\in\{0.3,1\}$. Với $\gamma_k=a(k+0.5)^{-0.55}$, $a=10$ và $a=100$ cho
+$12/12$ lần thành công tại $\kappa=0.3$; $\rho_{\cvx}=1$ cho $4/12$, đều với $d=2$;
+$\delta=10^{-1}$ tái tạo chính xác các điểm lặp của cấu hình gốc (Nhận xét~\ref{rem:delta-role}); các
+bước giảm nhanh hơn $s=0.75$ và $s=1$ không thành công lần nào tại $\kappa=0.3$, và
+$s=1$ cũng thất bại cả $12$ lần chạy tại $\kappa=1$. Vì vậy các thất bại tại $\kappa=0.3$
+phù hợp với việc bước giảm dần quá nhỏ so với thang của ràng buộc
+này, chứ không phải với một thay đổi về tính khả thi. Các phép thử này thay đổi
+từng tham số một trên một họ bài toán và không chỉ ra được một cấu hình
+tốt nhất nói chung.
+Trên~\eqref{eq:logball-test}, $\delta=10^{-1}$ và $\delta=10^{-3}$ cho các dãy lặp giống hệt nhau vì
+track giả lồi chỉ có một chỉ số, tại mọi điểm xuất phát hoặc chỉ $F_1$ bị vi phạm hoặc
+$v_1-v_2\ge4.79$, và track lồi được thỏa từ điểm đánh giá thứ hai trở đi; vì vậy
+dòng $\delta$ của Bảng~\ref{tab:dtap-sweep} là một phép kiểm tra tính nhất quán, không phải bằng chứng về
+vai trò của $\delta$.
+Các lần tìm kiếm tham số trên bài toán tổng hợp tốn $188\,295$ lần đánh giá trong tối ưu và
+$10.98$ giây thời gian giải cho SG-dyn, và $147\,331$ lần đánh giá và $8.27$
+giây cho SG-const, với cùng các khoản loại trừ như trên, trong môi trường
+nêu dưới đây.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\caption{DTAP trên~\eqref{eq:logball-test} khi thay đổi từng tham số một,
+$\gamma_k=a(k+0.5)^{-s}$. Cấu hình gốc $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $a=1$,
+$s=0.55$ là cột DTAP của Bảng~\ref{tab:synthetic-scale}. Mỗi ô là
+số lần thành công trên $12$ lần chạy (ba số chiều, bốn điểm xuất phát), kèm
+trung vị số điểm được đánh giá trong ngoặc, kể cả các lần chạy chạm ngân sách.}
+\label{tab:dtap-sweep}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Cấu hình & $\kappa=0.3$ & $\kappa=1$\\
+\midrule
+Cấu hình gốc & $0\ (1000)$ & $12\ (70)$\\
+$\rho_{\cvx}=1$ & $4\ (1000)$ & $12\ (223.5)$\\
+$\delta=10^{-1}$ & $0\ (1000)$ & $12\ (70)$\\
+$a=10$ & $12\ (77)$ & $12\ (6)$\\
+$a=100$ & $12\ (6)$ & $12\ (48)$\\
+$s=0.75$ & $0\ (1000)$ & $12\ (374)$\\
+$s=1$ & $0\ (1000)$ & $0\ (1000)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph*{Khả năng tái lập.}
+Kết quả chọn đặc trưng được lưu với Python~3.11.7 và NumPy~1.26.4
+trên Windows, với yêu cầu một luồng BLAS/OpenMP. Các hàm đánh giá cho bài toán đặc trưng dùng dạng toàn phương
+nén theo đại số; sai khác đã kiểm tra so với giá trị và gradient
+gốc lần lượt không quá $1.82\times10^{-12}$ và
+$1.10\times10^{-11}$. Thời gian giải báo cáo cho các bài toán đặc trưng ứng
+với cách cài đặt nén này. Gói mã đi kèm chỉ chứa các hàm đánh giá không nén;
+nó tái tạo các số lần đánh giá, còn thời gian giải được báo cáo là của
+cách cài đặt nén ban đầu. Các Bảng~\ref{tab:synthetic-scale}
+và~\ref{tab:dtap-sweep} và chi phí tinh chỉnh trên bài toán tổng hợp được tạo với
+Python~3.13.4 và NumPy~2.1.3 trên Windows với số luồng BLAS
+mặc định; các số đếm của chúng là tất định, còn thời gian giải là các
+phép đo một lần trên máy đó. Với Python~3.13.4 và NumPy~2.1.3, gói mã còn
+tái tạo chính xác mọi giá trị số trong các Bảng~\ref{tab:datasets}--\ref{tab:wilcoxon}
+(Bảng~\ref{tab:perf-summary} và~\ref{tab:wilcoxon} từ điểm chưa làm tròn) và trong
+Bảng~\ref{tab:activation-tuning}, cùng các số đếm nêu ở Mục~\ref{ssec:results}
+và~\ref{ssec:feasibility-audit}.
+Các script bổ sung, quỹ đạo thô, hồ sơ tinh chỉnh, điểm chứng,
+mã băm của mã nguồn và hướng dẫn kiểm tra được cung cấp kèm theo kết quả.
+
+\section{Kết luận}\label{sec:conclusion}
+DTAP giải các bài toán chấp nhận tách phi tuyến với hộp chuẩn và các thành phần lồi và giả lồi, bằng cách kết hợp một bước lồi co theo phần dư với một bước giả lồi có chặn an toàn. Dưới giả thiết nhất quán và khả vi liên tục, toàn bộ dãy hội tụ tới một điểm khả thi; không có mô-đun chính quy nào là đầu vào, mặc dù phân tích dùng các cận trên một tập compact chứa dãy lặp. Trong ứng dụng chọn đặc trưng, mọi ràng buộc đều lồi, và các bài toán thử có ràng buộc giả lồi không lồi kiểm tra track giả lồi. Trong thực nghiệm, các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, mà hiệu năng trong ngân sách hữu hạn của nó phụ thuộc vào điểm xuất phát và thang bước. Tốc độ cho toàn bộ phần dư $J(x^k)$, ngoài cận của track lồi ở Nhận xét~\ref{rem:rate}, và các bảo đảm dưới điều kiện cận sai số vẫn còn là vấn đề mở.
+
+\section*{Tuyên bố về xung đột lợi ích}
+Các tác giả tuyên bố không có xung đột lợi ích tài chính hay quan hệ cá nhân nào đã biết có thể ảnh hưởng đến công trình được báo cáo trong bài.
+\section*{Tài trợ}
+Các tác giả không nhận tài trợ riêng nào cho công trình này.
+\section*{Tuyên bố về việc dùng AI tạo sinh}
+OpenAI Codex đã được dùng trong quá trình chỉnh sửa để biên tập ngôn ngữ.
+\section*{Tính sẵn có của dữ liệu}
+Các bộ dữ liệu có tại UCI Machine Learning Repository~\citep{kelly2023uci}. Gói tái lập đi kèm chứa các script, kết quả số đã ghi lại, và hướng dẫn tạo lại các bảng đã báo cáo.
+
+\section*{ORCID}
+\noindent Nguyen Van The~\raisebox{-0.1ex}{\textit{https://orcid.org/0009-0004-6548-420X}}\\
+Tran Ngoc Thang~\raisebox{-0.1ex}{\textit{https://orcid.org/0009-0000-9549-5736}}\\
+Nguyen Hong Son~\raisebox{-0.1ex}{\textit{https://orcid.org/0009-0006-3106-8296}}
+
+
+\begin{thebibliography}{99}
+\newcommand{\bibdoi}[1]{doi: {\urlstyle{rm}\url{#1}}}
+
+\bibitem[Bauschke and Combettes(2011)]{bauschke2011}
+H.~H. Bauschke and P.~L. Combettes.
+\newblock \emph{Convex Analysis and Monotone Operator Theory in {H}ilbert Spaces}.
+\newblock CMS Books in Mathematics. Springer, New York, 2011.
+\newblock \bibdoi{10.1007/978-1-4419-9467-7}.
+
+\bibitem[Brown et~al.(2012)Brown, Pocock, Zhao, and Luj{\'a}n]{brown2012}
+G.~Brown, A.~Pocock, M.-J.~Zhao, and M.~Luj{\'a}n.
+\newblock Conditional likelihood maximization: a unifying framework for information theoretic feature selection.
+\newblock \emph{Journal of Machine Learning Research}, 13:\penalty0 27--66, 2012.
+
+\bibitem[Byrne(2002)]{byrne2002}
+C.~Byrne.
+\newblock Iterative oblique projection onto convex sets and the split feasibility problem.
+\newblock \emph{Inverse Problems}, 18\penalty0 (2):\penalty0 441--453, 2002.
+\newblock \bibdoi{10.1088/0266-5611/18/2/310}.
+
+\bibitem[Censor and Elfving(1994)]{censor1994}
+Y.~Censor and T.~Elfving.
+\newblock A multiprojection algorithm using {B}regman projections in a product space.
+\newblock \emph{Numerical Algorithms}, 8:\penalty0 221--239, 1994.
+\newblock \bibdoi{10.1007/BF02142692}.
+
+\bibitem[Combettes(2001)]{combettes2001quasifejer}
+P.~L. Combettes.
+\newblock Quasi-Fej{\'e}rian analysis of some optimization algorithms.
+\newblock In D.~Butnariu, Y.~Censor, and S.~Reich, editors, \emph{Inherently Parallel Algorithms in Feasibility and Optimization and Their Applications}, volume~8 of \emph{Studies in Computational Mathematics}, pages 115--152. Elsevier, Amsterdam, 2001.
+\newblock \bibdoi{10.1016/S1570-579X(01)80010-0}.
+
+\bibitem[Condat(2016)]{condat2016simplex}
+L.~Condat.
+\newblock Fast projection onto the simplex and the $\ell_1$ ball.
+\newblock \emph{Mathematical Programming}, 158\penalty0 (1):\penalty0 575--585, 2016.
+\newblock \bibdoi{10.1007/s10107-015-0946-6}.
+
+\bibitem[Hu et~al.(2022)Hu, Li, Yu, and Yip]{hu2022quasi}
+Y.~Hu, G.~Li, C.~K.~W. Yu, and T.~L. Yip.
+\newblock Quasi-convex feasibility problems: Subgradient methods and convergence rates.
+\newblock \emph{European Journal of Operational Research}, 298\penalty0 (1):\penalty0 45--58, 2022.
+\newblock \bibdoi{10.1016/j.ejor.2021.09.029}.
+
+\bibitem[Kelly et~al.(2023)Kelly, Longjohn, and Nottingham]{kelly2023uci}
+M.~Kelly, R.~Longjohn, and K.~Nottingham.
+\newblock The {UCI} machine learning repository.
+\newblock \url{https://archive.ics.uci.edu}, 2023.
+\newblock Accessed 2026.
+
+\bibitem[Li et~al.(2013)Li, Han, and Zhang]{li2013nsfp}
+Z.~Li, D.~Han, and W.~Zhang.
+\newblock A self-adaptive projection-type method for nonlinear multiple-sets split feasibility problem.
+\newblock \emph{Inverse Problems in Science and Engineering}, 21\penalty0 (1):\penalty0 155--170, 2013.
+\newblock \bibdoi{10.1080/17415977.2012.677445}.
+
+\bibitem[L{\'o}pez et~al.(2012)L{\'o}pez, Mart{\'\i}n-M{\'a}rquez, Wang, and Xu]{lopez2012}
+G.~L{\'o}pez, V.~Mart{\'\i}n-M{\'a}rquez, F.~Wang, and H.-K. Xu.
+\newblock Solving the split feasibility problem without prior knowledge of matrix norms.
+\newblock \emph{Inverse Problems}, 28\penalty0 (8):\penalty0 085004, 2012.
+\newblock \bibdoi{10.1088/0266-5611/28/8/085004}.
+
+\bibitem[Mangasarian(1965)]{mangasarian1965}
+O.~L. Mangasarian.
+\newblock Pseudo-convex functions.
+\newblock \emph{SIAM Journal on Control}, 3\penalty0 (2):\penalty0 281--290, 1965.
+\newblock \bibdoi{10.1137/0303020}.
+
+\bibitem[Mangasarian(1994)]{mangasarian1994}
+O.~L. Mangasarian.
+\newblock \emph{Nonlinear Programming}.
+\newblock Classics in Applied Mathematics. SIAM, Philadelphia, 1994.
+\newblock \bibdoi{10.1137/1.9781611971255}.
+
+\bibitem[Nogueira et~al.(2018)Nogueira, Sechidis, and Brown]{nogueira2018}
+S.~Nogueira, K.~Sechidis, and G.~Brown.
+\newblock On the stability of feature selection algorithms.
+\newblock \emph{Journal of Machine Learning Research}, 18\penalty0 (174):\penalty0 1--54, 2018.
+
+\bibitem[Polyak(1969)]{polyak1969}
+B.~T. Polyak.
+\newblock Minimization of unsmooth functionals.
+\newblock \emph{USSR Computational Mathematics and Mathematical Physics}, 9\penalty0 (3):\penalty0 14--29, 1969.
+\newblock \bibdoi{10.1016/0041-5553(69)90061-5}.
+
+\bibitem[Wang et~al.(2021)Wang, Li, and Wang]{wang2021fractional}
+Y.~Wang, X.~Li, and J.~Wang.
+\newblock A neurodynamic optimization approach to supervised feature selection via fractional programming.
+\newblock \emph{Neural Networks}, 136:\penalty0 194--206, 2021.
+\newblock \bibdoi{10.1016/j.neunet.2021.01.004}.
+
+\bibitem[Wang et~al.(2026)Wang, Zhang, An, and Deng]{wang2026afrsfcv}
+C.~Wang, Y.~Zhang, S.~An, and T.~Deng.
+\newblock Adaptive feature selection based on fuzzy rough set fusion model with class variance.
+\newblock \emph{Pattern Recognition}, 170:\penalty0 112014, 2026.
+\newblock \bibdoi{10.1016/j.patcog.2025.112014}.
+
+\bibitem[Yang(2004)]{yang2004}
+Q.~Yang.
+\newblock The relaxed {CQ} algorithm solving the split feasibility problem.
+\newblock \emph{Inverse Problems}, 20\penalty0 (4):\penalty0 1261--1266, 2004.
+\newblock \bibdoi{10.1088/0266-5611/20/4/014}.
+
+\bibitem[Yang et~al.(2014)Yang, Yang, and Zhang]{yang2014alternating}
+Y.~Yang, Q.~Yang, and S.~Zhang.
+\newblock Modified alternating direction methods for the modified multiple-sets split feasibility problems.
+\newblock \emph{Journal of Optimization Theory and Applications}, 163\penalty0 (1):\penalty0 130--147, 2014.
+\newblock \bibdoi{10.1007/s10957-013-0502-6}.
+
+\bibitem[Yen et~al.(2019)Yen, Huyen, and Muu]{yen2019}
+L.~H. Yen, N.~T.~T. Huyen, and L.~D. Muu.
+\newblock A subgradient algorithm for a class of nonlinear split feasibility problems: application to jointly constrained Nash equilibrium models.
+\newblock \emph{Journal of Global Optimization}, 73:\penalty0 849--868, 2019.
+\newblock \bibdoi{10.1007/s10898-018-00735-0}.
+
+\bibitem[Zhang et~al.(2009)Zhang, Han, and Li]{zhang2009adaptive}
+W.~Zhang, D.~Han, and Z.~Li.
+\newblock A self-adaptive projection method for solving the multiple-sets split feasibility problem.
+\newblock \emph{Inverse Problems}, 25\penalty0 (11):\penalty0 115001, 2009.
+\newblock \bibdoi{10.1088/0266-5611/25/11/115001}.
+
+\bibitem[Zhang et~al.(2012)Zhang, Han, and Yuan]{zhang2012simultaneous}
+W.~Zhang, D.~Han, and X.~Yuan.
+\newblock An efficient simultaneous method for the constrained multiple-sets split feasibility problem.
+\newblock \emph{Computational Optimization and Applications}, 52\penalty0 (3):\penalty0 825--843, 2012.
+\newblock \bibdoi{10.1007/s10589-011-9429-8}.
+
+\bibitem[Zhao and Yang(2011)]{zhao2011adaptive}
+J.~Zhao and Q.~Yang.
+\newblock Self-adaptive projection methods for the multiple-sets split feasibility problem.
+\newblock \emph{Inverse Problems}, 27\penalty0 (3):\penalty0 035009, 2011.
+\newblock \bibdoi{10.1088/0266-5611/27/3/035009}.
+
+\end{thebibliography}
+
+\end{document}
