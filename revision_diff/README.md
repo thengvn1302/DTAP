@@ -11,6 +11,7 @@
 | `v1_v2_changes.md` | Đối chiếu từng câu **trước/sau** giữa `DTAP Finally` và `DTAP Finally v2` (56 mục, kèm bản dịch tiếng Việt cho cả câu trước và câu sau); các thay đổi chỉ về ký hiệu ghi gọn ở Phụ lục. |
 | `v1_v2_side_by_side.pdf` | Cùng nội dung với `v1_v2_changes.md` nhưng **đặt hai cột cạnh nhau**: Trước (trái) và Sau (phải), mỗi câu cũ cùng hàng với câu mới tương ứng, kèm bản dịch dưới mỗi câu. Tạo bằng `python3 side_by_side.py` (cần `lualatex`). |
 | `vi_v2/main_document_vi.pdf`, `vi_v2/response_letter_vi.pdf` | **Bản dịch tiếng Việt** của bài v2 và response letter v2, chỉ để tự rà soát nội dung (không nộp). Công thức, nhãn, số mục/công thức/bảng giữ nguyên như bản tiếng Anh; trong letter, câu trích từ bản thảo có kèm nguyên văn tiếng Anh. Mã nguồn dịch ở `vi_v2/parts/` và `vi_v2/response_letter_vi.tex`; dựng lại bằng `vi_v2/build.sh`. |
+| `sentence_review/sentence_review.pdf` (và `.md`) | **Rà soát từng câu** của `DTAP Finally v2/main_document.tex` (chưa sửa bài): bảng 3 cột câu / có lỗi không / giữ nguyên hoặc cách sửa, theo tiêu chí A–F và mức [1]–[3]. Dựng lại: `python3 extract.py` rồi `python3 build.py` trong `sentence_review/`; đánh giá từng câu ở `verdicts.py`. |
 | `change_notes.json` | Mô tả tiếng Việt và ý kiến phản biện cho từng mã `Cn`. Sửa file này rồi build lại để cập nhật Bảng A/B. |
 | `review_comments.json` | Tóm tắt các ý kiến trong `referee_report.pdf`. |
 | `build_diff.py`, `assemble.py` | Script tạo bản đối chiếu. |
