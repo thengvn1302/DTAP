@@ -298,5 +298,28 @@ s = s[:a] + (
     "$J(x^k)$, beyond the convex-track bound of Remark~\\ref{rem:rate}, and guarantees under "
     "error-bound conditions remain open.") + s[b:]
 
+# ---------------------------------------------------------------- Introduction, final
+# The paragraph before the contributions explains why two tracks are needed instead of
+# repeating the abstract; the application moves into C3; J is defined before the
+# paragraph on Li, Yen and Hu, which refers to it.
+a = s.index("Li et al.~\\citep{li2013nsfp} assume")
+b = s.index("The contributions are as follows.")
+old_block = s[a:b]
+p3 = old_block[:old_block.index("\n\nBecause $Q$ is a box")]
+j0 = old_block.index("Because $Q$ is a box")
+j1 = old_block.index("\\]\n", j0) + 2
+jpar = old_block[j0:j1]
+newp4 = (
+    "Convex and pseudoconvex constraints call for different steps. For a convex constraint, the "
+    "gradient inequality bounds $\\inner{\\nabla F_i(x)}{x-x^\\star}$, for every $x^\\star\\in\\Omega$, from below by the violation, "
+    "which justifies a residual-scaled Polyak-type step~\\citep{polyak1969,lopez2012}; for a "
+    "pseudoconvex constraint, only the sign of this inner product is known, so a safeguarded "
+    "diminishing step is used. DTAP takes the two steps on separate tracks and combines them by a "
+    "proportional weight; the proof uses this weight only to keep a persistently violated track "
+    "active (Remark~\\ref{rem:weight-scope}).")
+s = s[:a] + jpar.rstrip("\n") + "\n\n" + p3 + "\n\n" + newp4 + "\n\n" + s[b:]
+rep("\\item Experiments that report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.",
+    "\\item A feature-selection application built from fractional and fuzzy-rough criteria, whose constraints are convex (Proposition~\\ref{prop:fs-reg}), and test problems with a nonconvex pseudoconvex constraint; the experiments report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.", "Intro-C3")
+
 DST.write_text(s, encoding="utf-8")
 print("written", DST)

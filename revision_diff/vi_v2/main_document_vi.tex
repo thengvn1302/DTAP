@@ -110,21 +110,20 @@ Thay $\mathcal A$ bằng một ánh xạ phi tuyến $F$ ta được SFP phi tuy
 \end{equation}
 trong đó $K\subseteq\R^n$ khác rỗng, đóng và lồi, $Q=\prod_{i=1}^m(-\infty,b_i]$ là hộp chuẩn, và mỗi $F_i$ khả vi và lồi hoặc giả lồi trên $K$. Vì hàm giả lồi có các tập mức dưới lồi, tập khả thi $\Omega=\{x\in K:F(x)\in Q\}$ là lồi. Ta tìm một điểm thuộc $\Omega$, không tìm điểm cực tiểu của $F_i$ nào.
 
-Li và cộng sự~\citep{li2013nsfp} giả thiết một hàm lân cận tổng hợp lồi, điều mà tính giả lồi của từng thành phần không bảo đảm. Yen và cộng sự~\citep{yen2019} dùng cùng độ đo vi phạm kiểu max và cùng kỹ thuật tập hoạt động, nhưng đòi các thành phần tựa tuyến tính, một lớp không so sánh được với lớp của ta. Hu và cộng sự~\citep{hu2022quasi} xét các bất đẳng thức tựa lồi, một lớp chứa lớp của ta, nhưng không dùng bất đẳng thức gradient của các thành phần lồi.
-
 Vì $Q$ là một hộp, khoảng cách $\ell_\infty$ từ $F(x)$ tới $Q$ có dạng tường minh
 \[
 J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+.
 \]
-DTAP chia các ràng buộc thành một track lồi và một track giả lồi. Trên mỗi track, nó cộng các gradient của những ràng buộc gần bị vi phạm nhiều nhất, có trọng số theo độ vi phạm. Bất đẳng thức gradient của hàm lồi biện minh cho một bước kiểu Polyak co theo phần dư trên track lồi~\citep{polyak1969,lopez2012}; tính giả lồi chỉ cho biết dấu của đạo hàm theo hướng, nên track giả lồi dùng một bước giảm dần có chặn an toàn. Một trọng số tỉ lệ kết hợp hai bước, rồi kết quả được chiếu lên $K$; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét~\ref{rem:weight-scope}). Không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older: một bất đẳng thức tựa Fej\'er cho thấy dãy lặp bị chặn, sau đó chứng minh dùng các cận địa phương, không cần gradient Lipschitz.
 
-Làm ứng dụng, các cận trên của ba tiêu chí lấy từ một mô hình phân thức~\citep{wang2021fractional} và một mô hình tập thô mờ~\citep{wang2026afrsfcv} tạo thành các ràng buộc; một vector trọng số khả thi thỏa cả ba cận nhưng không nhất thiết là nghiệm của bài toán gốc nào. Các ràng buộc này lồi (Mệnh đề~\ref{prop:fs-reg}), nên ta còn dùng các bài toán thử có một ràng buộc giả lồi không lồi để kiểm tra track giả lồi.
+Li và cộng sự~\citep{li2013nsfp} giả thiết một hàm lân cận tổng hợp lồi, điều mà tính giả lồi của từng thành phần không bảo đảm. Yen và cộng sự~\citep{yen2019} dùng cùng độ đo vi phạm kiểu max và cùng kỹ thuật tập hoạt động, nhưng đòi các thành phần tựa tuyến tính, một lớp không so sánh được với lớp của ta. Hu và cộng sự~\citep{hu2022quasi} xét các bất đẳng thức tựa lồi, một lớp chứa lớp của ta, nhưng không dùng bất đẳng thức gradient của các thành phần lồi.
+
+Ràng buộc lồi và ràng buộc giả lồi cần những bước khác nhau. Với ràng buộc lồi, bất đẳng thức gradient chặn dưới $\inner{\nabla F_i(x)}{x-x^\star}$, với mọi $x^\star\in\Omega$, bởi độ vi phạm, điều này biện minh cho một bước kiểu Polyak co theo phần dư~\citep{polyak1969,lopez2012}; với ràng buộc giả lồi, ta chỉ biết dấu của tích vô hướng này, nên dùng một bước giảm dần có chặn an toàn. DTAP thực hiện hai bước trên hai track riêng và kết hợp chúng bằng một trọng số tỉ lệ; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét~\ref{rem:weight-scope}).
 
 Các đóng góp như sau.
 \begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=2.4em,itemsep=3pt]
 \item Một phương pháp hai track dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ thông tin về dấu trên các ràng buộc giả lồi, không cần giả thiết hàm lân cận lồi như~\citep{li2013nsfp}, cũng không cần mô-đun H\"older như bước động của~\citep{hu2022quasi}.
 \item Sự hội tụ của toàn bộ dãy tới một điểm khả thi dưới Giả thiết~\ref{ass:standing} (Định lý~\ref{thm:strong}).
-\item Các thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của DTAP với điểm xuất phát và thang bước.
+\item Một ứng dụng chọn đặc trưng xây dựng từ các tiêu chí phân thức và tập thô mờ, có các ràng buộc lồi (Mệnh đề~\ref{prop:fs-reg}), cùng các bài toán thử có ràng buộc giả lồi không lồi; thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của nó với điểm xuất phát và thang bước.
 \end{enumerate}
 
 Mục~\ref{sec:prelim} trình bày kiến thức chuẩn bị. Mục~\ref{sec:convergence} trình bày \dtap{} và phân tích hội tụ. Mục~\ref{sec:experiments} báo cáo thực nghiệm, và Mục~\ref{sec:conclusion} kết luận.

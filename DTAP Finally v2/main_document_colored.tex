@@ -94,21 +94,20 @@ x^{k+1}=P_C\bigl(x^k-\tau\mathcal A^\top(I-P_Q)\mathcal A x^k\bigr),
 \end{equation}
 \leavevmode\textcolor{red}{where $K\subseteq\R^n$ is nonempty, closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$ is a normal box, and each $F_i$ is differentiable and convex or pseudoconvex on $K$. Since pseudoconvex functions have convex sublevel sets, the feasible set $\Omega=\{x\in K:F(x)\in Q\}$ is convex. We seek a point of $\Omega$, not a minimizer of any $F_i$}.
 
-\leavevmode\textcolor{red}{Li et al.~\citep{li2013nsfp} assume a convex aggregate proximity function, which componentwise pseudoconvexity does not ensure. Yen et al.~\citep{yen2019} use the same max-type violation measure and active-set device, but require quasilinear components, a class incomparable with ours. Hu et al.~\citep{hu2022quasi} treat quasiconvex inequalities, which contain our class, without using the gradient inequality of convex components.}
-
 \leavevmode\textcolor{red}{Because $Q$ is a box, the $\ell_\infty$-distance from $F(x)$ to $Q$ has the closed form}
 \[
 J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+.
 \]
-\leavevmode\textcolor{red}{DTAP splits the constraints into a convex track and a pseudoconvex track. On each track it sums the gradients of the nearly most violated constraints, weighted by their violations. The gradient inequality of convex functions justifies a residual-scaled Polyak-type step on the convex track~\citep{polyak1969,lopez2012}; pseudoconvexity gives only the sign of a directional derivative, so the pseudoconvex track uses a safeguarded diminishing step. A proportional weight combines the two steps, and the result is projected onto $K$; the proof uses this weight only to keep a persistently violated track active (Remark~\ref{rem:weight-scope}). No prescribed operator norm, Lipschitz constant, or H\"older modulus is needed: a quasi-Fej\'er inequality shows that the iterates are bounded, and the proof then uses local bounds, without Lipschitz gradients.}
 
-\leavevmode\textcolor{red}{As an application, upper bounds on three criteria from a fractional model~\citep{wang2021fractional} and a fuzzy-rough model~\citep{wang2026afrsfcv} define the constraints; a feasible weight vector satisfies all three bounds but need not solve either source problem. These constraints are convex (Proposition~\ref{prop:fs-reg}), so we also use test problems with a nonconvex pseudoconvex constraint to exercise the pseudoconvex track.}
+\leavevmode\textcolor{red}{Li et al.~\citep{li2013nsfp} assume a convex aggregate proximity function, which componentwise pseudoconvexity does not ensure. Yen et al.~\citep{yen2019} use the same max-type violation measure and active-set device, but require quasilinear components, a class incomparable with ours. Hu et al.~\citep{hu2022quasi} treat quasiconvex inequalities, which contain our class, without using the gradient inequality of convex components.}
+
+\leavevmode\textcolor{red}{Convex and pseudoconvex constraints call for different steps. For a convex constraint, the gradient inequality bounds $\inner{\nabla F_i(x)}{x-x^\star}$, for every $x^\star\in\Omega$, from below by the violation, which justifies a residual-scaled Polyak-type step~\citep{polyak1969,lopez2012}; for a pseudoconvex constraint, only the sign of this inner product is known, so a safeguarded diminishing step is used. DTAP takes the two steps on separate tracks and combines them by a proportional weight; the proof uses this weight only to keep a persistently violated track active (Remark~\ref{rem:weight-scope}}).
 
 \leavevmode\textcolor{red}{The contributions are as follows.}
 \begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=2.4em,itemsep=3pt]
 \item \leavevmode\textcolor{red}{A dual-track method that uses the gradient inequality on the convex constraints and only sign information on the pseudoconvex ones, without assuming a convex proximity function, unlike~\citep{li2013nsfp}, or a H\"older modulus, unlike the dynamic step of~\citep{hu2022quasi}}.
 \item \leavevmode\textcolor{red}{Convergence of the whole sequence to a feasible point under Assumption~\ref{ass:standing} (Theorem~\ref{thm:strong}}).
-\item \leavevmode\textcolor{red}{Experiments that report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.}
+\item \leavevmode\textcolor{red}{A feature-selection application built from fractional and fuzzy-rough criteria, whose constraints are convex (Proposition~\ref{prop:fs-reg}), and test problems with a nonconvex pseudoconvex constraint; the experiments report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.}
 \end{enumerate}
 
 Section~\leavevmode\textcolor{red}{\ref{sec:prelim} gives preliminaries. Section~\ref{sec:convergence} presents} \dtap{} and its convergence analysis. Section~\leavevmode\textcolor{red}{\ref{sec:experiments} reports experiments, and Section~\ref{sec:conclusion} concludes.}

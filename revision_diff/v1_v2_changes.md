@@ -2,7 +2,7 @@
 
 - **Trước** = `DTAP Finally/main_document.tex` (bản DTAP_OMS.pdf cũ).
 - **Sau** = `DTAP Finally v2/main_document.tex` (bản v2).
-- Danh sách lấy tự động từ phép so sánh từng câu giữa hai file; mọi câu khác nhau đều có mặt dưới đây (66 chỗ khác nhau, gom thành 56 mục).
+- Danh sách lấy tự động từ phép so sánh từng câu giữa hai file; mọi câu khác nhau đều có mặt dưới đây (65 chỗ khác nhau, gom thành 56 mục).
 - Không liệt kê chi tiết các thay đổi **chỉ về ký hiệu**; chúng được ghi gọn ở **Phụ lục** cuối file.
 - Số mục, số công thức, số tài liệu tham khảo ghi theo bản PDF tương ứng (hai bản có cùng cách đánh số).
 - Công thức hiển thị không đổi được ghi tắt là "(số công thức)".
@@ -137,6 +137,8 @@
 - **Sau:** Because $Q$ is a box, the $\ell_\infty$-distance from $F(x)$ to $Q$ has the closed form $J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+$.
   → Vì $Q$ là một hộp, khoảng cách $\ell_\infty$ từ $F(x)$ tới $Q$ có dạng tường minh $J(x)=\ldots$
 
+*(Ở bản Sau, câu này cùng công thức $J$ đứng thành một đoạn riêng, ngay trước đoạn về Li, Yen và Hu.)*
+
 ### 6. Đoạn mô tả DTAP
 
 **Trước**
@@ -160,16 +162,14 @@
    → Gradient liên tục không nhất thiết Lipschitz.
 
 **Sau**
-1. DTAP splits the constraints into a convex track and a pseudoconvex track.
-   → DTAP chia các ràng buộc thành một track lồi và một track giả lồi.
-2. On each track it sums the gradients of the nearly most violated constraints, weighted by their violations.
-   → Trên mỗi track, nó cộng các gradient của những ràng buộc gần bị vi phạm nhiều nhất, có trọng số theo độ vi phạm.
-3. The gradient inequality of convex functions justifies a residual-scaled Polyak-type step on the convex track [14, 10]; pseudoconvexity gives only the sign of a directional derivative, so the pseudoconvex track uses a safeguarded diminishing step.
-   → Bất đẳng thức gradient của hàm lồi biện minh cho một bước kiểu Polyak co theo phần dư trên track lồi [14, 10]; tính giả lồi chỉ cho biết dấu của đạo hàm theo hướng, nên track giả lồi dùng một bước giảm dần có chặn an toàn.
-4. A proportional weight combines the two steps, and the result is projected onto $K$; the proof uses this weight only to keep a persistently violated track active (Remark 1).
-   → Một trọng số tỉ lệ kết hợp hai bước, rồi kết quả được chiếu lên $K$; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét 1).
-5. No prescribed operator norm, Lipschitz constant, or Hölder modulus is needed: a quasi-Fejér inequality shows that the iterates are bounded, and the proof then uses local bounds, without Lipschitz gradients.
-   → Không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun Hölder: một bất đẳng thức tựa Fejér cho thấy dãy lặp bị chặn, sau đó chứng minh dùng các cận địa phương, không cần gradient Lipschitz.
+1. Convex and pseudoconvex constraints call for different steps.
+   → Ràng buộc lồi và ràng buộc giả lồi cần những bước khác nhau.
+2. For a convex constraint, the gradient inequality bounds $\langle\nabla F_i(x),x-x^\star\rangle$, for every $x^\star\in\Omega$, from below by the violation, which justifies a residual-scaled Polyak-type step [14, 10]; for a pseudoconvex constraint, only the sign of this inner product is known, so a safeguarded diminishing step is used.
+   → Với ràng buộc lồi, bất đẳng thức gradient chặn dưới $\langle\nabla F_i(x),x-x^\star\rangle$, với mọi $x^\star\in\Omega$, bởi độ vi phạm, điều này biện minh cho một bước kiểu Polyak co theo phần dư [14, 10]; với ràng buộc giả lồi, ta chỉ biết dấu của tích vô hướng này, nên dùng một bước giảm dần có chặn an toàn.
+3. DTAP takes the two steps on separate tracks and combines them by a proportional weight; the proof uses this weight only to keep a persistently violated track active (Remark 1).
+   → DTAP thực hiện hai bước trên hai track riêng và kết hợp chúng bằng một trọng số tỉ lệ; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét 1).
+
+*(Câu "No prescribed operator norm, Lipschitz constant, or Hölder modulus is needed…" không còn ở Introduction; ý này nằm ở Abstract, Nhận xét 2 và C1.)*
 
 ### 7. Đoạn về ứng dụng chọn đặc trưng
 
@@ -186,10 +186,7 @@
    → Phân loại chấm điểm các tập đặc trưng được tính một lần rồi dùng lại, trên cùng phép chia giữ lại đã cố định khi tính chúng, và các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP.
 
 **Sau**
-1. As an application, upper bounds on three criteria from a fractional model [15] and a fuzzy-rough model [16] define the constraints; a feasible weight vector satisfies all three bounds but need not solve either source problem.
-   → Làm ứng dụng, các cận trên của ba tiêu chí lấy từ một mô hình phân thức [15] và một mô hình tập thô mờ [16] tạo thành các ràng buộc; một vector trọng số khả thi thỏa cả ba cận nhưng không nhất thiết là nghiệm của bài toán gốc nào.
-2. These constraints are convex (Proposition 4.1), so we also use test problems with a nonconvex pseudoconvex constraint to exercise the pseudoconvex track.
-   → Các ràng buộc này lồi (Mệnh đề 4.1), nên ta còn dùng các bài toán thử có ràng buộc giả lồi không lồi để kiểm tra track giả lồi.
+1. *(xóa; nội dung gộp vào C3, xem mục 8)*
 
 ### 8. Các đóng góp C1–C3
 
@@ -210,8 +207,8 @@
    → C1. Một phương pháp hai track dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ thông tin về dấu trên các ràng buộc giả lồi, không cần giả thiết hàm lân cận lồi như [9], cũng không cần mô-đun Hölder như bước động của [7].
 2. C2. Convergence of the whole sequence to a feasible point under Assumption 1 (Theorem 3.12).
    → C2. Sự hội tụ của toàn bộ dãy tới một điểm khả thi dưới Giả thiết 1 (Định lý 3.12).
-3. C3. Experiments that report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.
-   → C3. Các thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của DTAP với điểm xuất phát và thang bước.
+3. C3. A feature-selection application built from fractional and fuzzy-rough criteria, whose constraints are convex (Proposition 4.1), and test problems with a nonconvex pseudoconvex constraint; the experiments report constraint activity, compare DTAP with tuned subgradient methods, and measure its sensitivity to the starting point and the step scale.
+   → C3. Một ứng dụng chọn đặc trưng xây dựng từ các tiêu chí phân thức và tập thô mờ, có các ràng buộc lồi (Mệnh đề 4.1), cùng các bài toán thử có ràng buộc giả lồi không lồi; thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của nó với điểm xuất phát và thang bước.
 
 ---
 
