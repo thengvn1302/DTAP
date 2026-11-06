@@ -27,14 +27,25 @@ def rep(old, new, tag):
 # ---------------------------------------------------------------- front matter
 # Keywords: kept as in v1.
 
-# Abstract: the v1 wording is kept; only the terminology follows the body ("track",
-# "proportional weight").
-rep("nearly active constraints in two blocks.", "nearly active constraints in two tracks.", "A0a")
-rep("a residual-scaled step for the convex block with a safeguarded diminishing step for the pseudoconvex block,",
-    "a residual-scaled step for the convex track with a safeguarded diminishing step for the pseudoconvex track,", "A0b")
-rep("The proportional mixing weight is a residual-responsive choice,", "The proportional weight is a residual-responsive choice,", "A0c")
-rep("On these examples, DTAP is sensitive to the scale of its diminishing step. The results also show initialization sensitivity and do not establish uniform computational superiority.",
-    "On these examples, tuned subgradient methods can match or outperform DTAP, whose performance depends on the starting point and the scale of its diminishing step.", "A0d")
+# Abstract: rewritten (final wording chosen by the authors).
+a = s.index("\\begin{abstract}\n") + len("\\begin{abstract}\n")
+b = s.index("\n\\end{abstract}")
+s = s[:a] + (
+    r"We study a nonlinear split feasibility problem whose output set is a normal box and whose "
+    r"component functions are differentiable and each convex or pseudoconvex. We propose the "
+    r"Dual-Track Adaptive Projection (DTAP) algorithm, which splits the constraints into a convex and "
+    r"a pseudoconvex track and works on the nearly most violated constraints of each. DTAP combines a "
+    r"residual-scaled Polyak-type step on the convex track with a safeguarded diminishing step on the "
+    r"pseudoconvex track through a residual-responsive proportional weight, and then projects onto the "
+    r"base convex set. Its step sizes require no prescribed operator norm, Lipschitz constant, or "
+    r"H\"older modulus; the proof uses local bounds on the bounded iterate region. Under consistency "
+    r"and continuous differentiability, we prove that the whole sequence converges strongly to a "
+    r"feasible point. As an application, we formulate feature selection as such a problem, with "
+    r"constraints built from fractional and fuzzy-rough feature-selection criteria. Experiments on UCI "
+    r"datasets show that the selected features keep the classification accuracy close to that of the "
+    r"full feature set, and test problems with a nonconvex pseudoconvex constraint exercise the "
+    r"pseudoconvex track; we also compare DTAP with subgradient methods and study its sensitivity to "
+    r"the starting point and the step scale.") + s[b:]
 
 # ---------------------------------------------------------------- Introduction
 rep(r"The split feasibility problem (SFP) models constrained reconstruction~\citep{censor1994}. For closed convex sets $C\subseteq\R^n$, $Q\subseteq\R^m$, and a matrix $\mathcal A$, it seeks",

@@ -91,7 +91,8 @@ def parse(md):
 # reordered: item number -> list of (old sentence numbers, new sentence numbers), in the order of
 # the new text. Items not listed with equally many old and new sentences are paired in order.
 MANUAL = {
-    1: [([1], [1]), ([2], [2]), ([3], [3]), ([4, 5], [4])],
+    1: [([1], [1]), ([2], [2]), ([3, 7], [3]), ([4, 6], [4]), ([5], [5]), ([8], [6]),
+        ([9, 10, 11, 12], [7])],
     2: [([1], [1]), ([2], [2]), ([3], [3]), ([], [4]), ([4, 5], [5]), ([6], [6])],
     4: [([1], []), ([2], [1]), ([3], [2]), ([4, 5], [3])],
     6: [([1], [1, 2]), ([2], [3]), ([3, 4, 5, 6], [4]), ([7, 8, 9], [5])],
