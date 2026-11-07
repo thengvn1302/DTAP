@@ -1,6 +1,6 @@
 \begin{document}
 
-\title{Thuật toán Chiếu Thích nghi Hai Track cho một bài toán chấp nhận tách phi tuyến với các ràng buộc hỗn hợp lồi--giả lồi}
+\title{Thuật toán Chiếu Thích nghi Hai Nhánh cho một bài toán chấp nhận tách phi tuyến với các ràng buộc hỗn hợp lồi--giả lồi}
 
 \author{
 \name{Nguyen Van The\textsuperscript{a}\thanks{Email: the.nv227153@sis.hust.edu.vn}, Tran Ngoc Thang\textsuperscript{a}\thanks{Email: thang.tranngoc@hust.edu.vn} và Nguyen Hong Son\textsuperscript{a}\thanks{LIÊN HỆ Nguyen Hong Son. Email: Son.NH240066D@sis.hust.edu.vn}}
@@ -10,97 +10,127 @@
 \maketitle
 
 \begin{abstract}
-Ta nghiên cứu một bài toán chấp nhận tách phi tuyến có tập đầu ra là hộp chuẩn, các hàm thành phần khả vi và mỗi hàm lồi hoặc giả lồi. Chúng tôi đề xuất thuật toán Chiếu Thích nghi Hai Track (DTAP): thuật toán chia các ràng buộc thành một track lồi và một track giả lồi, và trên mỗi track làm việc với các ràng buộc gần bị vi phạm nhiều nhất. DTAP kết hợp một bước kiểu Polyak co theo phần dư trên track lồi với một bước giảm dần có chặn an toàn trên track giả lồi, qua một trọng số tỉ lệ phản ứng theo phần dư, rồi chiếu lên tập lồi cơ sở. Độ dài bước không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older; chứng minh dùng các cận địa phương trên miền bị chặn chứa dãy lặp. Dưới giả thiết nhất quán và khả vi liên tục, chúng tôi chứng minh toàn bộ dãy hội tụ mạnh tới một điểm khả thi. Làm ứng dụng, chúng tôi phát biểu bài toán chọn đặc trưng dưới dạng bài toán trên, với các ràng buộc xây dựng từ các tiêu chí chọn đặc trưng phân thức và tập thô mờ. Thực nghiệm trên các bộ dữ liệu UCI cho thấy các đặc trưng được chọn giữ độ chính xác phân loại gần với bộ đặc trưng đầy đủ, và các bài toán thử có ràng buộc giả lồi không lồi kiểm tra track giả lồi; chúng tôi cũng so sánh DTAP với các phương pháp dưới gradient và khảo sát độ nhạy của nó với điểm xuất phát và thang bước.
+Chúng tôi nghiên cứu một bài toán chấp nhận tách phi tuyến có tập ảnh là một hộp chuẩn, trong đó các hàm thành phần khả vi và mỗi hàm là lồi hoặc giả lồi. Chúng tôi đề xuất thuật toán Chiếu Thích nghi Hai Nhánh (DTAP): thuật toán chia các ràng buộc thành một nhánh lồi và một nhánh giả lồi, và trên mỗi nhánh làm việc với các ràng buộc gần như bị vi phạm nhiều nhất. DTAP kết hợp một bước kiểu Polyak điều chỉnh theo phần dư trên nhánh lồi với một bước giảm dần có bảo vệ trên nhánh giả lồi, thông qua một trọng số tỉ lệ thay đổi theo phần dư, rồi chiếu lên tập lồi cơ sở. Các cỡ bước của thuật toán không đòi hỏi biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older; chứng minh sử dụng các cận địa phương trên miền bị chặn chứa các điểm lặp. Với giả thiết nhất quán và khả vi liên tục, chúng tôi chứng minh rằng toàn bộ dãy lặp hội tụ mạnh tới một điểm chấp nhận được. Làm ứng dụng, chúng tôi đưa bài toán chọn đặc trưng về dạng bài toán trên, với các ràng buộc được xây dựng từ các tiêu chí chọn đặc trưng dạng phân thức và dạng tập thô mờ. Thực nghiệm trên các bộ dữ liệu UCI cho thấy các đặc trưng được chọn giữ độ chính xác phân loại gần với độ chính xác khi dùng toàn bộ đặc trưng, còn các bài toán thử có ràng buộc giả lồi không lồi cho phép kiểm tra nhánh giả lồi; chúng tôi cũng so sánh DTAP với các phương pháp dưới gradient và khảo sát độ nhạy của DTAP đối với điểm xuất phát và thang cỡ bước.
 \end{abstract}
 
 \begin{keywords}
-Bài toán chấp nhận tách; Tối ưu giả lồi; Vô hướng hóa Tchebyshev; Độ dài bước thích nghi; Hội tụ mạnh; Chọn đặc trưng
+Bài toán chấp nhận tách; Tối ưu giả lồi; Vô hướng hóa Tchebyshev; Cỡ bước thích nghi; Hội tụ mạnh; Chọn đặc trưng
 \end{keywords}
 \begin{amscode}
 47J25; 90C25; 90C26; 65K05; 68T05
 \end{amscode}
 
+\medskip
+\noindent\fbox{\parbox{0.97\textwidth}{\footnotesize
+\textbf{Bảng thuật ngữ Anh--Việt dùng trong bản dịch.}
+split feasibility problem (SFP): bài toán chấp nhận tách;\
+feasible set / point: tập / điểm chấp nhận được;\
+track: nhánh;\
+normal box: hộp chuẩn;\
+step size: cỡ bước;\
+(approximate) active set: tập active (xấp xỉ);\
+violation: mức vi phạm;\
+residual: phần dư;\
+residual-scaled step: bước điều chỉnh theo phần dư;\
+safeguarded diminishing step: bước giảm dần có bảo vệ;\
+proportional weight: trọng số tỉ lệ;\
+consistency: tính nhất quán;\
+pseudoconvex / quasiconvex / quasilinear: giả lồi / tựa lồi / tựa tuyến tính;\
+sublevel set: tập mức dưới;\
+cluster point: điểm tụ;\
+metric projection: phép chiếu mêtric;\
+quasi-Fej\'er: tựa Fej\'er;\
+subgradient method: phương pháp dưới gradient;\
+tuned: đã tinh chỉnh;\
+tolerance: sai số cho phép;\
+budget: số vòng lặp (hoặc số điểm) tối đa;\
+evaluated point: điểm đã tính;\
+slack: độ chênh $b_i-F_i(w)$;\
+witness: điểm minh chứng;\
+fold, seed, mask: fold, seed, mặt nạ (giữ nguyên tên tiếng Anh).}}
+\medskip
+
 \section{Giới thiệu}\label{sec:intro}
 
-Bài toán chấp nhận tách (SFP) được Censor và Elfving~\citep{censor1994} đưa ra như một mô hình cho các bài toán ngược có ràng buộc. Cho các tập lồi đóng khác rỗng $C\subseteq\R^n$ và $Q\subseteq\R^m$ và một ma trận $\mathcal A\in\R^{m\times n}$, bài toán yêu cầu
+Bài toán chấp nhận tách (SFP) được Censor và Elfving~\citep{censor1994} đưa ra như một mô hình cho các bài toán ngược có ràng buộc. Cho các tập lồi đóng khác rỗng $C\subseteq\R^n$, $Q\subseteq\R^m$ và một ma trận $\mathcal A\in\R^{m\times n}$, bài toán yêu cầu
 \begin{equation}\label{eq:sfp-intro}
 \text{tìm }x^\star\in C\quad\text{sao cho}\quad\mathcal A x^\star\in Q.
 \end{equation}
-Thuật toán $CQ$ của Byrne~\citep{byrne2002} lặp theo
+Thuật toán $CQ$ của Byrne~\citep{byrne2002} lặp theo công thức
 \begin{equation}\label{eq:cq-intro}
 x^{k+1}=P_C\bigl(x^k-\tau\mathcal A^\top(I-P_Q)\mathcal A x^k\bigr),
 \qquad 0<\tau<2/\norm{\mathcal A}^2.
 \end{equation}
-Ở đây $\norm{\mathcal A}$ là chuẩn phổ của $\mathcal A$. Các biến thể nới lỏng chiếu lên nửa không gian tựa~\citep{yang2004}; bước tự thích nghi tránh phải ước lượng $\norm{\mathcal A}$~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}; tách toán tử~\citep{zhang2012simultaneous} và phương pháp hướng luân phiên~\citep{yang2014alternating} phân rã bài toán. Các ý tưởng này đã là chuẩn mực; DTAP vận dụng chúng cho trường hợp phi tuyến.
+Ở đây $\norm{\mathcal A}$ là chuẩn phổ của $\mathcal A$. Các biến thể nới lỏng chiếu lên các nửa không gian tựa~\citep{yang2004}; các cỡ bước tự thích nghi tránh việc phải ước lượng $\norm{\mathcal A}$~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}; phương pháp tách toán tử~\citep{zhang2012simultaneous} và phương pháp hướng luân phiên~\citep{yang2014alternating} phân rã bài toán. Các ý tưởng này đã quen thuộc; DTAP vận dụng chúng cho trường hợp phi tuyến.
 
-Thay $\mathcal A$ bằng một ánh xạ phi tuyến $F$ ta được SFP phi tuyến~\citep{li2013nsfp,yen2019}
+Thay $\mathcal A$ bởi một ánh xạ phi tuyến $F$, ta được SFP phi tuyến~\citep{li2013nsfp,yen2019}
 \begin{equation}\label{eq:nsfp-intro}
 \text{tìm }x^\star\in K\quad\text{sao cho}\quad F(x^\star)\in Q,
 \end{equation}
-trong đó $K\subseteq\R^n$ khác rỗng, đóng và lồi, $Q=\prod_{i=1}^m(-\infty,b_i]$ là hộp chuẩn, và mỗi $F_i$ khả vi và lồi hoặc giả lồi trên $K$. Vì hàm giả lồi có các tập mức dưới lồi, tập khả thi $\Omega=\{x\in K:F(x)\in Q\}$ là lồi. Ta tìm một điểm thuộc $\Omega$, không tìm điểm cực tiểu của $F_i$ nào.
+trong đó $K\subseteq\R^n$ là tập khác rỗng, đóng và lồi, $Q=\prod_{i=1}^m(-\infty,b_i]$ là một hộp chuẩn, và mỗi $F_i$ khả vi, lồi hoặc giả lồi trên $K$. Vì các hàm giả lồi có tập mức dưới lồi, tập chấp nhận được $\Omega=\{x\in K:F(x)\in Q\}$ là tập lồi. Ta tìm một điểm thuộc $\Omega$, chứ không tìm điểm cực tiểu của một hàm $F_i$ nào.
 
-Vì $Q$ là một hộp, khoảng cách $\ell_\infty$ từ $F(x)$ tới $Q$ có dạng tường minh
+Vì $Q$ là một hộp, khoảng cách $\ell_\infty$ từ $F(x)$ tới $Q$ có dạng hiển
 \[
 J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+.
 \]
 
-Li và cộng sự~\citep{li2013nsfp} giả thiết một hàm lân cận tổng hợp lồi, điều mà tính giả lồi của từng thành phần không bảo đảm. Yen và cộng sự~\citep{yen2019} dùng cùng độ đo vi phạm kiểu max và cùng kỹ thuật tập hoạt động, nhưng đòi các thành phần tựa tuyến tính, một lớp không so sánh được với lớp của ta. Hu và cộng sự~\citep{hu2022quasi} xét các bất đẳng thức tựa lồi, một lớp chứa lớp của ta, nhưng không dùng bất đẳng thức gradient của các thành phần lồi.
+Li và cộng sự~\citep{li2013nsfp} giả thiết hàm lân cận tổng hợp là lồi, điều mà tính giả lồi của từng thành phần không bảo đảm. Yen và cộng sự~\citep{yen2019} dùng cùng độ đo vi phạm kiểu max và cùng kỹ thuật tập active, nhưng đòi hỏi các thành phần tựa tuyến tính, một lớp hàm không so sánh được với lớp hàm của bài này. Hu và cộng sự~\citep{hu2022quasi} xét các bất đẳng thức tựa lồi, một lớp chứa lớp hàm của bài này, nhưng không sử dụng bất đẳng thức gradient của các thành phần lồi.
 
-Ràng buộc lồi và ràng buộc giả lồi cần những bước khác nhau. Với ràng buộc lồi, bất đẳng thức gradient chặn dưới $\inner{\nabla F_i(x)}{x-x^\star}$, với mọi $x^\star\in\Omega$, bởi độ vi phạm, điều này biện minh cho một bước kiểu Polyak co theo phần dư~\citep{polyak1969,lopez2012}; với ràng buộc giả lồi, ta chỉ biết dấu của tích vô hướng này, nên dùng một bước giảm dần có chặn an toàn. DTAP thực hiện hai bước trên hai track riêng và kết hợp chúng bằng một trọng số tỉ lệ; chứng minh chỉ dùng trọng số này để giữ cho một track bị vi phạm kéo dài vẫn có trọng số dương (Nhận xét~\ref{rem:weight-scope}).
+Ràng buộc lồi và ràng buộc giả lồi cần những bước đi khác nhau. Với một ràng buộc lồi, bất đẳng thức gradient chặn dưới $\inner{\nabla F_i(x)}{x-x^\star}$, với mọi $x^\star\in\Omega$, bởi mức vi phạm, điều này biện minh cho một bước kiểu Polyak điều chỉnh theo phần dư~\citep{polyak1969,lopez2012}; với một ràng buộc giả lồi, ta chỉ biết dấu của tích vô hướng này, nên dùng một bước giảm dần có bảo vệ. DTAP thực hiện hai bước này trên hai nhánh riêng và kết hợp chúng bằng một trọng số tỉ lệ; chứng minh chỉ dùng trọng số này để bảo đảm một nhánh bị vi phạm kéo dài vẫn còn trọng số dương (Nhận xét~\ref{rem:weight-scope}).
 
-Các đóng góp như sau.
+Các đóng góp của bài như sau.
 \begin{enumerate}[label=\textbf{C\arabic*.},leftmargin=2.4em,itemsep=3pt]
-\item Một phương pháp hai track dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ thông tin về dấu trên các ràng buộc giả lồi, không cần giả thiết hàm lân cận lồi như~\citep{li2013nsfp}, cũng không cần mô-đun H\"older như bước động của~\citep{hu2022quasi}.
-\item Sự hội tụ của toàn bộ dãy tới một điểm khả thi dưới Giả thiết~\ref{ass:standing} (Định lý~\ref{thm:strong}).
-\item Một ứng dụng chọn đặc trưng xây dựng từ các tiêu chí phân thức và tập thô mờ, có các ràng buộc lồi (Mệnh đề~\ref{prop:fs-reg}), cùng các bài toán thử có ràng buộc giả lồi không lồi; thực nghiệm báo cáo mức hoạt động của ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của nó với điểm xuất phát và thang bước.
+\item Một phương pháp hai nhánh dùng bất đẳng thức gradient trên các ràng buộc lồi và chỉ dùng thông tin về dấu trên các ràng buộc giả lồi, không cần giả thiết hàm lân cận lồi như~\citep{li2013nsfp}, cũng không cần mô-đun H\"older như cỡ bước động của~\citep{hu2022quasi}.
+\item Sự hội tụ của toàn bộ dãy lặp tới một điểm chấp nhận được dưới Giả thiết~\ref{ass:standing} (Định lý~\ref{thm:strong}).
+\item Một ứng dụng chọn đặc trưng xây dựng từ các tiêu chí dạng phân thức và dạng tập thô mờ, có các ràng buộc lồi (Mệnh đề~\ref{prop:fs-reg}), cùng các bài toán thử có ràng buộc giả lồi không lồi; thực nghiệm báo cáo mức hoạt động của các ràng buộc, so sánh DTAP với các phương pháp dưới gradient đã tinh chỉnh, và đo độ nhạy của DTAP đối với điểm xuất phát và thang cỡ bước.
 \end{enumerate}
 
-Mục~\ref{sec:prelim} trình bày kiến thức chuẩn bị. Mục~\ref{sec:convergence} trình bày \dtap{} và phân tích hội tụ. Mục~\ref{sec:experiments} báo cáo thực nghiệm, và Mục~\ref{sec:conclusion} kết luận.
+Mục~\ref{sec:prelim} trình bày kiến thức chuẩn bị. Mục~\ref{sec:convergence} trình bày \dtap{} và phân tích hội tụ. Mục~\ref{sec:experiments} báo cáo các thực nghiệm, và Mục~\ref{sec:conclusion} kết luận.
 
 
 \section{Kiến thức chuẩn bị}\label{sec:prelim}
-Trong toàn bài, $H=\R^n$ là không gian Euclid với tích vô hướng $\inner{\cdot}{\cdot}$ và chuẩn cảm sinh $\norm{\cdot}$. Mọi phát biểu về hội tụ đều theo tô-pô chuẩn. Dãy bị chặn có dãy con hội tụ. Các kết quả chuẩn về phép chiếu và lồi suy rộng dưới đây có thể tìm trong~\citep{bauschke2011,mangasarian1994}.
+Trong toàn bài, $H=\R^n$ là không gian Euclid với tích vô hướng $\inner{\cdot}{\cdot}$ và chuẩn sinh bởi tích vô hướng $\norm{\cdot}$. Mọi phát biểu về hội tụ đều hiểu theo tô-pô chuẩn. Mọi dãy bị chặn đều có dãy con hội tụ. Các kết quả quen thuộc về phép chiếu và về lồi suy rộng dưới đây có thể tìm trong~\citep{bauschke2011,mangasarian1994}.
 
 Với một tập lồi đóng khác rỗng $K\subseteq H$, phép chiếu mêtric $P_K(x)$ là điểm cực tiểu duy nhất của $\norm{y-x}$ trên $y\in K$.
 \begin{proposition}\label{prop:proj-char}
-Với $x\in H$ và $p\in K$, $p=P_K(x)$ khi và chỉ khi
+Với $x\in H$ và $p\in K$, ta có $p=P_K(x)$ khi và chỉ khi
 \begin{equation}\label{eq:proj-char}
 \inner{x-p}{y-p}\le0\qquad\text{với mọi }y\in K.
 \end{equation}
 \end{proposition}
-Đặc trưng này cho ta Bổ đề~\ref{lem:proj-nonexp} dưới đây.
+Đặc trưng này dẫn tới Bổ đề~\ref{lem:proj-nonexp} ở dưới.
 
-Một hàm $f:K\to\R$ là lồi nếu
+Hàm $f:K\to\R$ được gọi là lồi nếu
 $f((1-t)x+ty)\le(1-t)f(x)+tf(y)$ với $x,y\in K$ và $t\in[0,1]$.
 Điều kiện đạo hàm yếu hơn sau đây do Mangasarian~\citep{mangasarian1965} đưa ra.
 \begin{definition}\label{def:pseudoconvex}
-Một hàm $f$ khả vi trên một lân cận mở của $K$ được gọi là giả lồi trên $K$ nếu, với mọi $x,y\in K$,
+Hàm $f$ khả vi trên một lân cận mở của $K$ được gọi là giả lồi trên $K$ nếu với mọi $x,y\in K$,
 \begin{equation}\label{eq:contrapositive}
 f(y)<f(x)\quad\Longrightarrow\quad\inner{\nabla f(x)}{y-x}<0.
 \end{equation}
 \end{definition}
-Mọi hàm lồi khả vi đều giả lồi. Hàm giả lồi có các tập mức dưới lồi, mặc dù bản thân hàm không nhất thiết lồi.
+Mọi hàm lồi khả vi đều giả lồi. Hàm giả lồi có các tập mức dưới lồi, mặc dù bản thân hàm có thể không lồi.
 
 \section{Thuật toán DTAP và phân tích hội tụ}\label{sec:convergence}
-Ta phát biểu NSFP với hộp chuẩn, nêu thuật toán DTAP, và chứng minh toàn bộ dãy hội tụ
-tới một điểm khả thi.
+Ta phát biểu NSFP với hộp chuẩn, trình bày DTAP, và chứng minh toàn bộ dãy lặp hội tụ
+tới một điểm chấp nhận được.
 
 \subsection{Phát biểu bài toán và vô hướng hóa Tchebyshev}\label{ssec:model-stmt}
 Cho $K\subseteq H$ là tập lồi đóng khác rỗng, và $U\subseteq H$ là một lân cận mở
-của $K$. Cố định số nguyên $m\ge1$, cho $F=(F_1,\dots,F_m):U\to\R^m$,
-cho $b=(b_1,\dots,b_m)\in\R^m$, và đặt hộp chuẩn
-$Q:=(-\infty,b_1]\times\cdots\times(-\infty,b_m]$. Ta nghiên cứu trường hợp sau
-của~\eqref{eq:nsfp-intro}
+của $K$. Cố định số nguyên $m\ge1$, cho $F=(F_1,\dots,F_m):U\to\R^m$ và
+$b=(b_1,\dots,b_m)\in\R^m$, và đặt hộp chuẩn
+$Q:=(-\infty,b_1]\times\cdots\times(-\infty,b_m]$. Ta xét trường hợp sau
+của~\eqref{eq:nsfp-intro}:
 \begin{equation}\label{eq:nsfp-box}
 \text{tìm } x^\star\in\Omega,\qquad
 \Omega:=\bigl\{x\in K: F_i(x)\le b_i,\ i=1,\dots,m\bigr\},
 \end{equation}
-và gọi $\Omega$ là \emph{tập khả thi}. Để biến điều kiện $F(x)\in Q$ thành một hàm đánh giá
+và gọi $\Omega$ là \emph{tập chấp nhận được}. Để biến điều kiện $F(x)\in Q$ thành một hàm đánh giá
 dễ xử lý, ta đo phần dư theo chuẩn sup. Với $z=F(x)$,
-$d_\infty(z,Q)=\inf_{q\le b}\max_{1\le i\le m}\abs{z_i-q_i}$. Nhờ cấu trúc hộp,
-cận dưới đúng tách theo từng tọa độ: nếu $z_i\le b_i$ thì
-$\inf_{q_i\le b_i}\abs{z_i-q_i}=0$ (tại $q_i=z_i$), còn nếu $z_i>b_i$ thì nó bằng
-$z_i-b_i$ (tại $q_i=b_i$). Do đó $\inf_{q_i\le b_i}\abs{z_i-q_i}=(z_i-b_i)^+$ với
+$d_\infty(z,Q)=\inf_{q\le b}\max_{1\le i\le m}\abs{z_i-q_i}$. Do cấu trúc hộp,
+cận dưới đúng tách được theo từng tọa độ: nếu $z_i\le b_i$ thì
+$\inf_{q_i\le b_i}\abs{z_i-q_i}=0$ (đạt tại $q_i=z_i$), còn nếu $z_i>b_i$ thì nó bằng
+$z_i-b_i$ (đạt tại $q_i=b_i$). Do đó $\inf_{q_i\le b_i}\abs{z_i-q_i}=(z_i-b_i)^+$ với
 $(t)^+:=\max\{t,0\}$, nên
 \begin{equation}\label{eq:dinfty}
 d_\infty(z,Q)=\max_{1\le i\le m}(z_i-b_i)^+ .
@@ -109,94 +139,94 @@ d_\infty(z,Q)=\max_{1\le i\le m}(z_i-b_i)^+ .
 \begin{equation}\label{eq:Jdef}
 J(x):=d_\infty\bigl(F(x),Q\bigr)=\max_{1\le i\le m}\bigl(F_i(x)-b_i\bigr)^+ .
 \end{equation}
-Khi đó $x\in K$ khả thi khi và chỉ khi $J(x)=0$; khi $\Omega\ne\emptyset$, các điểm
-khả thi chính là các điểm cực tiểu của $J$ trên $K$. Công thức~\eqref{eq:Jdef} cho một phần dư khả thi dạng tường minh, mà các điểm
-đạt max chỉ ra những ràng buộc bị vi phạm nhiều nhất. Mục~\ref{ssec:dual-track}
-đưa vào một tập hoạt động xấp xỉ để xử lý tính không trơn của hàm max.
+Khi đó $x\in K$ là điểm chấp nhận được khi và chỉ khi $J(x)=0$; khi $\Omega\ne\emptyset$, các điểm
+chấp nhận được chính là các điểm cực tiểu của $J$ trên $K$. Công thức~\eqref{eq:Jdef} cho một phần dư dạng hiển của tính chấp nhận được, và các điểm
+đạt max của nó chỉ ra những ràng buộc bị vi phạm nhiều nhất. Mục~\ref{ssec:dual-track}
+đưa vào một tập active xấp xỉ để xử lý tính không trơn của hàm max.
 
-\subsection{Phân rã thành hai track}\label{ssec:dual-track}
-Ta chia $I:=\{1,\dots,m\}$ thành \emph{track lồi} $I^{\cvx}$ và
-\emph{track giả lồi} $I^{\ps}$, mỗi track có quy tắc bước riêng. Track lồi dùng bước Polyak~\citep{polyak1969};
-track giả lồi dùng bước giảm dần có chặn an toàn.
-Một trọng số tỉ lệ kết hợp hai bước cập nhật.
+\subsection{Phân rã thành hai nhánh}\label{ssec:dual-track}
+Ta chia $I:=\{1,\dots,m\}$ thành \emph{nhánh lồi} $I^{\cvx}$ và
+\emph{nhánh giả lồi} $I^{\ps}$, mỗi nhánh có quy tắc bước riêng. Nhánh lồi dùng bước Polyak~\citep{polyak1969};
+nhánh giả lồi dùng bước giảm dần có bảo vệ.
+Một trọng số tỉ lệ kết hợp hai bước cập nhật này.
 
-Cố định tham số $\delta>0$. Với $x\in U$, định nghĩa độ vi phạm từng thành phần
+Cố định một tham số $\delta>0$. Với $x\in U$, định nghĩa mức vi phạm của từng thành phần
 \begin{equation}\label{eq:vi}
 v_i(x):=\bigl(F_i(x)-b_i\bigr)^+,
 \end{equation}
-nên $J(x)=\max_i v_i(x)$ theo~\eqref{eq:Jdef}. Giả thiết~\ref{ass:standing} phát biểu chính xác
-phép chia này. \emph{Độ vi phạm lớn nhất trên mỗi track} là
+khi đó $J(x)=\max_i v_i(x)$ theo~\eqref{eq:Jdef}. Giả thiết~\ref{ass:standing} phát biểu chính xác
+phép chia này. \emph{Mức vi phạm lớn nhất trên từng nhánh} là
 \begin{align}
 J^{\cvx}(x)&:=\max_{i\in I^{\cvx}}v_i(x)\quad(\,{=}\,0\text{ nếu }I^{\cvx}=\emptyset),\label{eq:Jcvx}\\
 J^{\ps}(x)&:=\max_{j\in I^{\ps}}v_j(x)\quad(\,{=}\,0\text{ nếu }I^{\ps}=\emptyset),\label{eq:Jps}
 \end{align}
 nên $J(x)=\max\{J^{\cvx}(x),J^{\ps}(x)\}$. Để xử lý tính không trơn của hàm max,
-ta thay tập các chỉ số tại đó đạt giá trị lớn nhất bằng một \emph{tập hoạt động xấp xỉ}
-được nới rộng $\delta$ trên mỗi track (``hoạt động'' nghĩa là cách độ vi phạm lớn nhất
+trên mỗi nhánh ta thay tập các chỉ số đạt giá trị lớn nhất bằng một \emph{tập active xấp xỉ}
+được nới rộng một lượng $\delta$ (``active'' nghĩa là mức vi phạm cách giá trị lớn nhất
 không quá $\delta$):
 \begin{align}
 K^{\cvx}(x)&:=\begin{cases}\{i\in I^{\cvx}:v_i(x)\ge J^{\cvx}(x)-\delta\} & \text{nếu }J^{\cvx}(x)>0,\\ \emptyset & \text{nếu }J^{\cvx}(x)=0,\end{cases}\label{eq:Kcvx}\\[2pt]
 K^{\ps}(x)&:=\begin{cases}\{j\in I^{\ps}:v_j(x)\ge J^{\ps}(x)-\delta\} & \text{nếu }J^{\ps}(x)>0,\\ \emptyset & \text{nếu }J^{\ps}(x)=0.\end{cases}\label{eq:Kps}
 \end{align}
-Trên các tập này ta lập \emph{các hàm và hướng địa phương theo từng track}
+Trên các tập này ta lập \emph{các hàm và các hướng địa phương theo từng nhánh}
 \begin{align}
 \Phi^{\cvx}(x)&:=\tfrac12\!\!\sum_{i\in K^{\cvx}(x)}\!\! v_i(x)^2, & g^{\cvx}(x)&:=\!\!\sum_{i\in K^{\cvx}(x)}\!\! v_i(x)\nabla F_i(x),\label{eq:phi-g-cvx}\\
 & & g^{\ps}(x)&:=\!\!\sum_{j\in K^{\ps}(x)}\!\! v_j(x)\nabla F_j(x).\label{eq:phi-g-ps}
 \end{align}
-Các vector $g^{\cvx}(x),g^{\ps}(x)$ là hai hướng tìm kiếm, và $\Phi^{\cvx}(x)$
-cung cấp tử số Polyak trên track lồi. Dọc theo dãy lặp ta viết tắt
+Các vector $g^{\cvx}(x)$, $g^{\ps}(x)$ là hai hướng tìm kiếm, còn $\Phi^{\cvx}(x)$
+là tử số trong bước Polyak trên nhánh lồi. Dọc theo dãy lặp, ta viết tắt
 $J^{\cvx}_k:=J^{\cvx}(x^k)$, $g^{\cvx}_k:=g^{\cvx}(x^k)$, $\Phi^{\cvx}_k:=\Phi^{\cvx}(x^k)$,
-và tương tự trên track giả lồi.
+và tương tự trên nhánh giả lồi.
 
 \subsection{Các giả thiết}\label{ssec:assumptions}
 \begin{assumption}\label{ass:standing}
 Ta giả thiết \textup{(A1)--(A3)}:
 \begin{itemize}[leftmargin=2.4em,itemsep=2pt]
 \item[\textup{(A1)}] \textup{(a)} $\Omega\ne\emptyset$ (tính nhất quán). \textup{(b)} $I=\{1,\dots,m\}$
-được chia thành $I=I^{\cvx}\cup I^{\ps}$; mỗi $F_i:U\to\R$ là lồi trên $K$ nếu
+được chia thành $I=I^{\cvx}\cup I^{\ps}$; mỗi $F_i:U\to\R$ lồi trên $K$ nếu
 $i\in I^{\cvx}$ và giả lồi trên $K$ nếu $i\in I^{\ps}$.
 \item[\textup{(A2)}] Mỗi $F_i:U\to\R$ khả vi liên tục trên $U$.
 \item[\textup{(A3)}] \textup{(i)} $\delta>0$ cố định. \textup{(ii)}
-$\rho_{\cvx}\in(0,2)$. \textup{(iii)} $\{\gamma_k\}\subset(0,\infty)$ với
+$\rho_{\cvx}\in(0,2)$. \textup{(iii)} $\{\gamma_k\}\subset(0,\infty)$ thỏa
 $\sum_{k=0}^\infty\gamma_k^2<\infty$ và $\sum_{k=0}^\infty\gamma_k=\infty$.
 \end{itemize}
 \end{assumption}
-Cách phát biểu trên lân cận mở cho phép các hàm phân thức có mẫu số
+Việc phát biểu trên một lân cận mở cho phép các hàm phân thức có mẫu số
 dương trên $K$; thuật toán chỉ tính giá trị hàm và gradient tại các điểm thuộc $K$.
-Mặc dù một số hàm thành phần có thể không lồi, $\Omega$ vẫn lồi: các hàm giả lồi khả vi
-là tựa lồi trên $K$, nên mọi tập mức dưới của ràng buộc trong $K$ đều lồi.
+Dù một số hàm thành phần có thể không lồi, tập $\Omega$ vẫn lồi: các hàm giả lồi khả vi
+là tựa lồi trên $K$, nên mọi tập mức dưới của các ràng buộc trong $K$ đều lồi.
 \begin{example}\label{ex:gamma}
 Dãy $\gamma_k:=1/(k+1)$ thỏa (A3)(iii), vì $\sum_{k\ge0}(k+1)^{-2}<\infty$
-còn $\sum_{k\ge0}(k+1)^{-1}=\infty$. Tổng quát hơn, $\gamma_k=(k+c)^{-s}$ với $c>0$
-và $s\in(1/2,1]$ đều thỏa; các thực nghiệm dùng $s=0.55$.
+trong khi $\sum_{k\ge0}(k+1)^{-1}=\infty$. Tổng quát hơn, $\gamma_k=(k+c)^{-s}$ với $c>0$
+và $s\in(1/2,1]$ đều thỏa mãn; các thực nghiệm dùng $s=0.55$.
 \end{example}
 
 \subsection{Thuật toán DTAP}\label{ssec:algorithm}
-Thuật toán Chiếu Thích nghi Hai Track kết hợp hai độ dài bước riêng của từng track
-qua trọng số tỉ lệ $\mu_k$ và chiếu bước cập nhật kết hợp lên tập lồi cơ sở
-$K$. Thuật toán được phát biểu ở Thuật toán~\ref{alg:dtap}.
+Thuật toán Chiếu Thích nghi Hai Nhánh kết hợp hai cỡ bước riêng của hai nhánh
+thông qua trọng số tỉ lệ $\mu_k$, rồi chiếu bước cập nhật tổng hợp lên tập lồi cơ sở
+$K$. Thuật toán được phát biểu trong Thuật toán~\ref{alg:dtap}.
 
 \begin{algorithm}[H]
-\caption{Chiếu Thích nghi Hai Track (DTAP) cho NSFP với hộp chuẩn
+\caption{Chiếu Thích nghi Hai Nhánh (DTAP) cho NSFP với hộp chuẩn
 \eqref{eq:nsfp-box}.}
 \label{alg:dtap}
 \small
 \noindent\textbf{Đầu vào:} ánh xạ $F=(F_1,\dots,F_m)$, các ngưỡng $b$, tập cơ sở $K$, phép chia
 chỉ số $I^{\cvx}\cup I^{\ps}$.\\
-\textbf{Tham số:} $\delta>0$, sai số dừng $\varepsilon>0$, $\rho_{\cvx}\in(0,2)$,
+\textbf{Tham số:} $\delta>0$, sai số cho phép $\varepsilon>0$, $\rho_{\cvx}\in(0,2)$,
 dãy $\{\gamma_k\}$ thỏa (A3)(iii).\\
 \textbf{Khởi tạo:} chọn $x^0\in K$; đặt $k\leftarrow 0$.
 
-\algstep{Bước 1 (các đại lượng theo track).} Nếu $J(x^k)\le\varepsilon$ thì dừng và trả về $x^k$; ngược lại:
+\algstep{Bước 1 (các đại lượng theo từng nhánh).} Nếu $J(x^k)\le\varepsilon$ thì dừng và trả về $x^k$; nếu không:
 \begin{itemize}[leftmargin=1.6em,itemsep=1pt,topsep=2pt]
 \item[(1a)] Tính $v_i(x^k)$ với mọi $i$, và $J^{\cvx}_k=\max_{i\in I^{\cvx}}v_i(x^k)$,
-$J^{\ps}_k=\max_{j\in I^{\ps}}v_j(x^k)$ (mỗi đại lượng bằng $0$ nếu track tương ứng rỗng).
-\item[(1b)] Lập các tập hoạt động xấp xỉ $K^{\cvx}_k,K^{\ps}_k$ theo
+$J^{\ps}_k=\max_{j\in I^{\ps}}v_j(x^k)$ (bằng $0$ nếu nhánh tương ứng rỗng).
+\item[(1b)] Lập các tập active xấp xỉ $K^{\cvx}_k,K^{\ps}_k$ theo
 \eqref{eq:Kcvx}--\eqref{eq:Kps}.
 \item[(1c)] Lập $\Phi^{\cvx}_k$, $g^{\cvx}_k$, $g^{\ps}_k$ theo
 \eqref{eq:phi-g-cvx}--\eqref{eq:phi-g-ps}.
-\item[(1d)] Độ dài bước theo từng track (Polyak trên track lồi, có chặn an toàn trên
-track giả lồi):
+\item[(1d)] Cỡ bước trên từng nhánh (bước Polyak trên nhánh lồi, bước có bảo vệ trên
+nhánh giả lồi):
 \[
 \eta^{\cvx}_k=\begin{cases}\rho_{\cvx}\,\dfrac{2\Phi^{\cvx}_k}{\norm{g^{\cvx}_k}^2} & \text{nếu }\norm{g^{\cvx}_k}>0,\\ 0 & \text{ngược lại,}\end{cases}
 \qquad
@@ -212,56 +242,56 @@ $\displaystyle y^k=x^k-\bigl[\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k
 \end{algorithm}
 
 \begin{remark}\label{rem:weight-scope}
-Trọng số tỉ lệ là một cách phân bổ thích nghi dựa trên hai độ vi phạm lớn nhất;
-ta không khẳng định đó là lựa chọn duy nhất khiến DTAP hội tụ, hay là tối ưu.
-Dạng cụ thể của nó được dùng trong~\eqref{eq:p10} để kiểm soát phần dư của track lồi và trong
-Khẳng định~2 của Giai đoạn~2 của Định lý~\ref{thm:strong} để bảo đảm một track giả lồi
-bị vi phạm kéo dài vẫn giữ trọng số dương. Mặc dù bất đẳng thức một bước của Bổ đề~\ref{lem:fejer} đúng
-với mọi $\mu_k\in[0,1]$, tự nó không suy ra hội tụ với mọi dãy trọng số.
+Trọng số tỉ lệ là một cách phân bổ thích nghi dựa trên hai mức vi phạm lớn nhất;
+chúng tôi không khẳng định đó là lựa chọn duy nhất làm DTAP hội tụ, cũng không khẳng định nó tối ưu.
+Dạng cụ thể của trọng số được dùng trong~\eqref{eq:p10} để kiểm soát phần dư trên nhánh lồi, và trong
+Khẳng định~2 thuộc Giai đoạn~2 của Định lý~\ref{thm:strong} để bảo đảm một nhánh giả lồi
+bị vi phạm kéo dài vẫn giữ trọng số dương. Mặc dù bất đẳng thức một bước trong Bổ đề~\ref{lem:fejer} đúng
+với mọi $\mu_k\in[0,1]$, riêng bất đẳng thức này không suy ra sự hội tụ với mọi dãy trọng số.
 \end{remark}
 
 \begin{remark}\label{rem:regularity-scope}
-Phép lặp không cần biết trước chuẩn toán tử, hằng số Lipschitz hay
-mô-đun H\"older. Tuy vậy, chứng minh dùng các cận hữu hạn của giá trị hàm và
-gradient trên một tập compact chứa dãy lặp, sau khi đã chứng minh tính bị chặn.
-Gradient bị chặn kéo theo các hàm Lipschitz trên tập compact lồi đó,
+Phép lặp không đòi hỏi biết trước chuẩn toán tử, hằng số Lipschitz hay
+mô-đun H\"older. Tuy vậy, chứng minh có dùng các cận hữu hạn của giá trị hàm và
+gradient trên một tập compact chứa các điểm lặp, sau khi đã chứng minh tính bị chặn.
+Gradient bị chặn kéo theo các hàm là Lipschitz trên tập compact lồi đó,
 nhưng các cận này không phải là đầu vào của thuật toán. Giả thiết (A2) không
-kéo theo tính Lipschitz của gradient, và định lý không cần điều đó.
+kéo theo tính Lipschitz của gradient, và định lý cũng không cần tính chất đó.
 Người dùng vẫn phải chọn $\rho_{\cvx}$, $\delta$ và $\{\gamma_k\}$; các tham số này không
 phụ thuộc vào hằng số nào của bài toán.
 \end{remark}
 
-Để phân tích, ta viết số gia kết hợp là
+Để phân tích, ta viết số gia tổng hợp dưới dạng
 \begin{equation}\label{eq:dk}
 d_k:=\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k,
 \end{equation}
 nên $y^k=x^k-d_k$ và $x^{k+1}=P_K(x^k-d_k)$.
 \subsection{Chi phí mỗi vòng lặp}\label{ssec:complexity}
 Mỗi vòng lặp của \dtap{} tính
-các độ vi phạm $v_i(x^k)$ và gradient trên tập hoạt động $\{\nabla F_i(x^k):i\in
-K^{\cvx}_k\cup K^{\ps}_k\}$, lập hai hướng tìm kiếm $g^{\cvx}_k,g^{\ps}_k$ như các tổng có trọng số
-của các gradient này, tính độ dài bước, và thực hiện một phép chiếu lên $K$.
-Nó không dùng ước lượng chuẩn toán tử cũng không dùng tìm kiếm theo tia. Chi phí chủ yếu nằm ở
+các mức vi phạm $v_i(x^k)$ và các gradient trên tập active $\{\nabla F_i(x^k):i\in
+K^{\cvx}_k\cup K^{\ps}_k\}$, lập hai hướng tìm kiếm $g^{\cvx}_k,g^{\ps}_k$ dưới dạng tổng có trọng số
+của các gradient này, tính các cỡ bước, và thực hiện một phép chiếu lên $K$.
+Thuật toán không dùng ước lượng chuẩn toán tử, cũng không dùng tìm kiếm theo tia. Chi phí chủ yếu nằm ở
 việc tính các ràng buộc và phép chiếu. Chi phí cho bài toán chọn đặc trưng
 được nêu ở Mục~\ref{sec:fs}
 (Nhận xét~\ref{rem:fs-cost}).
 
 \subsection{Các bổ đề bổ trợ}\label{ssec:aux}
-Hai track cần những lập luận khác nhau. Trên track lồi, Bổ đề~\ref{lem:grad-cvx} chặn dưới
-$\inner{\nabla F_i(x)}{x-x^\star}$ bởi độ vi phạm $v_i(x)$; điều này cho mức giảm của
-$\norm{x^k-x^\star}^2$ cỡ $\mu_kT_k$. Trên track giả lồi,
+Hai nhánh cần những lập luận khác nhau. Trên nhánh lồi, Bổ đề~\ref{lem:grad-cvx} chặn dưới
+$\inner{\nabla F_i(x)}{x-x^\star}$ bởi mức vi phạm $v_i(x)$; nhờ đó $\norm{x^k-x^\star}^2$ giảm
+một lượng cỡ $\mu_kT_k$. Trên nhánh giả lồi,
 định nghĩa~\eqref{eq:contrapositive} chỉ cho biết dấu của tích vô hướng này.
-Bổ đề~\ref{lem:fejer} gộp cả hai track trong một bất đẳng thức tựa Fej\'er; cách chọn
-tham số $\zeta$ trong bất đẳng thức Young giữ cho số hạng của track lồi luôn âm. Sau đó Giai đoạn~2 của
+Bổ đề~\ref{lem:fejer} gộp cả hai nhánh vào một bất đẳng thức tựa Fej\'er; cách chọn
+tham số $\zeta$ trong bất đẳng thức Young giữ cho số hạng của nhánh lồi luôn âm. Sau đó Giai đoạn~2 của
 Định lý~\ref{thm:strong} chứng minh bằng phản chứng rằng có ít nhất một điểm tụ
-khả thi, và Giai đoạn~3 chứng minh toàn bộ dãy hội tụ mạnh tới điểm đó. Hai trường hợp suy biến
-được suy ra như các hệ quả.
+chấp nhận được, và Giai đoạn~3 chứng minh toàn bộ dãy hội tụ mạnh tới điểm đó. Hai trường hợp suy biến
+được suy ra dưới dạng hệ quả.
 
 Trong toàn bộ phần sau, $\{x^k\}$ là dãy vô hạn sinh bởi Thuật toán~\ref{alg:dtap} khi
-bỏ phép kiểm tra dừng. Như chứng minh dưới đây
+bỏ phép kiểm tra dừng. Như được chứng minh dưới đây
 (Bổ đề~\ref{lem:jcvx0} và Định lý~\ref{thm:strong}), $J(x^k)\to 0$; do đó với mọi
-$\varepsilon>0$ có một chỉ số hữu hạn $k$ với $J(x^k)\le\varepsilon$, nên phiên bản có điều kiện dừng
-kết thúc sau hữu hạn bước với một điểm $\varepsilon$-khả thi.
+$\varepsilon>0$ tồn tại chỉ số hữu hạn $k$ với $J(x^k)\le\varepsilon$, nên phiên bản có phép kiểm tra dừng
+kết thúc sau hữu hạn bước với một điểm $\varepsilon$-chấp nhận được.
 
-Ta bắt đầu với hai kết quả chuẩn bị được dùng nhiều lần dưới đây.
+Ta bắt đầu với hai kết quả chuẩn bị được dùng nhiều lần ở phần sau.
 

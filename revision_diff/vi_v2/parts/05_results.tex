@@ -2,7 +2,7 @@
 Các Bảng~\ref{tab:nfeat}--\ref{tab:perf-summary} báo cáo kích thước tập được chọn,
 độ ổn định và hiệu quả dự đoán. Trung bình DTAP giữ lại $84.2\%$ số đặc trưng,
 trong đó $33/36$ trên Satimage và $49/57$ trên Spambase.
-Độ ổn định trung bình của nó là $0.786$, so với $0.822$ của N-Fscore.
+Độ ổn định trung bình của DTAP là $0.786$, so với $0.822$ của N-Fscore.
 Như vậy DTAP giảm số đặc trưng ở mức vừa phải; nó không chọn được các tập thưa hơn hay
 ổn định hơn các mô hình gốc. AFRSFCV chọn các tập nhỏ hơn nhiều trên một số bộ dữ liệu,
 với độ chính xác trung bình thấp hơn trong cấu hình cố định.
@@ -11,15 +11,15 @@ với độ chính xác trung bình thấp hơn trong cấu hình cố định.
 với cả hai bộ phân loại. Nó cao hơn N-Fscore và AFRSFCV lần lượt $3.12$
 và $4.83$ điểm về độ chính xác SVM, trong khi giữ lại nhiều đặc trưng hơn.
 Đây là sự đánh đổi giữa kích thước và khả năng dự đoán, không phải một phép so sánh cùng số lượng đặc trưng.
-Cả hai biến thể SG có mặt nạ bỏ phiếu giống hệt DTAP trên bảy bộ dữ liệu;
+Cả hai biến thể SG có mặt nạ chọn theo bỏ phiếu giống hệt DTAP trên bảy bộ dữ liệu;
 chỉ Spambase khác ($48$ so với $49$ đặc trưng).
-SG-dyn dùng hết ngân sách 1000 vòng lặp ở 6/7 fold chọn trên Glass,
+SG-dyn chạy hết 1000 vòng lặp tối đa ở 6/7 fold chọn trên Glass,
 7/10 trên Diabetes và 10/10 trên Abalone, còn SG-const ở 1/10 trên Abalone
-(DTAP không có fold nào); trọng số bỏ phiếu của cả hai biến thể SG là các điểm lặp tốt nhất
-tìm được trong ngân sách. Kết quả SG trên Spambase, bộ dữ liệu duy nhất
+(DTAP không có fold nào); trọng số dùng để bỏ phiếu của cả hai biến thể SG là các điểm lặp tốt nhất
+tìm được trong giới hạn số vòng lặp. Kết quả SG trên Spambase, bộ dữ liệu duy nhất
 mà chúng khác DTAP, được ghi dưới Bảng~\ref{tab:acc};
 Bảng~\ref{tab:perf-summary} gồm cả năm phương pháp.
-Độ ổn định theo fold có thể khác nhau ngay cả khi mặt nạ bỏ phiếu cuối cùng giống hệt.
+Độ ổn định theo fold có thể khác nhau ngay cả khi mặt nạ chọn theo bỏ phiếu cuối cùng giống hệt.
 
 Bảng~\ref{tab:wilcoxon} báo cáo các kiểm định hạng có dấu. Không phép so sánh từng cặp nào
 bác bỏ ở mức $0.05$ sau hiệu chỉnh Holm; các phép so sánh SVM với
@@ -51,7 +51,7 @@ Pendigits & $16$ & $13/0.854$ & $12/0.063$ & $15/1.000$ & $15/1.000$ & $15/1.000
 \end{table}
 \begin{table}[htbp]
 \centering\small\setlength{\tabcolsep}{4pt}
-\caption{Độ chính xác (\%) / AUC một-chọi-còn-lại trung bình macro theo từng bộ dữ liệu trên tập giữ lại duy nhất. Các mặt nạ bỏ phiếu giống nhau dùng chung dự đoán; các ngoại lệ của SG được ghi bên dưới.}\label{tab:acc}
+\caption{Độ chính xác (\%) / AUC macro (one-vs-rest) theo từng bộ dữ liệu trên tập kiểm tra duy nhất. Các mặt nạ chọn theo bỏ phiếu giống nhau dùng chung dự đoán; các ngoại lệ của SG được ghi bên dưới.}\label{tab:acc}
 \begin{tabular}{llrrrr}
 \toprule
 Bộ dữ liệu & Bộ phân loại & Đầy đủ & N-Fscore & AFRSFCV & DTAP \\
@@ -113,31 +113,31 @@ AUC, $5$-NN & $0.0781/0.3125$ & $0.1562/0.4688$ & $1.0000/1.0000$ & $1.0000/1.00
 \label{ssec:feasibility-audit}
 
 Như đã nêu ở Mục~\ref{ssec:reduction}, các ngưỡng đã hiệu chỉnh không nhất thiết cho
-$\Omega\ne\varnothing$. Với mỗi bài toán dữ liệu đầy đủ dưới đây, ta giữ lại điểm được đánh giá có độ dôi
+$\Omega\ne\varnothing$. Với mỗi bài toán dữ liệu đầy đủ dưới đây, ta giữ lại điểm đã tính có độ chênh
 $\min_i(b_i-F_i(w))$ lớn nhất trên mọi lần chạy. Khi tính lại trên các ma trận dựng lại từ dữ liệu, mỗi
-điểm này thỏa chặt cả ba bất đẳng thức; độ dôi nhỏ nhất là
-$4.33\times10^{-4}$. Đây là một phép kiểm tra số, không phải chứng nhận chính xác về tính khả thi.
+điểm này thỏa chặt cả ba bất đẳng thức; độ chênh nhỏ nhất là
+$4.33\times10^{-4}$. Đây là một phép kiểm tra số, không phải chứng nhận chính xác về tính chấp nhận được.
 
-Ta đếm các điểm lặp của một lần chạy, kể cả điểm cuối (các điểm được đánh giá của nó), tại đó
+Ta gọi các điểm lặp của một lần chạy, kể cả điểm cuối, là các điểm đã tính của lần chạy đó, và đếm các điểm tại đó
 $F_3(w^k)-b_3>10^{-6}$. Đại lượng này đo sự vi phạm dọc theo quỹ đạo, chứ không đo việc
-ràng buộc có chặt tại giới hạn hay không. Bảng~\ref{tab:activation-tuning} cho thấy, từ
-điểm xuất phát chuẩn, $F_3$ không bị vi phạm tại điểm được đánh giá nào trên bảy trong tám bộ dữ liệu
-phân loại, và bị vi phạm tại một trong $48$ điểm được đánh giá trên Abalone. Vì $F_3$ lồi
+ràng buộc có chặt tại điểm giới hạn hay không. Bảng~\ref{tab:activation-tuning} cho thấy, từ
+điểm xuất phát chuẩn, $F_3$ không bị vi phạm tại điểm đã tính nào trên bảy trong tám bộ dữ liệu
+phân loại, và bị vi phạm tại một trong $48$ điểm đã tính trên Abalone. Vì $F_3$ lồi
 (Mệnh đề~\ref{prop:fs-reg}), các bài toán chọn đặc trưng này kiểm tra một lớp con lồi và
 không cho thấy cần đến phần mở rộng không lồi. Ta cũng báo cáo phương án so sánh toàn lồi
-(AC), gán cả ba ràng buộc vào track lồi.
+(AC), gán cả ba ràng buộc vào nhánh lồi.
 
 \paragraph*{Quy trình và chi phí tinh chỉnh.}
-Đây là các phép thử chỉ về tối ưu trên các bài toán chấp nhận với dữ liệu đầy đủ.
-Chúng dùng $J\le10^{-6}$, tối đa $1\,000$ điểm được đánh giá, và cùng
+Đây là các phép thử thuần túy về tối ưu trên các bài toán chấp nhận với dữ liệu đầy đủ.
+Chúng dùng $J\le10^{-6}$, tối đa $1\,000$ điểm đã tính, và cùng
 điểm xuất phát cho mọi phương pháp. SG-const và SG-dyn được định nghĩa ở Mục~\ref{sssec:baselines}. Bên cạnh SG-dyn với
 mô-đun lấy mẫu $\widehat L$, một biến thể tinh chỉnh chọn $L=c\widehat L$ từ lưới đặt thủ công
 $c\in\{10^{-3},10^{-2.5},\ldots,10^1\}$ bằng ba điểm xuất phát
 ngẫu nhiên (seed $1101$--$1103$). Việc chọn trước hết cực đại hóa số
-lần chạy thành công, sau đó cực tiểu hóa tổng số lần đánh giá, rồi tổng phần dư tốt nhất.
+lần chạy thành công, sau đó cực tiểu hóa tổng số lần tính hàm, rồi tổng phần dư tốt nhất.
 Đánh giá dùng điểm xuất phát chuẩn và ba điểm xuất phát ngẫu nhiên khác
 (seed $2101$--$2103$). Các điểm xuất phát cho bài toán đặc trưng là các mẫu Dirichlet.
 Chỉ các điểm xuất phát được tách riêng: tinh chỉnh và đánh giá dùng cùng
-bài toán dữ liệu đầy đủ, và không dùng điểm phân loại nào. Cả
+bài toán dữ liệu đầy đủ, và không dùng kết quả phân loại nào. Cả
 $\widehat L$ lẫn giá trị đã tinh chỉnh đều không phải là một mô-đun H\"older toàn cục đã được chứng nhận.
 

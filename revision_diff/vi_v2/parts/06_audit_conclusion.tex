@@ -1,11 +1,11 @@
 \begin{table}[t]
 \centering\small
 \setlength{\tabcolsep}{4pt}
-\caption{Số lần đánh giá trong tối ưu, xuất phát từ điểm đều trên đơn hình.
+\caption{Số lần tính hàm trong tối ưu, xuất phát từ điểm đều trên đơn hình.
 AC là phương án so sánh toàn lồi; ``lấy mẫu'' và ``tinh chỉnh'' là hai biến thể của SG-dyn.
-$\dagger$ nghĩa là không đạt sai số dừng trong ngân sách.
+$\dagger$ nghĩa là không đạt sai số cho phép trong giới hạn số điểm.
 Cột cuối là số điểm mà DTAP vi phạm ràng buộc thứ ba, chia cho
-số điểm được đánh giá của nó.}
+số điểm đã tính của nó.}
 \label{tab:activation-tuning}
 \begin{tabular}{@{}lrrrrrl@{}}
 \toprule
@@ -25,29 +25,29 @@ Movement Libras & 637 & 637 & 62 & $1000^\dagger$ & 144 & $0/637$\\
 \end{tabular}
 \end{table}
 
-Mỗi khi $F_3(w^k)\le b_3$ dọc theo một lần chạy, track giả lồi rỗng,
+Mỗi khi $F_3(w^k)\le b_3$ dọc theo một lần chạy, tập active của nhánh giả lồi rỗng,
 $\mu_k=1$ và DTAP trùng từng bước với phương án so sánh toàn lồi;
 trên tám bài toán có mức hoạt động của $F_3$ bằng không, hai cột DTAP và AC giống hệt nhau
 phản ánh sự trùng khớp này. Trên Abalone, $F_3$ chỉ bị vi phạm tại điểm xuất phát
 đều ($1/48$), nơi $J^{\ps}_0\approx1.56\times10^{-3}$ rất nhỏ so với
 $J^{\cvx}_0\approx366.3$, nên $1-\mu_0\approx4.27\times10^{-6}$; các giá trị của $J$
 dọc hai quỹ đạo thỏa $|J_{\rm DTAP}-J_{\rm AC}|\le3.18\times10^{-5}\,J_{\rm AC}$ tại
-mọi điểm được đánh giá,
-và cả hai lần chạy dừng sau $48$ điểm được đánh giá. Vì vậy các cột này
-không phải là phép so sánh hai cách gán, mà số lần thành công của chúng
-chỉ khác nhau trên các điểm xuất phát ngẫu nhiên ($26/36$ so với $36/36$).
+mọi điểm đã tính,
+và cả hai lần chạy dừng sau $48$ điểm đã tính. Vì vậy các cột này
+không phải là phép so sánh hai cách gán; hai cách gán chỉ khác nhau về số lần thành công
+trên các điểm xuất phát ngẫu nhiên ($26/36$ so với $36/36$).
 
-Tinh chỉnh nâng số lần thành công của SG-dyn từ điểm xuất phát chuẩn từ $5/9$ lên $9/9$.
-Nó có thể tốt hơn DTAP, chẳng hạn trên Abalone, và SG-const nhanh hơn
+Việc tinh chỉnh nâng số lần thành công của SG-dyn, xuất phát từ điểm chuẩn, từ $5/9$ lên $9/9$.
+SG-dyn tinh chỉnh có thể tốt hơn DTAP, chẳng hạn trên Abalone, và SG-const nhanh hơn
 trên Movement Libras. Trên cả bốn điểm xuất phát của cả chín bài toán đặc trưng,
 số lần thành công là $26/36$ cho DTAP, $36/36$ cho phương án so sánh toàn lồi,
 $33/36$ cho SG-const, $15/36$ cho SG-dyn lấy mẫu, và $28/36$
 cho SG-dyn tinh chỉnh. Một biến thể DTAP cân bằng cũng đạt $26/36$; nó gán
-trọng số bằng nhau khi cả hai track bị vi phạm, và ngược lại gán toàn bộ trọng số cho track duy nhất bị vi phạm.
+trọng số bằng nhau khi cả hai nhánh bị vi phạm, và ngược lại gán toàn bộ trọng số cho nhánh duy nhất bị vi phạm.
 Như vậy các phép thử này không chứng tỏ được ưu thế đồng đều của trọng số tỉ lệ,
-cũng như độ bền đối với điểm khởi đầu.
+cũng không chứng tỏ được tính ổn định đối với điểm khởi đầu.
 
-Chín lần tìm kiếm tham số trên các bài toán đặc trưng cần tổng cộng $179\,744$ lần đánh giá trong tối ưu
+Chín lần tìm kiếm tham số trên các bài toán đặc trưng cần tổng cộng $179\,744$ lần tính hàm trong tối ưu
 và $10.80$ giây thời gian giải cho việc tinh chỉnh. Các chi phí này
 là phần thêm vào so với Bảng~\ref{tab:activation-tuning}; DTAP không được tinh chỉnh.
 Việc lấy mẫu mô-đun ban đầu, tiền xử lý và chi phí phụ của việc tìm kiếm không được tính
@@ -55,7 +55,7 @@ vào tổng thời gian giải này. Hồ sơ bổ sung ghi chi phí của
 từng lần tìm kiếm.
 
 \paragraph*{Một ràng buộc giả lồi thực sự không lồi.}
-Để kiểm tra trực tiếp track giả lồi, xét $K=[-2,2]^d$ và
+Để kiểm tra trực tiếp nhánh giả lồi, xét $K=[-2,2]^d$ và
 \begin{equation}\label{eq:logball-test}
 \begin{aligned}
  F_1(x)&=\|x+e_1\|^2\le1,\qquad
@@ -64,14 +64,14 @@ từng lần tìm kiếm.
 \end{aligned}
 \end{equation}
 Ở đây $d\in\{2,10,50\}$ và $\kappa\in\{0.3,1,3\}$ cho chín cấu hình.
-Hàm thứ ba là giả lồi: nó là một phép biến đổi khả vi tăng, có đạo hàm dương,
-của một hàm bậc hai lồi. Nó không
+Hàm thứ ba là giả lồi: nó là hợp của một hàm bậc hai lồi với một hàm khả vi tăng
+có đạo hàm dương. Nó không
 lồi, vì giá trị riêng theo phương bán kính của ma trận Hesse là
 $2\kappa(1-r^2)/(1+r^2)^2<0$ với $r=\|x-e_1\|>1$.
-Điểm chứng chính xác $x=-e_1/10$ có các độ dôi dương
+Điểm minh chứng chính xác $x=-e_1/10$ có các độ chênh dương
 $19/100$, $31/25$ và $\kappa\log(300/221)$.
-Điểm xuất phát chuẩn là $1.5\mathbf1$; ba điểm xuất phát đánh giá và ba
-điểm xuất phát tinh chỉnh được lấy đều trên $[0.8,1.8]^d$ với các seed nêu trên
+Điểm xuất phát chuẩn là $1.5\mathbf1$; ba điểm xuất phát dùng để đánh giá và ba
+điểm xuất phát dùng để tinh chỉnh được lấy đều trên $[0.8,1.8]^d$ với các seed nêu trên
 (NumPy \texttt{default\_rng}).
 Để lấy mẫu mô-đun, ta dùng $500$ điểm đều trong $K$ (seed $42$).
 SG-const dùng cùng bước $\nu_k=10^{-3}$ như trên các bài toán đặc trưng. SG-const
@@ -85,7 +85,7 @@ là biến thể đã mô tả ở trên.
 \setlength{\tabcolsep}{5pt}
 \caption{Các phép thử giả lồi không lồi, nhóm theo $\kappa$.
 Mỗi ô là số lần thành công trên $12$ lần chạy, kèm trung vị số
-điểm được đánh giá trong ngoặc, kể cả các lần chạy chạm ngân sách. Mỗi nhóm
+điểm đã tính trong ngoặc, kể cả các lần chạy hết số điểm tối đa. Mỗi nhóm
 gồm cả ba số chiều và bốn điểm xuất phát. SG-const tinh chỉnh dùng bước
 được chọn như mô tả trong bài.}
 \label{tab:synthetic-scale}
@@ -101,42 +101,42 @@ $3$   & $12\ (4)$ & $12\ (4)$ & $0\ (1000)$ & $12\ (16)$ & $12\ (167)$ & $12\ (1
 \end{table}
 
 DTAP gặp vi phạm ràng buộc thứ ba ở mọi lần trong $36$
-lần chạy này. Mức hoạt động gộp của nó là $12\,835/12\,877$ điểm được đánh giá.
-Tuy vậy, nó chỉ đạt sai số dừng ở $24/36$ lần chạy, so
+lần chạy này. Tính gộp lại, ràng buộc thứ ba bị vi phạm tại $12\,835/12\,877$ điểm đã tính.
+Tuy vậy, nó chỉ đạt sai số cho phép ở $24/36$ lần chạy, so
 với $32/36$ của SG-dyn lấy mẫu, $36/36$ của SG-dyn tinh chỉnh và $36/36$ của SG-const
 tinh chỉnh (Bảng~\ref{tab:synthetic-scale}).
-SG-const tinh chỉnh đạt sai số dừng ở mọi lần chạy với trung vị $15$--$16$
-điểm được đánh giá, ít hơn mọi phương pháp khác tại $\kappa=0.3$ và $\kappa=1$; tại
+SG-const tinh chỉnh đạt sai số cho phép ở mọi lần chạy với trung vị $15$--$16$
+điểm đã tính, ít hơn mọi phương pháp khác tại $\kappa=0.3$ và $\kappa=1$; tại
 $\kappa=3$, DTAP và biến thể cân bằng cần trung vị $4$. Các số đếm này
-không gồm $147\,331$ lần đánh giá trong việc tìm kiếm tham số của nó.
+không gồm $147\,331$ lần tính hàm trong việc tìm kiếm tham số của nó.
 
 Với $\nu_k=10^{-3}$, SG-const di chuyển nhiều nhất $999\times10^{-3}=0.999$ so với điểm xuất phát
-trong ngân sách, trong khi mọi điểm xuất phát cách
-$\Omega$ ít nhất $1.11$; vì vậy các số đếm bằng không của nó do độ dài bước và ngân sách quyết định.
-Với $\kappa\le1$, track lồi được thỏa từ điểm đánh giá thứ hai trở đi,
-nên sau đó DTAP đi theo phép lặp một track của Hệ quả~\ref{cor:ps}; cả hai track
-cùng bị vi phạm chỉ tại $32$ trong $12\,877$ điểm được đánh giá này.
+trong giới hạn số điểm, trong khi mọi điểm xuất phát cách
+$\Omega$ ít nhất $1.11$; vì vậy các số đếm bằng không của nó do cỡ bước và giới hạn số điểm quyết định.
+Với $\kappa\le1$, nhánh lồi được thỏa từ điểm đã tính thứ hai trở đi,
+nên sau đó DTAP đi theo phép lặp một nhánh của Hệ quả~\ref{cor:ps}; cả hai nhánh
+cùng bị vi phạm chỉ tại $32$ trong $12\,877$ điểm đã tính này.
 
-Mọi thất bại của DTAP đều xảy ra tại $\kappa=0.3$. Thay đổi $\kappa$ không làm thay đổi tập khả thi,
+Mọi thất bại của DTAP đều xảy ra tại $\kappa=0.3$. Thay đổi $\kappa$ không làm thay đổi tập chấp nhận được,
 nhưng $v_3$ và $\nabla F_3$ đều tỉ lệ với $\kappa$, nên khi
 $\|g^{\ps}_k\|\le1$ bước giả lồi $(1-\mu_k)\gamma_k g^{\ps}_k$ tỉ lệ với
-$\gamma_k\kappa^2$. Bảng~\ref{tab:dtap-sweep} thay đổi từng tham số của DTAP một
+$\gamma_k\kappa^2$. Bảng~\ref{tab:dtap-sweep} lần lượt thay đổi từng tham số của DTAP
 với $\kappa\in\{0.3,1\}$. Với $\gamma_k=a(k+0.5)^{-0.55}$, $a=10$ và $a=100$ cho
 $12/12$ lần thành công tại $\kappa=0.3$; $\rho_{\cvx}=1$ cho $4/12$, đều với $d=2$;
 $\delta=10^{-1}$ tái tạo chính xác các điểm lặp của cấu hình gốc (Nhận xét~\ref{rem:delta-role}); các
 bước giảm nhanh hơn $s=0.75$ và $s=1$ không thành công lần nào tại $\kappa=0.3$, và
 $s=1$ cũng thất bại cả $12$ lần chạy tại $\kappa=1$. Vì vậy các thất bại tại $\kappa=0.3$
 phù hợp với việc bước giảm dần quá nhỏ so với thang của ràng buộc
-này, chứ không phải với một thay đổi về tính khả thi. Các phép thử này thay đổi
+này, chứ không phải với một thay đổi về tính chấp nhận được. Các phép thử này thay đổi
 từng tham số một trên một họ bài toán và không chỉ ra được một cấu hình
 tốt nhất nói chung.
 Trên~\eqref{eq:logball-test}, $\delta=10^{-1}$ và $\delta=10^{-3}$ cho các dãy lặp giống hệt nhau vì
-track giả lồi chỉ có một chỉ số, tại mọi điểm xuất phát hoặc chỉ $F_1$ bị vi phạm hoặc
-$v_1-v_2\ge4.79$, và track lồi được thỏa từ điểm đánh giá thứ hai trở đi; vì vậy
+nhánh giả lồi chỉ có một chỉ số, tại mọi điểm xuất phát hoặc chỉ $F_1$ bị vi phạm hoặc
+$v_1-v_2\ge4.79$, và nhánh lồi được thỏa từ điểm đã tính thứ hai trở đi; vì vậy
 dòng $\delta$ của Bảng~\ref{tab:dtap-sweep} là một phép kiểm tra tính nhất quán, không phải bằng chứng về
 vai trò của $\delta$.
-Các lần tìm kiếm tham số trên bài toán tổng hợp tốn $188\,295$ lần đánh giá trong tối ưu và
-$10.98$ giây thời gian giải cho SG-dyn, và $147\,331$ lần đánh giá và $8.27$
+Các lần tìm kiếm tham số trên bài toán tổng hợp tốn $188\,295$ lần tính hàm trong tối ưu và
+$10.98$ giây thời gian giải cho SG-dyn, và $147\,331$ lần tính hàm và $8.27$
 giây cho SG-const, với cùng các khoản loại trừ như trên, trong môi trường
 nêu dưới đây.
 
@@ -147,7 +147,7 @@ nêu dưới đây.
 $\gamma_k=a(k+0.5)^{-s}$. Cấu hình gốc $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $a=1$,
 $s=0.55$ là cột DTAP của Bảng~\ref{tab:synthetic-scale}. Mỗi ô là
 số lần thành công trên $12$ lần chạy (ba số chiều, bốn điểm xuất phát), kèm
-trung vị số điểm được đánh giá trong ngoặc, kể cả các lần chạy chạm ngân sách.}
+trung vị số điểm đã tính trong ngoặc, kể cả các lần chạy hết số điểm tối đa.}
 \label{tab:dtap-sweep}
 \begin{tabular}{@{}lrr@{}}
 \toprule
@@ -166,12 +166,12 @@ $s=1$ & $0\ (1000)$ & $0\ (1000)$\\
 
 \paragraph*{Khả năng tái lập.}
 Kết quả chọn đặc trưng được lưu với Python~3.11.7 và NumPy~1.26.4
-trên Windows, với yêu cầu một luồng BLAS/OpenMP. Các hàm đánh giá cho bài toán đặc trưng dùng dạng toàn phương
+trên Windows, với yêu cầu một luồng BLAS/OpenMP. Các hàm tính giá trị (oracle) cho bài toán đặc trưng dùng dạng toàn phương
 nén theo đại số; sai khác đã kiểm tra so với giá trị và gradient
 gốc lần lượt không quá $1.82\times10^{-12}$ và
 $1.10\times10^{-11}$. Thời gian giải báo cáo cho các bài toán đặc trưng ứng
-với cách cài đặt nén này. Gói mã đi kèm chỉ chứa các hàm đánh giá không nén;
-nó tái tạo các số lần đánh giá, còn thời gian giải được báo cáo là của
+với cách cài đặt nén này. Gói mã đi kèm chỉ chứa các hàm tính giá trị không nén;
+nó tái tạo các số lần tính hàm, còn thời gian giải được báo cáo là của
 cách cài đặt nén ban đầu. Các Bảng~\ref{tab:synthetic-scale}
 và~\ref{tab:dtap-sweep} và chi phí tinh chỉnh trên bài toán tổng hợp được tạo với
 Python~3.13.4 và NumPy~2.1.3 trên Windows với số luồng BLAS
@@ -181,11 +181,11 @@ tái tạo chính xác mọi giá trị số trong các Bảng~\ref{tab:datasets
 (Bảng~\ref{tab:perf-summary} và~\ref{tab:wilcoxon} từ điểm chưa làm tròn) và trong
 Bảng~\ref{tab:activation-tuning}, cùng các số đếm nêu ở Mục~\ref{ssec:results}
 và~\ref{ssec:feasibility-audit}.
-Các script bổ sung, quỹ đạo thô, hồ sơ tinh chỉnh, điểm chứng,
+Các script bổ sung, quỹ đạo thô, hồ sơ tinh chỉnh, điểm minh chứng,
 mã băm của mã nguồn và hướng dẫn kiểm tra được cung cấp kèm theo kết quả.
 
 \section{Kết luận}\label{sec:conclusion}
-DTAP giải các bài toán chấp nhận tách phi tuyến với hộp chuẩn và các thành phần lồi và giả lồi, bằng cách kết hợp một bước lồi co theo phần dư với một bước giả lồi có chặn an toàn. Dưới giả thiết nhất quán và khả vi liên tục, toàn bộ dãy hội tụ tới một điểm khả thi; không có mô-đun chính quy nào là đầu vào, mặc dù phân tích dùng các cận trên một tập compact chứa dãy lặp. Trong ứng dụng chọn đặc trưng, mọi ràng buộc đều lồi, và các bài toán thử có ràng buộc giả lồi không lồi kiểm tra track giả lồi. Trong thực nghiệm, các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, mà hiệu năng trong ngân sách hữu hạn của nó phụ thuộc vào điểm xuất phát và thang bước. Tốc độ cho toàn bộ phần dư $J(x^k)$, ngoài cận của track lồi ở Nhận xét~\ref{rem:rate}, và các bảo đảm dưới điều kiện cận sai số vẫn còn là vấn đề mở.
+DTAP giải các bài toán chấp nhận tách phi tuyến với hộp chuẩn và các thành phần lồi và giả lồi, bằng cách kết hợp một bước lồi điều chỉnh theo phần dư với một bước giả lồi có bảo vệ. Dưới giả thiết nhất quán và khả vi liên tục, toàn bộ dãy hội tụ tới một điểm chấp nhận được; không có mô-đun chính quy nào là đầu vào, mặc dù phân tích dùng các cận trên một tập compact chứa dãy lặp. Trong ứng dụng chọn đặc trưng, mọi ràng buộc đều lồi, và các bài toán thử có ràng buộc giả lồi không lồi kiểm tra nhánh giả lồi. Trong thực nghiệm, các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP, và hiệu năng của DTAP với số vòng lặp hữu hạn phụ thuộc vào điểm xuất phát và thang cỡ bước. Tốc độ cho toàn bộ phần dư $J(x^k)$, ngoài cận của nhánh lồi ở Nhận xét~\ref{rem:rate}, và các bảo đảm dưới điều kiện cận sai số vẫn còn là vấn đề mở.
 
 \section*{Tuyên bố về xung đột lợi ích}
 Các tác giả tuyên bố không có xung đột lợi ích tài chính hay quan hệ cá nhân nào đã biết có thể ảnh hưởng đến công trình được báo cáo trong bài.

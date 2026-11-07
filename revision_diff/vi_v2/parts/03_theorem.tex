@@ -1,8 +1,8 @@
-\subsection{Hội tụ mạnh tới một điểm khả thi}\label{ssec:strong}
-Bây giờ ta chứng minh toàn bộ dãy hội tụ mạnh tới một điểm khả thi. Chứng minh có ba
+\subsection{Hội tụ mạnh tới một điểm chấp nhận được}\label{ssec:strong}
+Bây giờ ta chứng minh toàn bộ dãy hội tụ mạnh tới một điểm chấp nhận được. Chứng minh có ba
 giai đoạn. Giai đoạn~1 dùng Bổ đề~\ref{lem:jcvx0} để chứng minh mọi điểm tụ thỏa các
 ràng buộc lồi. Giai đoạn~2 chứng minh, bằng phản chứng và tính giả lồi, rằng có ít nhất một
-điểm tụ khả thi. Giai đoạn~3 dùng sự hội tụ của $\norm{x^k-\bar x}$ để chứng minh
+điểm tụ chấp nhận được. Giai đoạn~3 dùng sự hội tụ của $\norm{x^k-\bar x}$ để chứng minh
 toàn bộ dãy hội tụ tới điểm đó.
 
 \begin{theorem}\label{thm:strong}
@@ -25,10 +25,10 @@ Nếu $I^{\ps}=\emptyset$ thì~\eqref{eq:p13} cho $C\subseteq\Omega$,
 nên $C\cap\Omega=C\ne\emptyset$.
 Từ đây giả sử $I^{\ps}\ne\emptyset$.
 
-\emph{Giai đoạn 2 (một điểm tụ khả thi).} Giả sử phản chứng rằng
+\emph{Giai đoạn 2 (một điểm tụ chấp nhận được).} Giả sử ngược lại rằng
 $C\cap\Omega=\emptyset$. Theo~\eqref{eq:p13} và phép chia $I=I^{\cvx}\cup I^{\ps}$, với
 mỗi $\bar x\in C$ có $j\in I^{\ps}$ với $F_j(\bar x)>b_j$, tức là
-$J^{\ps}(\bar x)>0$. Là max của hữu hạn hàm liên tục, $J^{\ps}$
+$J^{\ps}(\bar x)>0$. Vì là giá trị lớn nhất của hữu hạn hàm liên tục, $J^{\ps}$
 liên tục và dương trên tập compact $C$, nên $\alpha:=\min_{x\in C}J^{\ps}(x)>0$.
 
 \smallskip
@@ -46,9 +46,9 @@ Bổ đề~\ref{lem:jcvx0}. Do đó có $k_1\ge k_0$ với $1-\mu_k\ge1/2$ với
 \smallskip
 \emph{Khẳng định 3 (cận dưới đều cho $R^{x^\star}_k$).} Cố định $x^\star\in\Omega$. Tồn tại
 $\xi_0>0$ và $k_2\ge k_1$ với $R^{x^\star}_k\ge\xi_0$ với mọi $k\ge k_2$. Giả sử
-không: có $k_l\to\infty$ với $R^{x^\star}_{k_l}\to0$. Vì $\{x^{k_l}\}$ bị chặn,
+ngược lại: tồn tại $k_l\to\infty$ với $R^{x^\star}_{k_l}\to0$. Vì $\{x^{k_l}\}$ bị chặn,
 trích $x^{k_l}\to\bar x\in C$; vì $I^{\ps}$ chỉ có hữu hạn tập con, trích tiếp
-để $K^{\ps}_{k_l}\equiv K^\star$ là hằng. Theo giả thiết phản chứng
+để $K^{\ps}_{k_l}\equiv K^\star$ không đổi. Theo giả thiết phản chứng
 $J^{\ps}(\bar x)>0$; chọn $j^\star\in\argmax_{j\in I^{\ps}}v_j(\bar x)$, nên
 $v_{j^\star}(\bar x)=J^{\ps}(\bar x)>0$. Theo tính liên tục $v_{j^\star}(x^{k_l})\to
 v_{j^\star}(\bar x)$ và $J^{\ps}_{k_l}\to J^{\ps}(\bar x)$, nên
@@ -90,7 +90,7 @@ $x^{k_l}$ hội tụ tới $\bar x$. Do đó
 =\lim_{l\to\infty}\norm{x^{k_l}-\bar x}^2=0.
 \]
 Vậy toàn bộ dãy hội tụ tới $\bar x$, và ta đặt $x^\infty:=\bar x\in\Omega$.
-Lập luận không cần $\Omega$ chỉ có một điểm: một điểm tụ khả thi và
+Lập luận không cần $\Omega$ chỉ có một điểm: một điểm tụ chấp nhận được và
 sự hội tụ của khoảng cách tới nó là đủ.
 \end{proof}
 
@@ -99,24 +99,24 @@ Tham số $\delta>0$ không cần thiết cho sự hội tụ. Khi $\delta=0$, t
 dãy con: dọc theo $x^{k_l}\to\bar x\in C$, chọn
 $j_l\in\argmax_{j\in I^{\ps}}v_j(x^{k_l})$; vì $I^{\ps}$ hữu hạn, trích
 $j_l\equiv j^\star$, và $v_{j^\star}(x^{k_l})=J^{\ps}(x^{k_l})\to J^{\ps}(\bar x)>0$, nên
-$j^\star$ đạt độ vi phạm lớn nhất tại $\bar x$ và lập luận giả lồi
-vẫn đúng. Vai trò của $\delta>0$ là làm đơn giản: một chỉ số đạt max tại $\bar x$ tự động
-nằm trong $K^{\ps}_{k_l}$ khi $l$ đủ lớn, tránh phải trích dãy con theo ``hữu hạn chỉ số''.
+$j^\star$ đạt mức vi phạm lớn nhất tại $\bar x$ và lập luận giả lồi
+vẫn đúng. Vai trò của $\delta>0$ là làm chứng minh đơn giản hơn: một chỉ số đạt max tại $\bar x$ tự động
+nằm trong $K^{\ps}_{k_l}$ khi $l$ đủ lớn, nên không cần bước trích dãy con dựa trên tính hữu hạn của tập chỉ số.
 $\delta$ lớn hơn làm rộng $K^{\cvx}_k$ và $K^{\ps}_k$, điều này có thể cải thiện độ ổn định
 số khi nhiều $v_i(x^k)$ gần bằng nhau.
 \end{remark}
 
 \begin{remark}\label{rem:rate}
 Từ~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, suy ra
-$\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. Đây là cận cho độ vi phạm \emph{tốt nhất} của track lồi
+$\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. Đây là cận cho mức vi phạm \emph{tốt nhất} của nhánh lồi
 trong $N$ điểm lặp đầu tiên. Nó không phải là cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư
-$J(x^k)$, cũng không phải tốc độ cho khoảng cách tới một điểm khả thi. Với các đại lượng sau này,
-chỉ dưới (A1)--(A3) ta chỉ khẳng định sự hội tụ định tính.
+$J(x^k)$, cũng không phải tốc độ cho khoảng cách tới một điểm chấp nhận được. Với các đại lượng này,
+chỉ với (A1)--(A3), chúng tôi chỉ khẳng định sự hội tụ định tính.
 \end{remark}
 
 \subsection{Các cấu trúc ràng buộc suy biến}\label{ssec:degenerate}
-Khi cấu trúc ràng buộc suy biến (chỉ có track lồi hoặc chỉ có track giả lồi),
-\dtap{} và phân tích của nó đơn giản đi, cho hai hệ quả của
+Khi cấu trúc ràng buộc suy biến (chỉ có nhánh lồi hoặc chỉ có nhánh giả lồi),
+\dtap{} và phân tích của nó trở nên đơn giản hơn, và ta được hai hệ quả của
 Định lý~\ref{thm:strong}.
 
 \begin{corollary}\label{cor:cvx}
@@ -144,7 +144,7 @@ lấy tổng ta được $\sum_k T_k<\infty$. Như trong Bổ đề~\ref{lem:jcv
 $T_k\ge(J^{\cvx}_k)^2/(m^{\cvx}L^2)$ (để ý số mũ $2$ ở đây, so với $3$
 trong~\eqref{eq:p12}, vì không có thừa số $\mu_k$), nên $\sum_k(J^{\cvx}_k)^2<\infty$ và
 $J^{\cvx}_k\to0$. Cuối cùng, $I^{\ps}=\emptyset$ khiến Giai đoạn~2 của
-Định lý~\ref{thm:strong} trở nên hiển nhiên (thật vậy $C\subseteq\Omega$ đã có
+Định lý~\ref{thm:strong} không còn cần thiết (thật vậy $C\subseteq\Omega$ đã có
 từ~\eqref{eq:p13}), và Giai đoạn~3 cho $x^k\to x^\infty\in\Omega$.
 \end{proof}
 
@@ -161,14 +161,14 @@ chính là~\eqref{eq:fejer} trong trường hợp suy biến này ($T_k=0$, $1-\
 $R^{x^\star}_k\ge0$ (Bổ đề~\ref{lem:sign-ps}), $a_{k+1}\le a_k+\gamma_k^2$, và
 Bổ đề~\ref{lem:seq} cho sự hội tụ của $\{\norm{x^k-x^\star}^2\}$ và tính bị chặn;
 lấy tổng ta được $\sum_k\eta^{\ps}_k R^{x^\star}_k<\infty$. Giai đoạn~1 của
-Định lý~\ref{thm:strong} cho $C\subseteq K$ (phần lồi là hiển nhiên); Giai đoạn~2 với
+Định lý~\ref{thm:strong} cho $C\subseteq K$ (phần về ràng buộc lồi không có nội dung); Giai đoạn~2 với
 $\mu_k=0$ (nên $1-\mu_k=1$) cho cùng mâu thuẫn $\sum\eta^{\ps}_k R^{x^\star}_k=+\infty$,
 nên $C\cap\Omega\ne\emptyset$; Giai đoạn~3 cho $x^k\to x^\infty\in\Omega$.
 \end{proof}
 
 
 \section{Thực nghiệm số}\label{sec:experiments}
-Ta tách hiệu quả dự đoán khỏi việc giải số hệ chấp nhận. Phép so sánh phân loại dùng tám bộ dữ liệu. Phần chẩn đoán bộ giải còn dùng thêm Movement Libras và các bài toán giả lồi không lồi có kiểm soát.
+Chúng tôi tách riêng hiệu quả dự đoán và việc giải số hệ chấp nhận. Phép so sánh phân loại dùng tám bộ dữ liệu. Phần chẩn đoán bộ giải còn dùng thêm Movement Libras và các bài toán giả lồi không lồi có kiểm soát.
 
 \subsection{Mô hình chọn đặc trưng}\label{sec:fs}
 Ta áp dụng NSFP với hộp chuẩn cho bài toán chọn đặc trưng bằng cách kết hợp các tiêu chí từ mô hình quy hoạch phân thức của Wang và cộng sự~\citep{wang2021fractional} và mô hình tập thô mờ AFRSFCV~\citep{wang2026afrsfcv}. Cho $\mathcal{X}=\{x_1,\ldots,x_n\}$ là các mẫu huấn luyện, $A=\{a_1,\ldots,a_p\}$ là các đặc trưng, $X\in\R^{n\times p}$ là ma trận dữ liệu, và $y\in\{1,\ldots,r\}^n$ là nhãn lớp. Ở đây $n$ là số mẫu; chỉ số dưới đánh số đặc trưng, chỉ số trên đánh số vòng lặp. Các trọng số đặc trưng thuộc đơn hình lồi compact $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. Mọi đại lượng có giám sát dưới đây được ước lượng từ dữ liệu huấn luyện.

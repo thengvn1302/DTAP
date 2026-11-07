@@ -7,7 +7,7 @@ trong đó $Z_i$ là đặc trưng $a_i$ đã rời rạc hóa, $C$ là biến l
 \begin{equation}\label{eq:matrixQ}
 Q_R=S+\delta_QI_p,\qquad \delta_Q\ge-\min\{0,\lambda_{\min}(S)\},
 \end{equation}
-nên $Q_R\succeq0$. Mã cài đặt dùng $\delta_Q=\max\{0,-\lambda_{\min}(S)\}+10^{-10}$. Cho $n_t$, $\bar a_{kt}$ và $\sigma_{kt}^2$ là cỡ lớp, trung bình và phương sai tổng thể của đặc trưng $a_k$ trong lớp $t$, và $\bar a_k$ là trung bình chung của nó. Điểm Fisher là
+nên $Q_R\succeq0$. Mã cài đặt dùng $\delta_Q=\max\{0,-\lambda_{\min}(S)\}+10^{-10}$. Cho $n_t$, $\bar a_{kt}$ và $\sigma_{kt}^2$ là kích thước lớp, trung bình và phương sai tổng thể của đặc trưng $a_k$ trong lớp $t$, và $\bar a_k$ là trung bình chung của nó. Điểm Fisher là
 \begin{equation}\label{eq:rhoFisher}
 \rho_k=\frac{\sum_{t=1}^r n_t(\bar a_{kt}-\bar a_k)^2}{\sum_{t=1}^r n_t\sigma_{kt}^2+\varepsilon_\rho},\qquad \varepsilon_\rho=10^{-12}.
 \end{equation}
@@ -17,7 +17,7 @@ Bài toán quy hoạch phân thức nằm sau N-Fscore là
 \begin{equation}\label{eq:wangOrig}
 \min_{w\in K}\ \frac{w^{\top}Q_Rw}{\rho^{\top}w},
 \end{equation}
-với giả thiết mẫu số dương trên $K$. Tử số đo độ dư thừa và mẫu số đo độ liên quan. Phương pháp cơ sở N-Fscore của ta dùng giai đoạn mạng nơ-ron chiếu của~\citep{wang2021fractional}, với điểm Fisher trong~\eqref{eq:rhoFisher}. Sau đó nó áp dụng quy tắc chọn chung~\eqref{eq:thetaRule}, thay cho giai đoạn $k$-winners-take-all của phương pháp gốc. Động lực học và cách cài đặt Euler hiện của nó được nêu ở Mục~\ref{sssec:baselines}.
+với giả thiết mẫu số dương trên $K$. Tử số đo độ dư thừa và mẫu số đo độ liên quan. Phương pháp cơ sở N-Fscore của chúng tôi dùng giai đoạn mạng nơ-ron chiếu của~\citep{wang2021fractional}, với điểm Fisher trong~\eqref{eq:rhoFisher}. Sau đó nó áp dụng quy tắc chọn chung~\eqref{eq:thetaRule}, thay cho giai đoạn $k$-winners-take-all của phương pháp gốc. Động lực học và cách cài đặt Euler hiện của nó được nêu ở Mục~\ref{sssec:baselines}.
 
 \subsubsection{Tiêu chí tập thô mờ và AFRSFCV}\label{ssec:afrsfcv}\label{sssec:afrsfcv-inputs}\label{sssec:afrsfcv-model}
 Với mỗi lớp, viết $D_t=\{x_i:y_i=t\}$ và $D_t(x_j)=\mathbf1_{\{y_j=t\}}$. AFRSFCV đưa phương sai lớp vào một quan hệ mờ. Với $a_k(x_i)=X_{ik}$, quan hệ được cài đặt là
@@ -25,7 +25,7 @@ Với mỗi lớp, viết $D_t=\{x_i:y_i=t\}$ và $D_t(x_j)=\mathbf1_{\{y_j=t\}}
 R_k(x_i,x_j)=\exp\!\left(-\frac{[a_k(x_i)-a_k(x_j)]^2}{2\widetilde\sigma_{k,y_i}^2}\right),
 \qquad \widetilde\sigma_{kt}^2=\max\{\sigma_{kt}^2,10^{-10}\}.
 \end{equation}
-Chặn dưới của phương sai làm công thức xác định khi một đặc trưng là hằng trong một lớp. Xấp xỉ dưới mờ là
+Ngưỡng dưới của phương sai bảo đảm công thức có nghĩa khi một đặc trưng là hằng trong một lớp. Xấp xỉ dưới mờ là
 \begin{equation}\label{eq:lower}
 \underline{R_k}(D_t)(x_i)=\min_{x_j\in\mathcal{X}}\max\{1-R_k(x_i,x_j),D_t(x_j)\}.
 \end{equation}
@@ -33,7 +33,7 @@ Các giá trị này tạo thành ma trận $\underline{R_k}(D)\in[0,1]^{n\times
 \begin{equation}\label{eq:Pmat}
 P_{ik}=\mathbf1_{\{\argmax_{1\le t\le r}\underline{R_k}(D_t)(x_i)=y_i\}}.
 \end{equation}
-Trường hợp bằng nhau được phân định bằng chỉ số lớp nhỏ nhất. Như vậy $P_{ik}=1$ đúng khi đặc trưng $a_k$ dự đoán đúng mẫu $x_i$ theo quy tắc này.
+Khi nhiều lớp cùng đạt giá trị lớn nhất, ta chọn lớp có chỉ số nhỏ nhất. Như vậy $P_{ik}=1$ khi và chỉ khi đặc trưng $a_k$ dự đoán đúng mẫu $x_i$ theo quy tắc này.
 
 Phương pháp cơ sở AFRSFCV~\citep{wang2026afrsfcv} cực tiểu hóa
 \begin{equation}\label{eq:afrsfcvLoss}
@@ -56,7 +56,7 @@ F_3(w)&=\frac{w^{\top}Q_Rw}{\rho^{\top}w},\qquad U_\rho=\{w:\rho^{\top}w>0\}.\la
 \begin{equation}\label{eq:nsfp-fs}
 \text{tìm }w^\star\in\Omega,\qquad \Omega=\{w\in K:F_i(w)\le b_i,\ i=1,2,3\}.
 \end{equation}
-Cách phát biểu này đòi hỏi ba tiêu chí đồng thời ở mức chấp nhận được. Nó bỏ số hạng Tikhonov và không bảo toàn bài toán tối ưu gốc nào cũng như các nghiệm của chúng.
+Cách phát biểu này đòi hỏi cả ba tiêu chí đồng thời đạt mức chấp nhận được. Nó bỏ số hạng Tikhonov và không bảo toàn bài toán tối ưu gốc nào cũng như các nghiệm của chúng.
 
 \begin{proposition}\label{prop:fs-reg}
 Nếu $Q_R\succeq0$ và $\min_k\rho_k>0$ thì cả ba hàm trong~\eqref{eq:fsF1}--\eqref{eq:fsF3} trơn và lồi trên một lân cận mở lồi của $K$. Do đó~\eqref{eq:nsfp-fs} là một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Vì vậy~\eqref{eq:nsfp-fs} thỏa (A1) và (A2) của Giả thiết~\ref{ass:standing}, với $U=U_\rho$, bất cứ khi nào $\Omega\ne\varnothing$.
@@ -69,22 +69,22 @@ D^2F_3(w)[h,h]=\frac2t\left(h-\frac atw\right)^{\!\top}Q_R\left(h-\frac atw\righ
 Vậy $F_3$ lồi và trơn trên nửa không gian mở $U_\rho$. Vì $\rho^{\top}w\ge\min_k\rho_k>0$ với $w\in K$, nửa không gian này chứa $K$.
 \end{proof}
 
-Thực nghiệm dùng $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$; cách gán này hợp lệ vì hàm lồi là giả lồi; khi đó DTAP chỉ dùng thông tin về dấu cho $F_3$, nên không có ràng buộc thực sự không lồi nào được kiểm tra. Cách gán toàn lồi $I^{\cvx}=\{1,2,3\}$ cũng hợp lệ, và Định lý~\ref{thm:strong} áp dụng cho cả hai. Mệnh đề~\ref{prop:fs-reg} cần $\min_k\rho_k>0$; trên mọi bài toán dùng ở đây, điểm số nhỏ nhất là $4.77\times10^{-5}$. Do đó chặn an toàn $\max\{\rho^\top w,10^{-15}\}$ trong mã cài đặt không bao giờ có tác dụng, và $F_3$ được cài đặt đúng là~\eqref{eq:fsF3}.
+Thực nghiệm dùng $I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$, một cách gán hợp lệ vì hàm lồi là giả lồi; khi đó DTAP chỉ dùng thông tin về dấu cho $F_3$, nên không có ràng buộc thực sự không lồi nào được kiểm tra. Cách gán toàn lồi $I^{\cvx}=\{1,2,3\}$ cũng hợp lệ, và Định lý~\ref{thm:strong} áp dụng cho cả hai. Mệnh đề~\ref{prop:fs-reg} cần $\min_k\rho_k>0$; trên mọi bài toán dùng ở đây, điểm số nhỏ nhất là $4.77\times10^{-5}$. Do đó ngưỡng bảo vệ $\max\{\rho^\top w,10^{-15}\}$ trong mã cài đặt không bao giờ có tác dụng, và $F_3$ được cài đặt đúng là~\eqref{eq:fsF3}.
 
-Các ngưỡng được hiệu chỉnh trên dữ liệu huấn luyện: $b_i$ là phân vị thứ $q_i$ của $F_i$ trên $3\,000$ điểm Dirichlet (seed $42$) và $p$ đỉnh của $K$, trong đó một quy tắc cố định chọn $q_i$ theo cỡ mẫu, số đặc trưng, số lớp và mức mất cân bằng lớp (siêu dữ liệu bổ sung). Mọi bộ giải dùng chung các ngưỡng này. Hiệu chỉnh riêng từng $b_i$ không bảo đảm $\Omega\ne\varnothing$; Mục~\ref{ssec:feasibility-audit} kiểm tra tính khả thi bằng số. Nếu ngưỡng được cho trước thì sẽ được dùng nguyên như vậy.
+Các ngưỡng được hiệu chỉnh trên dữ liệu huấn luyện: $b_i$ là phân vị thứ $q_i$ của $F_i$ trên $3\,000$ điểm Dirichlet (seed $42$) và $p$ đỉnh của $K$, trong đó một quy tắc cố định chọn $q_i$ theo cỡ mẫu, số đặc trưng, số lớp và mức mất cân bằng lớp (siêu dữ liệu bổ sung). Mọi bộ giải dùng chung các ngưỡng này. Hiệu chỉnh riêng từng $b_i$ không bảo đảm $\Omega\ne\varnothing$; Mục~\ref{ssec:feasibility-audit} kiểm tra tính chấp nhận được bằng số. Nếu ngưỡng được cho trước thì sẽ được dùng nguyên như vậy.
 
 Với mọi phương pháp, sắp xếp các trọng số tính được thành $w^\star_{(1)}\ge\cdots\ge w^\star_{(p)}$ và giữ lại $s$ đặc trưng đầu, trong đó
 \begin{equation}\label{eq:thetaRule}
 s=\min\left\{s'\in\{1,\ldots,p\}:\sum_{j=1}^{s'}w^\star_{(j)}\ge\theta\right\},\qquad 0<\theta<1.
 \end{equation}
-Quy tắc trọng số tích lũy này không áp đặt một số lượng đặc trưng cho trước. Việc cắt bớt các trọng số không bảo toàn bảo đảm khả thi của vector đầy đủ.
+Quy tắc trọng số tích lũy này không áp đặt một số lượng đặc trưng cho trước. Việc cắt bớt các trọng số không bảo toàn bảo đảm tính chấp nhận được của vector đầy đủ.
 
 \begin{remark}\label{rem:fs-cost}
 Với các ma trận đã tính sẵn, tính $F_1,\nabla F_1$ tốn $O(nrp)$, tính $F_2,\nabla F_2$ tốn $O(np)$, và tính $F_3,\nabla F_3$ tốn $O(p^2)$. Phép chiếu lên $K=\Delta_{p-1}$ bằng sắp xếp tốn $O(p\log p)$ phép toán~\citep{condat2016simplex}. Vì vậy một vòng lặp dày tốn $O(nrp+p^2)$ phép toán và cần $O(nrp+p^2)$ bộ nhớ, kể cả $Q_R$. Tiền xử lý và huấn luyện bộ phân loại là các chi phí riêng.
 \end{remark}
 
 \subsection{Thiết lập thực nghiệm}\label{ssec:setup}
-Nghiên cứu phân loại chính dùng tám bộ dữ liệu UCI~\citep{kelly2023uci} trong Bảng~\ref{tab:datasets}. Các lần chạy DTAP báo cáo ở đây xuất phát từ vector trọng số đều và dùng $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, sai số dừng $10^{-6}$, và ngân sách $1000$ vòng lặp. SG-const dùng bước $\nu_k=10^{-3}$ và SG-dyn dùng mô-đun lấy mẫu $\widehat L$ (Mục~\ref{sssec:baselines}); mô-đun tinh chỉnh chỉ được xét ở Mục~\ref{ssec:feasibility-audit}. N-Fscore dùng $\varepsilon_{\mathrm{PNN}}=10^{-3}$ và $1000$ điểm lưới Euler trên $[0,0.2]$. AFRSFCV dùng tốc độ học $10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, và $1000$ bước. Ngưỡng tích lũy dùng chung là $\theta=0.9$.
+Nghiên cứu phân loại chính dùng tám bộ dữ liệu UCI~\citep{kelly2023uci} trong Bảng~\ref{tab:datasets}. Các lần chạy DTAP báo cáo ở đây xuất phát từ vector trọng số đều và dùng $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, sai số cho phép $10^{-6}$, và tối đa $1000$ vòng lặp. SG-const dùng bước $\nu_k=10^{-3}$ và SG-dyn dùng mô-đun lấy mẫu $\widehat L$ (Mục~\ref{sssec:baselines}); mô-đun tinh chỉnh chỉ được xét ở Mục~\ref{ssec:feasibility-audit}. N-Fscore dùng $\varepsilon_{\mathrm{PNN}}=10^{-3}$ và $1000$ điểm lưới Euler trên $[0,0.2]$. AFRSFCV dùng tốc độ học $10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, và $1000$ bước. Ngưỡng tích lũy dùng chung là $\theta=0.9$.
 
 \begin{table}[htbp]
 \centering
@@ -119,7 +119,7 @@ Hàm mất mát softmax~\eqref{eq:afrsfcvLoss} được cực tiểu hóa theo $
 \begin{equation}\label{eq:gradTau}
 \nabla_\tau L(\tau)=\bigl(\diag(w(\tau))-w(\tau)w(\tau)^{\top}\bigr)\nabla_w L(w(\tau)),
 \end{equation}
-với $\nabla_w L=-\mathbf{M}^{\top}(\vecop(Y)-\mathbf{M}w)+\lambda_1(P^{\top}Pw-P^{\top}\mathbf{1}_n)+\lambda_2 w$, trong đó $\mathbf{M}\in\R^{nr\times p}$ có cột thứ $k$ là $\vecop(\underline{R_k}(D))$. Bước cập nhật $\tau^{t+1}=\tau^t-\eta\,\nabla_\tau L(\tau^t)$ chạy với ngân sách cố định $T$ bước; trọng số cuối $w^\star=w(\tau^T)\in K$ được đưa vào quy tắc chọn dùng chung ở Mục~\ref{ssec:selection}.
+với $\nabla_w L=-\mathbf{M}^{\top}(\vecop(Y)-\mathbf{M}w)+\lambda_1(P^{\top}Pw-P^{\top}\mathbf{1}_n)+\lambda_2 w$, trong đó $\mathbf{M}\in\R^{nr\times p}$ có cột thứ $k$ là $\vecop(\underline{R_k}(D))$. Bước cập nhật $\tau^{t+1}=\tau^t-\eta\,\nabla_\tau L(\tau^t)$ chạy cố định $T$ bước; trọng số cuối $w^\star=w(\tau^T)\in K$ được đưa vào quy tắc chọn dùng chung ở Mục~\ref{ssec:selection}.
 
 \paragraph*{SG-const và SG-dyn}
 Các phương pháp dưới gradient cho bài toán chấp nhận tựa lồi này~\citep{hu2022quasi} theo
@@ -135,22 +135,22 @@ bằng $1$), với $L=\widehat L$ là chuẩn gradient lớn nhất tại $500$ 
 
 \subsubsection{Quy trình đánh giá}\label{sssec:protocol}
 Mỗi bộ dữ liệu dùng một phép chia phân tầng duy nhất $80/20$ thành tập huấn luyện và tập kiểm tra
-(seed $42$). Chuẩn hóa min--max được khớp một lần trên toàn bộ tập huấn luyện, không
-khớp riêng trong từng fold chọn đặc trưng, rồi áp dụng cho dữ liệu kiểm tra.
+(seed $42$). Chuẩn hóa min--max được xác định một lần trên toàn bộ tập huấn luyện, không
+xác định riêng trong từng fold chọn đặc trưng, rồi áp dụng cho dữ liệu kiểm tra.
 Các fold phân tầng (seed $42$) trong tập huấn luyện dùng $N_f=10$, giảm còn $7$ trên Glass
 và $4$ trên Yeast. Mặt nạ của mỗi fold dùng $\theta=0.9$ trong~\eqref{eq:thetaRule};
 quy tắc đa số chặt cố định giữ lại các đặc trưng được chọn trong ít nhất
 $\lfloor N_f/2\rfloor+1$ fold. Ta ký hiệu tập đặc trưng được bỏ phiếu chọn là $A^\star$. Các bộ phân loại cuối dùng toàn bộ tập huấn luyện với các
 đặc trưng được chọn này: RBF-SVM ($C=1$, \texttt{gamma=scale}) và $5$-NN, với tập
-đặc trưng đầy đủ làm đối chứng. Ta báo cáo độ chính xác và AUC một-chọi-còn-lại trung bình macro.
+đặc trưng đầy đủ làm đối chứng. Ta báo cáo độ chính xác và AUC macro theo cách một-chọi-phần-còn-lại (one-vs-rest).
 
-Các mặt nạ bỏ phiếu được tính một lần rồi dùng lại: giai đoạn đánh giá chỉ huấn luyện
+Các mặt nạ chọn theo bỏ phiếu được tính một lần rồi dùng lại: giai đoạn đánh giá chỉ huấn luyện
 các bộ phân loại phía sau trên các mặt nạ cố định này, với seed hiệu chỉnh xác suất của SVM
 bằng $42$; các mặt nạ giống nhau cho cùng dự đoán. Dữ liệu kiểm tra không được dùng để chọn đặc trưng hay chọn bất kỳ tham số hoặc ngưỡng bỏ phiếu nào.
 Phép chia huấn luyện/kiểm tra được cố định trước khi tính các tập đặc trưng, và quy tắc chọn
 mức ngưỡng chỉ dùng cỡ mẫu, số đặc trưng, số lớp
 và kích thước các lớp của toàn bộ dữ liệu, không dùng giá trị đặc trưng nào. Vì chỉ dùng một phép chia,
-đây là một đánh giá khám phá, không phải một nghiên cứu đầu-cuối hay kiểm định lồng.
+đây là một đánh giá khám phá, không phải một đánh giá đầu-cuối (end-to-end) hay kiểm định chéo lồng (nested).
 Với ma trận chọn theo fold $Z\in\{0,1\}^{N_f\times p}$, chỉ số Nogueira~\citep{nogueira2018}
 được tính bởi
 \[

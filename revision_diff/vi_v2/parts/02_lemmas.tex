@@ -21,8 +21,8 @@ bị chặn dưới bởi $-\sum_l\varepsilon_l>-\infty$, nên hội tụ; vì
 $\sum_{l<k}\varepsilon_l\to S<\infty$, dãy $a_k=b_k+\sum_{l<k}\varepsilon_l$ hội tụ.
 \end{proof}
 
-Trên track lồi, tính lồi cho một liên hệ định lượng giữa gradient và
-độ vi phạm.
+Trên nhánh lồi, tính lồi cho một liên hệ định lượng giữa gradient và
+mức vi phạm.
 
 \begin{lemma}\label{lem:grad-cvx}
 Với $x^\star\in\Omega$, $i\in I^{\cvx}$ và $x\in K$,
@@ -43,12 +43,12 @@ khẳng định.
 \end{proof}
 
 \begin{remark}\label{rem:grad-cvx-sum}
-Cộng Bổ đề~\ref{lem:grad-cvx} trên tập hoạt động xấp xỉ $K^{\cvx}_k$ ta được
+Cộng Bổ đề~\ref{lem:grad-cvx} trên tập active xấp xỉ $K^{\cvx}_k$ ta được
 $\inner{g^{\cvx}_k}{x^k-x^\star}\ge\sum_{i\in K^{\cvx}_k}v_i(x^k)^2=2\Phi^{\cvx}_k$, một cận
 được dùng trong chứng minh các Bổ đề~\ref{lem:fejer} và~\ref{lem:jcvx0}.
 \end{remark}
 
-Trên track giả lồi, ta chỉ có thông tin về dấu.
+Trên nhánh giả lồi, ta chỉ có thông tin về dấu.
 
 \begin{lemma}\label{lem:sign-ps}
 Với $x^\star\in\Omega$, $j\in I^{\ps}$ và $x\in K$,
@@ -102,7 +102,7 @@ $\norm{g^{\ps}(x)}=\bigl\|\sum_{j\in K^{\ps}(x)}v_j(x)\nabla F_j(x)\bigr\|
 \subsection{Tính bị chặn và sự giảm của sai số lặp}\label{ssec:bounded}
 Bất đẳng thức sau đây thuộc loại tựa Fej\'er theo nghĩa của
 Combettes~\citep{combettes2001quasifejer}. Nó cho tính bị chặn của $\{x^k\}$ và sự giảm của
-độ vi phạm trên track lồi. Đặt
+mức vi phạm trên nhánh lồi. Đặt
 \begin{equation}\label{eq:c0C0}
 c_0:=\frac{\rho_{\cvx}(2-\rho_{\cvx})}{2}\in\Bigl(0,\tfrac12\Bigr],\qquad
 C_0:=\frac{2+\rho_{\cvx}}{2-\rho_{\cvx}}\in(1,\infty),

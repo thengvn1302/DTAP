@@ -20,7 +20,7 @@
 \newenvironment{point}[1]{\medskip\noindent\textbf{\uline{#1}}\par}{\par}
 
 \title{\vspace{-2em}Thư trả lời phản biện\\[0.3em]
-\large Bản thảo: \emph{Thuật toán Chiếu Thích nghi Hai Track cho một bài toán chấp nhận tách phi tuyến với các ràng buộc hỗn hợp lồi--giả lồi}\\[0.2em]
+\large Bản thảo: \emph{Thuật toán Chiếu Thích nghi Hai Nhánh cho một bài toán chấp nhận tách phi tuyến với các ràng buộc hỗn hợp lồi--giả lồi}\\[0.2em]
 \normalsize Tạp chí: \emph{Optimization Methods and Software}}
 \author{Nguyen Van The, Tran Ngoc Thang và Nguyen Hong Son}
 \date{}
@@ -48,7 +48,7 @@ từng ý kiến và chỉ ra thay đổi tương ứng trong bản thảo sửa
         như một cách phân bổ kinh nghiệm theo tỉ phần phần dư, không khẳng định là cần thiết hay
         tối ưu (Nhận xét~1 mới);
   \item làm tường minh lập luận hội tụ của toàn bộ dãy (viết lại Giai đoạn~3 của
-        Định lý~3.12), làm rõ rằng nó chỉ cần một điểm tụ khả thi và
+        Định lý~3.12), làm rõ rằng nó chỉ cần một điểm tụ chấp nhận được và
         tính đơn điệu Fej\'er, không cần giới hạn duy nhất;
   \item bổ sung một phần chẩn đoán bộ giải (Mục~4.4 mới) báo cáo mức hoạt động của ràng buộc
         theo từng quỹ đạo, một phép so sánh với phương pháp dưới gradient có mô-đun tinh chỉnh cùng chi phí tinh chỉnh, và
@@ -88,21 +88,21 @@ cụ thể này, hoặc trình bày lại đóng góp cho phù hợp.}
 \response{Chúng tôi chọn đề nghị thứ hai của Reviewer và trình bày lại đóng góp.
 Chúng tôi đồng ý rằng dạng tỉ lệ không cần thiết về mặt cấu trúc: bất đẳng thức
 tựa Fej\'er một bước (Bổ đề~3.8) đúng với mọi $\mu_k\in[0,1]$, và chứng minh
-hội tụ chỉ cần trọng số giữ cho mỗi track còn hoạt động --- chẳng hạn với trọng số hằng
+hội tụ chỉ cần trọng số giữ cho mỗi nhánh còn hoạt động --- chẳng hạn với trọng số hằng
 $\mu_k\equiv\tfrac12$, chứng minh của Bổ đề~3.10 và của Giai đoạn~2 vẫn đúng với
 vài thay đổi nhỏ. Thực nghiệm cũng cho thấy điều tương tự: một biến thể cân bằng, gán
-trọng số bằng nhau khi cả hai track bị vi phạm, thành công ở $26/36$ lần chạy trên các bài toán
+trọng số bằng nhau khi cả hai nhánh bị vi phạm, thành công ở $26/36$ lần chạy trên các bài toán
 đặc trưng và $24/36$ trên họ bài toán không lồi, đúng bằng số lần của DTAP \loc{Mục~4.4,
 Bảng~7}. Vì vậy chúng tôi không còn trình bày trọng số cụ thể này như một điều cần thiết về lý thuyết hay
-một lựa chọn tối ưu. Phần Giới thiệu nay nói rằng ``chứng minh chỉ dùng trọng số này để giữ cho một
-track bị vi phạm kéo dài vẫn có trọng số dương'' \en{the proof uses this weight only to keep a
-persistently violated track active}. Nhận xét~1 mới \loc{Nhận xét~1, Mục~3.4} nói rõ điều này: nó ghi lại chỗ
+một lựa chọn tối ưu. Phần Giới thiệu nay nói rằng ``chứng minh chỉ dùng trọng số này để bảo đảm một
+nhánh bị vi phạm kéo dài vẫn còn trọng số dương'' \en{the proof uses this weight only to keep a
+persistently violated nhánh active}. Nhận xét~1 mới \loc{Nhận xét~1, Mục~3.4} nói rõ điều này: nó ghi lại chỗ
 dạng tỉ lệ được dùng trong chứng minh hiện tại và lưu ý rằng bất đẳng thức một bước,
 dù đúng với mọi $\mu_k\in[0,1]$, tự nó không suy ra hội tụ với mọi
 dãy trọng số. Các chế độ suy biến của Hệ quả~3.13--3.14 ứng với
-$\mu_k\equiv1$ và $\mu_k\equiv0$. Cấu trúc hai track
---- một bước co theo phần dư ở nơi có bất đẳng thức gradient định lượng,
-và một bước có chặn an toàn ở nơi chỉ có thông tin về dấu --- vẫn là
+$\mu_k\equiv1$ và $\mu_k\equiv0$. Cấu trúc hai nhánh
+--- một bước điều chỉnh theo phần dư ở nơi có bất đẳng thức gradient định lượng,
+và một bước có bảo vệ ở nơi chỉ có thông tin về dấu --- vẫn là
 đóng góp; còn trọng số cụ thể dùng để pha trộn chúng thì không.}
 \end{point}
 
@@ -116,15 +116,15 @@ chứ không theo nghĩa sự tồn tại của một hằng số. Phát biểu 
 chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older nào là \emph{đầu vào} của
 phép lặp, trong khi \emph{phân tích} có dùng các cận hữu hạn của giá trị hàm và
 gradient trên tập compact chứa dãy lặp (đã được chứng minh là bị chặn). Nhận xét~2
-mới \loc{Nhận xét~2, Mục~3.4} nói rõ điều này: ``Gradient bị chặn kéo theo các hàm
+mới \loc{Nhận xét~2, Mục~3.4} nói rõ điều này: ``Gradient bị chặn kéo theo các hàm là
 Lipschitz trên tập compact lồi đó, nhưng các cận này không phải là đầu vào của
 thuật toán'' \en{Bounded gradients imply
 Lipschitz continuity of the functions on that convex compact set, but these bounds are
 not algorithm inputs}, và lưu ý rằng tính bị chặn được chứng minh trước (Bổ đề~3.9, tức
 Bổ đề~4.9 cũ) rồi mới dùng đến các cận như vậy. Tóm tắt nay nói rằng
-độ dài bước ``không cần biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older''
+các cỡ bước ``không đòi hỏi biết trước chuẩn toán tử, hằng số Lipschitz hay mô-đun H\"older''
 \en{require no prescribed operator norm, Lipschitz constant, or H\"older modulus}
-và rằng ``chứng minh dùng các cận địa phương trên miền bị chặn chứa dãy lặp'' \en{the proof uses local bounds on the bounded iterate region}, còn phần Kết luận nói
+và rằng ``chứng minh sử dụng các cận địa phương trên miền bị chặn chứa các điểm lặp'' \en{the proof uses local bounds on the bounded iterate region}, còn phần Kết luận nói
 rằng ``không có mô-đun chính quy nào là đầu vào, mặc dù phân tích dùng các cận trên một tập compact
 chứa dãy lặp'' \en{no regularity modulus is an input, although the analysis uses bounds on a compact
 set containing the iterates}. Chúng tôi không còn dùng cụm ``không cần hằng số'' mà không kèm giới hạn.}
@@ -132,20 +132,20 @@ set containing the iterates}. Chúng tôi không còn dùng cụm ``không cần
 
 \begin{point}{R1.3 Định lý~4.12 khẳng định toàn bộ dãy hội tụ tới một điểm khả
 thi. Tuy nhiên, Giai đoạn~2 của chứng minh chỉ xác lập được rằng có ít nhất một điểm giới hạn
-khả thi. Vì bài toán không lồi, có thể tồn tại nhiều điểm giới hạn. Tác giả
+chấp nhận được. Vì bài toán không lồi, có thể tồn tại nhiều điểm giới hạn. Tác giả
 nên hoặc làm chặt lập luận, hoặc sửa định lý thành hội tụ theo
 dãy con.}
 \response{Chúng tôi giữ phát biểu về hội tụ của toàn bộ dãy, vì nó đúng, và viết lại
 Giai đoạn~3 để bước mà Reviewer chỉ ra nay được trình bày tường minh. Lập luận không
 cần điểm giới hạn duy nhất. Với \emph{mọi} $x^\star\in\Omega$ cố định, Bổ đề~3.9(i)
 cho thấy $\{\lVert x^k-x^\star\rVert^2\}$ hội tụ (tính đơn điệu Fej\'er đối với
-toàn bộ tập khả thi, chỉ dùng $R^{x^\star}_k\ge0$ từ Bổ đề~3.5). Giai đoạn~2
-tạo ra \emph{một} điểm tụ khả thi $\bar x\in C\cap\Omega$. Áp dụng Bổ đề~3.9(i)
+toàn bộ tập chấp nhận được, chỉ dùng $R^{x^\star}_k\ge0$ từ Bổ đề~3.5). Giai đoạn~2
+tạo ra \emph{một} điểm tụ chấp nhận được $\bar x\in C\cap\Omega$. Áp dụng Bổ đề~3.9(i)
 với lựa chọn hợp lệ $x^\star=\bar x$, giới hạn $\lim_k\lVert x^k-\bar x\rVert^2$
 tồn tại; vì có một dãy con hội tụ tới $\bar x$, giới hạn đó bằng $0$, nên \emph{toàn bộ}
-dãy hội tụ tới $\bar x$. Do đó không thể có nhiều điểm tụ khả thi cùng tồn tại.
+dãy hội tụ tới $\bar x$. Do đó không thể có nhiều điểm tụ chấp nhận được cùng tồn tại.
 Giai đoạn~3 viết lại trình bày đầy đủ điều này và kết thúc bằng câu: ``Lập luận không
-cần $\Omega$ chỉ có một điểm: một điểm tụ khả thi và sự hội tụ của khoảng cách tới nó
+cần $\Omega$ chỉ có một điểm: một điểm tụ chấp nhận được và sự hội tụ của khoảng cách tới nó
 là đủ'' \en{The argument does not
 require $\Omega$ to be a singleton: one feasible cluster point and the convergence of its
 distance suffice} \loc{chứng minh Định lý~3.12,
@@ -167,16 +167,16 @@ giả thiết, và các mức cụ thể được ghi trong siêu dữ liệu b�
 $F_3(w^k)-b_3>10^{-6}$ dọc theo mọi quỹ đạo. Ràng buộc thứ ba thực ra
 \emph{không hoạt động} trên bảy trong tám bộ dữ liệu và chỉ hoạt động tại $1$ trong $48$ điểm được
 đánh giá trên Abalone (Bảng~6). Chúng tôi nói thẳng hệ quả, đồng ý với
-Reviewer: trên các bài toán này track giả lồi hầu như không bao giờ chặt, nên
-cơ chế hai track không cần thiết ở đó --- các bài toán chọn đặc trưng này chỉ kiểm tra một
+Reviewer: trên các bài toán này nhánh giả lồi hầu như không bao giờ chặt, nên
+cơ chế hai nhánh không cần thiết ở đó --- các bài toán chọn đặc trưng này chỉ kiểm tra một
 lớp con lồi. Thật vậy, Mệnh đề~4.1 mới chứng minh rằng
 tiêu chí phân thức $F_3=w^{\top}Q_Rw/\rho^{\top}w$ là \emph{lồi} trên một lân cận
 của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$, nên mô hình đặc trưng là
 một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Để thực sự kích hoạt bối cảnh hỗn hợp, chúng tôi bổ sung các bài toán
 có kiểm soát với một ràng buộc giả lồi được chứng minh là không lồi,
 $F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Công thức~(47), Mục~4.4}; ở đó
-track giả lồi hoạt động trong cả $36$ lần chạy (mức hoạt động gộp $12\,835/12\,877$ điểm
-được đánh giá), nên track giả lồi được kiểm tra trực tiếp chứ không phải một cách hình thức.}
+nhánh giả lồi hoạt động trong cả $36$ lần chạy (mức hoạt động gộp $12\,835/12\,877$ điểm
+đã tính), nên nhánh giả lồi được kiểm tra trực tiếp chứ không phải một cách hình thức.}
 \end{point}
 
 \begin{point}{R1.5 DTAP và SG-const/SG-dyn không phân biệt được về mặt thống kê trên ba
@@ -186,11 +186,11 @@ thực nghiệm bổ sung với mô-đun tinh chỉnh thủ công sẽ làm phé
 \response{Chúng tôi đã bổ sung đúng thực nghiệm này \loc{Mục~4.4, Bảng~6--8}. Với SG-dyn, bên cạnh
 biến thể dùng mô-đun lấy mẫu, chúng tôi nay báo cáo một biến thể \emph{tinh chỉnh} có mô-đun được
 chọn từ một lưới thủ công $c\in\{10^{-3},\dots,10^{1}\}$ trên các điểm xuất phát tách riêng, và
-tính riêng chi phí tinh chỉnh ($179\,744$ lần đánh giá trong tối ưu và
+tính riêng chi phí tinh chỉnh ($179\,744$ lần tính hàm trong tối ưu và
 $10.80$\,s trên các bài toán đặc trưng; số liệu tương tự cho họ bài toán tổng hợp). Tinh chỉnh
 nâng số lần thành công từ điểm xuất phát chuẩn của SG-dyn từ $5/9$ lên $9/9$ và, như Reviewer
 dự đoán, một phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP --- chẳng hạn trên Abalone,
-và trên họ bài toán không lồi, SG-const tinh chỉnh và SG-dyn tinh chỉnh đạt sai số dừng ở cả
+và trên họ bài toán không lồi, SG-const tinh chỉnh và SG-dyn tinh chỉnh đạt sai số cho phép ở cả
 $36$ lần chạy, so với $24/36$ của DTAP (Bảng~7). Vì vậy chúng tôi đã sửa mọi khẳng định
 so sánh: bài nay nói rằng không phép so sánh từng cặp nào có ý nghĩa sau hiệu chỉnh
 Holm, rằng kết quả phân loại phản ánh sự đánh đổi giữa kích thước và khả năng dự đoán chứ không phải
@@ -283,8 +283,8 @@ m2 (tr.~2, d.~27) --- ``differing'' hay ``different densities'' (mật độ kh�
   & Dùng ``different''; câu về xạ trị đã được bỏ (Mục~1).\\
 m3 (tr.~2, d.~35) --- trau chuốt câu ``The NSFP is not itself new'' (bản thân NSFP không mới).
   & Đã bỏ câu này; Li và cộng sự, Yen và cộng sự, Hu và cộng sự nay được so sánh trực tiếp với DTAP (Mục~1).\\
-m4 (tr.~2, d.~39) --- ``active index set'' hay ``active set'' (tập hoạt động).
-  & Dùng ``active set''; câu đó đã bỏ; chúng tôi dùng ``approximate active set'' (tập hoạt động xấp xỉ) (Mục~3.2).\\
+m4 (tr.~2, d.~39) --- ``active index set'' hay ``active set'' (tập active).
+  & Dùng ``active set''; câu đó đã bỏ; chúng tôi dùng ``approximate active set'' (tập active xấp xỉ) (Mục~3.2).\\
 m5 (tr.~2, d.~47--49) --- câu ``We ask instead \dots'' (thay vào đó chúng tôi hỏi \dots) không rõ.
   & Đã bỏ; quan hệ giữa các lớp hàm được nêu lại bằng các câu ngắn (Mục~1).\\
 m6 (tr.~3, d.~48--53) --- các câu quá dài.
@@ -299,7 +299,7 @@ m10 (tr.~5, d.~35) --- ``plain gradient inequality'' (bất đẳng thức gradi
   & Đã bỏ (cụm này muốn nói bất đẳng thức gradient của hàm lồi $f(y)\ge f(x)+\langle\nabla f(x),y-x\rangle$).\\
 m11 (tr.~5, d.~44) --- ``the closest predecessor'' (công trình tiền nhiệm gần nhất).
   & Đã bỏ; ba công trình đi trước được so sánh trực tiếp với DTAP (Mục~1).\\
-m12 (tr.~5, d.~48) --- ``step'' hay ``step size'' (độ dài bước).
+m12 (tr.~5, d.~48) --- ``step'' hay ``step size'' (cỡ bước).
   & Dùng ``step size''; câu đó đã bỏ cùng với mục Các công trình liên quan.\\
 m13 (tr.~7, d.~31) --- ``dtap'' phải là ``DTAP''.
   & Đã sửa trong toàn bài; từ viết tắt nay luôn là ``DTAP''.\\
@@ -334,7 +334,7 @@ Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
   $F_3(w)=w^{\top}Q_Rw/\rho^{\top}w$ là giả lồi. Nay chúng tôi chứng minh nó \emph{lồi} trên một
   lân cận mở của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$
   (Mệnh đề~4.1), nên bài toán chọn đặc trưng là một NSFP mà mọi ràng buộc đều lồi. Cách
-  gán $F_3$ vào track giả lồi dùng trong thực nghiệm vẫn hợp lệ
+  gán $F_3$ vào nhánh giả lồi dùng trong thực nghiệm vẫn hợp lệ
   (lồi $\Rightarrow$ giả lồi), và cách gán toàn lồi được báo cáo như một phương án
   so sánh.
 \item \textbf{Miền xác định của các hàm thành phần.} Các hàm nay được định nghĩa trên một lân cận
@@ -342,9 +342,9 @@ Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
   bao gồm các hàm phân thức có mẫu số dương trên $K$. Một đoạn ngắn sau
   Giả thiết~1 giải thích điều này và lý do $\Omega$ lồi.
 \item \textbf{Phạm vi của phân tích.} Ngoài Nhận xét~1 và~2 (xem R1.1, R1.2), Nhận xét~5
-  nay nói chính xác rằng cận $O(N^{-1/3})$ chỉ liên quan đến độ vi phạm \emph{tốt nhất}
-  của track lồi --- không phải cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư hay
-  cho khoảng cách tới tập khả thi.
+  nay nói chính xác rằng cận $O(N^{-1/3})$ chỉ liên quan đến mức vi phạm \emph{tốt nhất}
+  của nhánh lồi --- không phải cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư hay
+  cho khoảng cách tới tập chấp nhận được.
 \item \textbf{Quy trình thực nghiệm.} Mục~4.2.2 nay nêu chính xác quy trình:
   chuẩn hóa min--max được khớp một lần trên tập huấn luyện, các mặt nạ bỏ phiếu được tính một lần
   rồi dùng lại, việc hiệu chỉnh xác suất của SVM dùng một seed cố định, và việc đánh giá là
@@ -362,7 +362,7 @@ Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
   đặt ở đầu Bước~1 thay vì ở một Bước~3 riêng; các điểm lặp và
   điểm được trả về không đổi.
 \item \textbf{Chặn an toàn ở mẫu số.} Mục~4.1.3 nay báo cáo rằng điểm Fisher
-  nhỏ nhất trên mọi bài toán là $4.77\times10^{-5}$, nên chặn an toàn $\max\{\rho^{\top}w,10^{-15}\}$
+  nhỏ nhất trên mọi bài toán là $4.77\times10^{-5}$, nên ngưỡng bảo vệ $\max\{\rho^{\top}w,10^{-15}\}$
   trong mã cài đặt không bao giờ có tác dụng và $F_3$ được cài đặt đúng là~(41).
 \item \textbf{Các tuyên bố.} Tuyên bố về việc dùng AI tạo sinh và tuyên bố về tính sẵn có của
   dữ liệu đã được cập nhật, và một gói tái lập nay được cung cấp kèm bài.
