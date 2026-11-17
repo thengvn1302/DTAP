@@ -109,20 +109,6 @@ only the combined files from the saved per-dataset results, or to check that the
 use `python run_all.py all --reuse`; to recompute everything, use `python run_all.py all`
 (about 1.3 hours, see above).
 
-## Seeds (Tables 2-5 over several splits)
-
-`config.SEED` (default 42, the saved results) fixes all randomness of the classification study: the
-stratified 80/20 split, the fold partition, the solver seeds (SEED + fold index), the SVM probability
-calibration and the Dirichlet sampling of the thresholds. Tables 6-8 do not depend on it.
-`python run_all.py seeds` repeats `comparison` on the eight classification datasets for each seed of
-`config.SEED_LIST` (42-46). Seed 42 is read from `results/comparison.csv` (`--rerun-base` recomputes it
-in `results/seeds/seed_42/`); every other seed runs in its own directory `results/seeds/seed_<s>/`,
-and datasets already saved there are skipped, so an interrupted run resumes. The summary
-`results/seeds/seeds_summary.{txt,json}` gives, per dataset and for Table 4, the mean +- sample std over
-the seeds, the Table 5 tests on the seed-averaged scores and, per seed, the range of the Holm-adjusted
-p-values. The four extra seeds take about 4 x 43 min with `--jobs 1`; `--jobs N` runs N seeds in parallel
-(one BLAS thread each) and needs about 2 GB of free memory per seed (Pendigits).
-
 ## Drivers
 
 Run from the project root:
@@ -137,7 +123,6 @@ Run from the project root:
 | `python run_all.py synthetic [--out DIR]` | Table 7 | `synthetic/{table7.txt, synthetic_runs.csv, synthetic_tuning.json, synthetic_trajectories.json.gz, witness_47.json}` |
 | `python run_all.py synthetic --dtap-sweep [--out DIR]` | Table 8 | `synthetic/{table8.txt, synthetic_sweep.csv, synthetic_sweep_trajectories.json.gz}` |
 | `python run_all.py hashes [--check]` | - | writes / checks `SHA256SUMS` |
-| `python run_all.py seeds [--seeds 42,43,44,45,46] [--jobs N] [--rerun-base] [--summary-only]` | Tables 2-5 over 5 seeds | `seeds/seed_<s>/` (the `comparison` outputs for seed s), `seeds/seeds_summary.{txt,json}` |
 
 `comparison` and `hu2022` save one file set per dataset and rebuild the combined files from every dataset saved
 so far, so large datasets can be run one at a time (`--datasets Pendigits`).

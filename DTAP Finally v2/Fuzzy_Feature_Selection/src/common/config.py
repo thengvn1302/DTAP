@@ -5,7 +5,6 @@ Combined feasibility system on the probability simplex K = Delta_{m-1}:
     F2(w) = ||1 - P w||^2                (convex, Model II)
     F3(w) = (w^T G w) / (rho^T w)        (pseudoconvex, Model I)
 """
-import os
 from typing import Dict, List
 
 from src.common.consts import Method
@@ -71,14 +70,9 @@ PREPROCESSING = dict(
     fisher_inf_replacement_factor=10.0,
 )
 
-# Seed of the classification study (Tables 1-5): the 80/20 split, the fold partition, the solver
-# seeds (SEED + fold index), the SVM calibration and the threshold sampling. The saved results use 42;
-# FFS_SEED overrides it (used by `run_all.py seeds`). Tables 6-8 do not depend on it.
-SEED = int(os.environ.get("FFS_SEED", "42"))
-SEED_LIST: List[int] = [42, 43, 44, 45, 46]   # `run_all.py seeds`
 THETA_LIST: List[float] = [0.9]
 N_FOLDS = 10
-TEST_FRACTION = 0.2          # stratified hold-out, random_state=SEED
+TEST_FRACTION = 0.2          # stratified hold-out, random_state=42
 VOTE_THRESHOLD_LIST = None   # None -> auto [majority .. n_folds]
 SVM_PARAMS = dict(kernel="rbf", C=1.0, gamma="scale")
 KNN_K = 5
