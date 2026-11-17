@@ -1,0 +1,77 @@
+Dataset: Yeast - 1484 mau | 7 dac trung | 10 lop | Mat can bang
+
+ theta_list=[0.9]
+============================================================
+ outer_folds=4  vote_thresholds=[3, 4]  test_fraction=20%  n_pool=1187  n_test=297
+Chi tiet tung fold (chon dac trung - khong danh gia SVM/KNN):
+  [Fold 1/4] | b=(b1=887.241, b2=579.238, b3=0.0520036)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.235s   iters=1000
+      DTAP:      time=0.002s   iters=8
+      SG-const:  time=0.086s   iters=322
+      SG-dyn:    time=0.169s   iters=343
+    theta=0.9:
+      N-Fscore:  |A*|=6    feat=[0, 1, 2, 3, 5, 6]
+      AFRSFCV:   |A*|=4    feat=[1, 2, 5, 6]
+      DTAP:      |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-const:  |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-dyn:    |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+  [Fold 2/4] | b=(b1=887.055, b2=577.38, b3=0.0581881)
+      N-Fscore:  time=0.054s   iters=999
+      AFRSFCV:   time=0.236s   iters=1000
+      DTAP:      time=0.001s   iters=5
+      SG-const:  time=0.072s   iters=269
+      SG-dyn:    time=0.138s   iters=228
+    theta=0.9:
+      N-Fscore:  |A*|=6    feat=[0, 1, 2, 3, 5, 6]
+      AFRSFCV:   |A*|=4    feat=[0, 1, 2, 6]
+      DTAP:      |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-const:  |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-dyn:    |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+  [Fold 3/4] | b=(b1=886.965, b2=579.927, b3=0.0520249)
+      N-Fscore:  time=0.054s   iters=999
+      AFRSFCV:   time=0.239s   iters=1000
+      DTAP:      time=0.004s   iters=20
+      SG-const:  time=0.118s   iters=428
+      SG-dyn:    time=0.210s   iters=482
+    theta=0.9:
+      N-Fscore:  |A*|=6    feat=[0, 1, 2, 3, 5, 6]
+      AFRSFCV:   |A*|=5    feat=[0, 1, 2, 5, 6]
+      DTAP:      |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-const:  |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-dyn:    |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+  [Fold 4/4] | b=(b1=888.69, b2=581.195, b3=0.052921)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.240s   iters=1000
+      DTAP:      time=0.001s   iters=5
+      SG-const:  time=0.076s   iters=283
+      SG-dyn:    time=0.166s   iters=332
+    theta=0.9:
+      N-Fscore:  |A*|=6    feat=[0, 1, 2, 3, 5, 6]
+      AFRSFCV:   |A*|=5    feat=[0, 1, 2, 5, 6]
+      DTAP:      |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-const:  |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+      SG-dyn:    |A*|=6    feat=[0, 1, 2, 4, 5, 6]
+
+Trung binh tren CV folds:
+  N-Fscore:  time=0.053 ± 0.000s  iters=999.0 ± 0.0   time/iter=0.0535 ± 0.0003ms
+  AFRSFCV:   time=0.237 ± 0.002s  iters=1000.0 ± 0.0  time/iter=0.2373 ± 0.0021ms
+  DTAP:      time=0.002 ± 0.001s  iters=9.5 ± 6.2     time/iter=0.1875 ± 0.0289ms
+  SG-const:  time=0.088 ± 0.018s  iters=325.5 ± 62.3  time/iter=0.2695 ± 0.0037ms
+  SG-dyn:    time=0.171 ± 0.026s  iters=346.2 ± 90.3  time/iter=0.5080 ± 0.0607ms
+
+Ket qua bau chon va danh gia tren hold-out test (n=297):
+Raw (7 dac trung): SVM=52.86  KNN=54.88  SVM-ROC=0.8259  KNN-ROC=0.7967
+theta = 0.9
+  vote>=3/4 (majority):
+    N-Fscore:  |A*|=6    SVM= 54.21  KNN= 53.20  SVM-ROC=0.8026  KNN-ROC=0.7809  Nogueira=1.0000  voted=[0, 1, 2, 3, 5, 6]
+    AFRSFCV:   |A*|=5    SVM= 54.21  KNN= 53.87  SVM-ROC=0.7887  KNN-ROC=0.7813  Nogueira=0.6889  voted=[0, 1, 2, 5, 6]
+    DTAP:      |A*|=6    SVM= 54.21  KNN= 55.56  SVM-ROC=0.8261  KNN-ROC=0.7971  Nogueira=1.0000  voted=[0, 1, 2, 4, 5, 6]
+    SG-const:  |A*|=6    SVM= 54.21  KNN= 55.56  SVM-ROC=0.8261  KNN-ROC=0.7971  Nogueira=1.0000  voted=[0, 1, 2, 4, 5, 6]
+    SG-dyn:    |A*|=6    SVM= 54.21  KNN= 55.56  SVM-ROC=0.8261  KNN-ROC=0.7971  Nogueira=1.0000  voted=[0, 1, 2, 4, 5, 6]
+  vote>=4/4 (unanimous):
+    N-Fscore:  |A*|=6    SVM= 54.21  KNN= 53.20  SVM-ROC=0.8026  KNN-ROC=0.7809  Nogueira=1.0000  voted=[0, 1, 2, 3, 5, 6]
+    AFRSFCV:   |A*|=3    SVM= 50.84  KNN= 50.51  SVM-ROC=0.6944  KNN-ROC=0.6912  Nogueira=0.6889  voted=[1, 2, 6]
+    DTAP:      |A*|=6    SVM= 54.21  KNN= 55.56  SVM-ROC=0.8261  KNN-ROC=0.7971  Nogueira=1.0000  voted=[0, 1, 2, 4, 5, 6]
+    SG-const:  |A*|=6    SVM= 54.21  KNN= 55.56  SVM-ROC=0.8261  KNN-ROC=0.7971  Nogueira=1.0000  voted=[0, 1, 2, 4, 5, 6]
+    SG-dyn:    |A*|=6    SVM= 54.21  KNN= 55.56  SVM-ROC=0.8261  KNN-ROC=0.7971  Nogueira=1.0000  voted=[0, 1, 2, 4, 5, 6]

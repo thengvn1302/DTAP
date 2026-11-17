@@ -1,0 +1,167 @@
+Dataset: Abalone - 4177 mau | 8 dac trung | 3 lop | Can bang
+
+ theta_list=[0.9]
+============================================================
+ outer_folds=10  vote_thresholds=[6, 7, 8, 9, 10]  test_fraction=20%  n_pool=3341  n_test=836
+Chi tiet tung fold (chon dac trung - khong danh gia SVM/KNN):
+  [Fold 1/10] | b=(b1=2984.62, b2=1092.63, b3=0.0943408)
+      N-Fscore:  time=0.055s   iters=999
+      AFRSFCV:   time=0.327s   iters=1000
+      DTAP:      time=0.018s   iters=64
+      SG-const:  time=0.375s   iters=872
+      SG-dyn:    time=0.535s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=5    feat=[1, 2, 3, 5, 7]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 2/10] | b=(b1=2986.43, b2=1108.15, b3=0.0941814)
+      N-Fscore:  time=0.058s   iters=999
+      AFRSFCV:   time=0.302s   iters=1000
+      DTAP:      time=0.017s   iters=68
+      SG-const:  time=0.321s   iters=917
+      SG-dyn:    time=0.443s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=4    feat=[1, 2, 3, 5]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 3/10] | b=(b1=2986.44, b2=1090.04, b3=0.0950948)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.305s   iters=1000
+      DTAP:      time=0.018s   iters=70
+      SG-const:  time=0.429s   iters=910
+      SG-dyn:    time=1.071s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=4    feat=[1, 2, 3, 5]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 4/10] | b=(b1=2984.79, b2=1111.08, b3=0.0954298)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.287s   iters=1000
+      DTAP:      time=0.017s   iters=68
+      SG-const:  time=0.339s   iters=872
+      SG-dyn:    time=0.453s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=4    feat=[1, 2, 3, 5]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 5/10] | b=(b1=2985.99, b2=1099.45, b3=0.0951558)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.303s   iters=1000
+      DTAP:      time=0.018s   iters=72
+      SG-const:  time=0.328s   iters=914
+      SG-dyn:    time=0.421s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=4    feat=[1, 2, 3, 5]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 6/10] | b=(b1=2987.43, b2=1091.4, b3=0.0946525)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.299s   iters=1000
+      DTAP:      time=0.021s   iters=64
+      SG-const:  time=0.287s   iters=851
+      SG-dyn:    time=0.406s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=3    feat=[1, 2, 3]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 7/10] | b=(b1=2987.04, b2=1113.64, b3=0.0950728)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.311s   iters=1000
+      DTAP:      time=0.018s   iters=64
+      SG-const:  time=0.310s   iters=845
+      SG-dyn:    time=0.463s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=3    feat=[1, 2, 3]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 8/10] | b=(b1=2985.25, b2=1097.28, b3=0.0956563)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.301s   iters=1000
+      DTAP:      time=0.019s   iters=70
+      SG-const:  time=0.316s   iters=913
+      SG-dyn:    time=0.469s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=4    feat=[1, 2, 3, 5]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 9/10] | b=(b1=2984.41, b2=1106.86, b3=0.0932411)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.313s   iters=1000
+      DTAP:      time=0.034s   iters=128
+      SG-const:  time=0.352s   iters=1000
+      SG-dyn:    time=0.417s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=4    feat=[2, 3, 5, 7]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+  [Fold 10/10] | b=(b1=2986.45, b2=1106.49, b3=0.095676)
+      N-Fscore:  time=0.053s   iters=999
+      AFRSFCV:   time=0.277s   iters=1000
+      DTAP:      time=0.015s   iters=66
+      SG-const:  time=0.282s   iters=902
+      SG-dyn:    time=0.397s   iters=1000
+    theta=0.9:
+      N-Fscore:  |A*|=3    feat=[2, 3, 5]
+      AFRSFCV:   |A*|=2    feat=[4, 5]
+      DTAP:      |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-const:  |A*|=5    feat=[1, 2, 4, 5, 7]
+      SG-dyn:    |A*|=5    feat=[1, 2, 4, 5, 7]
+
+Trung binh tren CV folds:
+  N-Fscore:  time=0.054 ± 0.002s  iters=999.0 ± 0.0   time/iter=0.0538 ± 0.0015ms
+  AFRSFCV:   time=0.303 ± 0.013s  iters=1000.0 ± 0.0  time/iter=0.3027 ± 0.0130ms
+  DTAP:      time=0.019 ± 0.005s  iters=73.4 ± 18.4   time/iter=0.2654 ± 0.0241ms
+  SG-const:  time=0.334 ± 0.041s  iters=899.6 ± 42.1  time/iter=0.3715 ± 0.0447ms
+  SG-dyn:    time=0.508 ± 0.192s  iters=1000.0 ± 0.0  time/iter=0.5076 ± 0.1917ms
+
+Ket qua bau chon va danh gia tren hold-out test (n=836):
+Raw (8 dac trung): SVM=65.55  KNN=61.36  SVM-ROC=0.8291  KNN-ROC=0.7898
+theta = 0.9
+  vote>=6/10 (majority):
+    N-Fscore:  |A*|=4    SVM= 62.32  KNN= 59.45  SVM-ROC=0.8154  KNN-ROC=0.7513  Nogueira=0.7327  voted=[1, 2, 3, 5]
+    AFRSFCV:   |A*|=2    SVM= 64.11  KNN= 61.24  SVM-ROC=0.8218  KNN-ROC=0.7831  Nogueira=1.0000  voted=[4, 5]
+    DTAP:      |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-const:  |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-dyn:    |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+  vote>=7/10:
+    N-Fscore:  |A*|=4    SVM= 62.32  KNN= 59.45  SVM-ROC=0.8154  KNN-ROC=0.7513  Nogueira=0.7327  voted=[1, 2, 3, 5]
+    AFRSFCV:   |A*|=2    SVM= 64.11  KNN= 61.24  SVM-ROC=0.8218  KNN-ROC=0.7831  Nogueira=1.0000  voted=[4, 5]
+    DTAP:      |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-const:  |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-dyn:    |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+  vote>=8/10:
+    N-Fscore:  |A*|=4    SVM= 62.32  KNN= 59.45  SVM-ROC=0.8154  KNN-ROC=0.7513  Nogueira=0.7327  voted=[1, 2, 3, 5]
+    AFRSFCV:   |A*|=2    SVM= 64.11  KNN= 61.24  SVM-ROC=0.8218  KNN-ROC=0.7831  Nogueira=1.0000  voted=[4, 5]
+    DTAP:      |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-const:  |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-dyn:    |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+  vote>=9/10:
+    N-Fscore:  |A*|=2    SVM= 61.60  KNN= 54.19  SVM-ROC=0.7831  KNN-ROC=0.7348  Nogueira=0.7327  voted=[2, 3]
+    AFRSFCV:   |A*|=2    SVM= 64.11  KNN= 61.24  SVM-ROC=0.8218  KNN-ROC=0.7831  Nogueira=1.0000  voted=[4, 5]
+    DTAP:      |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-const:  |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-dyn:    |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+  vote>=10/10 (unanimous):
+    N-Fscore:  |A*|=2    SVM= 61.60  KNN= 54.19  SVM-ROC=0.7831  KNN-ROC=0.7348  Nogueira=0.7327  voted=[2, 3]
+    AFRSFCV:   |A*|=2    SVM= 64.11  KNN= 61.24  SVM-ROC=0.8218  KNN-ROC=0.7831  Nogueira=1.0000  voted=[4, 5]
+    DTAP:      |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-const:  |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
+    SG-dyn:    |A*|=5    SVM= 64.83  KNN= 63.88  SVM-ROC=0.8248  KNN-ROC=0.8019  Nogueira=1.0000  voted=[1, 2, 4, 5, 7]
