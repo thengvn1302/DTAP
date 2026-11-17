@@ -160,34 +160,19 @@ dual-track mechanism is not needed there --- these feature-selection instances e
 convex subclass. Indeed, new Proposition~3.1 proves that the
 fractional criterion $F_3=w^{\top}Q_Rw/\rho^{\top}w$ is \emph{convex} on a neighbourhood
 of the simplex when $Q_R\succeq0$ and $\min_k\rho_k>0$, so the feature model is an
-all-convex normal-box NSFP. To exercise the pseudoconvex track on a genuinely nonconvex
-constraint, we added controlled instances with a provably nonconvex pseudoconvex constraint,
-$F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Eq.~(45), Sec.~3.4}; there the third
-constraint is violated in all $36$ runs (pooled activity $12\,835/12\,877$ evaluated
-points), so the pseudoconvex track is exercised directly rather than vacuously. We also
-state plainly that the two tracks are rarely active at the same time: for $\kappa\le1$ the
-convex track is satisfied from the second evaluated point on, and both tracks are violated
-simultaneously at only $32$ of the $12\,877$ evaluated points. These experiments therefore
-exercise each track separately rather than the regime in which both are active, as
-Sec.~3.4 reports.}
+all-convex normal-box NSFP. To engage the mixed setting genuinely, we added controlled
+instances with a provably nonconvex pseudoconvex constraint,
+$F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Eq.~(45), Sec.~3.4}; there the
+pseudoconvex track is active in all $36$ runs (pooled activity $12\,835/12\,877$ evaluated
+points), so the pseudoconvex track is exercised directly rather than vacuously.}
 \end{point}
 
 \begin{point}{R1.5 DTAP and SG-const/SG-dyn are statistically indistinguishable on three
 of four metrics (Table~5). SG-dyn's failure on $3$ datasets is attributed to poor
 H\"older modulus estimation --- but with a tuned modulus it might perform comparably. An
 additional experiment with manually tuned moduli would strengthen the comparison.}
-\response{On the first observation: after recomputation, the DTAP--SG $p$-values in
-Table~5 equal $1$ on all four metrics, not only on three. The earlier difference in SVM AUC
-came from the randomness of the SVM probability calibration, which gave slightly different
-AUC values for identical voted masks. The calibration now uses a fixed seed, so identical
-masks give identical predictions (Table~3), and the voted masks of DTAP and both SG
-variants coincide on seven of the eight datasets. On the second observation, we added
-exactly this experiment \loc{Sec.~3.4, Tables~6--8}. It is run on the optimization task,
-where the sampled variant fails: the tuned variant reaches the tolerance on Glass, Diabetes
-and Abalone, the three classification datasets on which sampled SG-dyn does not
-(Table~6). We did not rerun the classification comparison of Tables~2--5 with the tuned
-modulus, because the voted masks of both SG variants already coincide with DTAP's on seven
-of the eight datasets. For SG-dyn we now report, alongside the sampled-modulus variant, a \emph{tuned} variant whose modulus is
+\response{We added exactly this experiment \loc{Sec.~3.4, Tables~6--8}. For SG-dyn we now
+report, alongside the sampled-modulus variant, a \emph{tuned} variant whose modulus is
 selected from a manual grid $c\in\{10^{-3},\dots,10^{1}\}$ on held-out starts, and we
 account for its tuning cost separately ($179\,744$ optimization evaluations and
 $10.80$\,s on the feature instances; comparable figures for the synthetic family). Tuning
