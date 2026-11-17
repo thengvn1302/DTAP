@@ -6,6 +6,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
+from src.common import config
 from src.common.config import KNN_K, SVM_PARAMS
 
 
@@ -36,13 +37,13 @@ def score_fold(X_train, y_train, X_test, y_test, selected_idx) -> Tuple[float, f
     Xte = X_test[:, selected_idx]
 
     knn = KNeighborsClassifier(n_neighbors=KNN_K).fit(Xtr, y_train)
-    svm_acc = SVC(**SVM_PARAMS, random_state=42).fit(Xtr, y_train).score(Xte, y_test) * 100.0
+    svm_acc = SVC(**SVM_PARAMS, random_state=config.SEED).fit(Xtr, y_train).score(Xte, y_test) * 100.0
     knn_acc = knn.score(Xte, y_test) * 100.0
 
     n_cls = len(np.unique(y_train))
     svm_roc = knn_roc = float("nan")
     try:
-        svm_p = SVC(**SVM_PARAMS, probability=True, random_state=42).fit(Xtr, y_train).predict_proba(Xte)
+        svm_p = SVC(**SVM_PARAMS, probability=True, random_state=config.SEED).fit(Xtr, y_train).predict_proba(Xte)
         knn_p = knn.predict_proba(Xte)
         if n_cls == 2:
             svm_roc = float(roc_auc_score(y_test, svm_p[:, 1]))

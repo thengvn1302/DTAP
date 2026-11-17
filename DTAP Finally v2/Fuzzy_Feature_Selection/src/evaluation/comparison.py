@@ -83,7 +83,7 @@ def run_single_dataset(name: str, cfg_entry: dict, theta_list=None, verbose: boo
     # ── 1. Hold-out split ──
     test_frac = float(getattr(config, "TEST_FRACTION", 0.2))
     pool_idx, test_idx = train_test_split(
-        np.arange(n), test_size=test_frac, stratify=y, random_state=42)
+        np.arange(n), test_size=test_frac, stratify=y, random_state=config.SEED)
     X_pool, X_test = scale_train_test(X_raw[pool_idx], X_raw[test_idx])
     y_pool, y_test = y[pool_idx], y[test_idx]
     n_pool, n_test = len(y_pool), len(y_test)
@@ -92,7 +92,7 @@ def run_single_dataset(name: str, cfg_entry: dict, theta_list=None, verbose: boo
     n_folds = _effective_folds(y_pool, config.N_FOLDS)
     vote_thr_list = _vote_thr_list(n_folds)
     majority = n_folds // 2 + 1
-    skf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=42)
+    skf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=config.SEED)
 
     wl = {mth: {"time": [], "iters": [], "tpi": []} for mth in methods}
     feature_votes = {mth: {t: np.zeros(m, dtype=int) for t in theta_list} for mth in methods}
@@ -113,7 +113,7 @@ def run_single_dataset(name: str, cfg_entry: dict, theta_list=None, verbose: boo
 
     for fold_idx, (tr, _) in enumerate(skf.split(X_pool, y_pool), start=1):
         Xtr, ytr = X_pool[tr], y_pool[tr]
-        seed = 42 + fold_idx
+        seed = config.SEED + fold_idx
 
         prep = build_matrices(Xtr, ytr)
         prepared = prepare_from_prep(prep, threshold_cfg)

@@ -10,6 +10,7 @@ Run from the project root:
     python run_all.py synthetic  [--out DIR]
     python run_all.py synthetic --dtap-sweep [--out DIR]
     python run_all.py hashes     [--check]
+    python run_all.py seeds      [--seeds 42,43,44,45,46] [--jobs N] [--rerun-base] [--summary-only]
 
 Pipeline (`all`), Tables 2-8 in order:
     1. comparison -> comparison.csv / .txt, comparison/<dataset>.*, thresholds/<dataset>_folds.json, curve data
@@ -21,6 +22,10 @@ Pipeline (`all`), Tables 2-8 in order:
                      synthetic_trajectories.json.gz, witness_47.json}             (Table 7)
     6. synthetic --dtap-sweep -> synthetic/{table8.txt, synthetic_sweep.csv, ...}  (Table 8)
     7. hashes     -> SHA256SUMS
+
+Not part of `all`:
+    seeds      -> results/seeds/seed_<s>/ (step 1 with config.SEED = s, s != 42) and
+                  results/seeds/seeds_summary.{txt,json}: Tables 2-5 as mean +- std over the seeds
 """
 import argparse
 import os
@@ -41,6 +46,7 @@ from src.common.consts import RESULTS_DIR, Method
 from src.evaluation.comparison import run_experiment_comparison
 from src.evaluation.convergence import run_convergence
 from src.evaluation.curves import load_curve_data, render_grid_figure
+from src.evaluation.seeds import run_seeds
 from src.evaluation.stats import run_stats
 from src.evaluation.synthetic import run_dtap_sweep, run_synthetic
 from src.common.hashes import check_sums, write_sums
@@ -142,6 +148,19 @@ def cmd_hashes(argv=None) -> int:
     return check_sums() if args.check else write_sums()
 
 
+def cmd_seeds(argv=None) -> int:
+    p = argparse.ArgumentParser(prog="run_all.py seeds")
+    p.add_argument("--seeds", default=None, help="comma list; default = config.SEED_LIST (42-46)")
+    p.add_argument("--jobs", type=int, default=1,
+                   help="seeds run in parallel (each needs its own core and memory); default 1")
+    p.add_argument("--rerun-base", action="store_true",
+                   help="also recompute seed 42 in results/seeds/seed_42/ instead of reading results/comparison.csv")
+    p.add_argument("--summary-only", action="store_true", help="only rebuild seeds_summary from saved runs")
+    args = p.parse_args(argv)
+    seeds = None if args.seeds is None else [int(x) for x in args.seeds.split(",") if x.strip()]
+    return run_seeds(seeds, jobs=args.jobs, rerun_base=args.rerun_base, summary_only=args.summary_only)
+
+
 _STEPS = {
     "comparison": cmd_comparison,
     "stats": cmd_stats,
@@ -149,6 +168,7 @@ _STEPS = {
     "q1": cmd_q1,
     "synthetic": cmd_synthetic,
     "hashes": cmd_hashes,
+    "seeds": cmd_seeds,
 }
 
 

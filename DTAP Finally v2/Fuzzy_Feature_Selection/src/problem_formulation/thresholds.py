@@ -6,6 +6,7 @@ taking the p_i-th percentile of F_i. Per-dataset percentiles come from DATC
 """
 import numpy as np
 
+from src.common import config as _cfg
 from src.common.config import THRESHOLD_CONFIG
 from src.problem_formulation.constraints import value_f1, value_f2, value_f3
 
@@ -76,7 +77,7 @@ def build_threshold_config(adaptive: dict) -> dict:
         method="sampling_based",
         sampling_based=dict(
             n_samples=3000,
-            seed=42,
+            seed=_cfg.SEED,
             f1_percentile=adaptive["f1_percentile"],
             f2_percentile=adaptive["f2_percentile"],
             f3_percentile=adaptive["f3_percentile"],

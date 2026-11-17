@@ -1,3 +1,4 @@
+import os
 import sys
 from dataclasses import dataclass
 from enum import Enum
@@ -6,7 +7,8 @@ from typing import Dict
 
 PROJECT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_DIR / "data"
-RESULTS_DIR = PROJECT_DIR / "results"
+# FFS_RESULTS_DIR redirects every output (used by `run_all.py seeds` for the per-seed runs).
+RESULTS_DIR = Path(os.environ["FFS_RESULTS_DIR"]) if os.environ.get("FFS_RESULTS_DIR") else PROJECT_DIR / "results"
 CONVERGENCE_DIR = RESULTS_DIR / "hu2022"
 
 sys.path.append(str(PROJECT_DIR))
