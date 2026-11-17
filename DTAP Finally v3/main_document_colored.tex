@@ -454,7 +454,7 @@ by \leavevmode\textcolor{red}{(P3),} contradicting Lemma~\ref{lem:bounded}(iii).
 =\lim_{l\to\infty}\norm{x^{k_l}-\bar x}^2=0.
 }\]
 % NEED RECHECK: reworded Stage 3 closing sentence (singleton remark)
-\leavevmode\textcolor{red}{Hence the whole sequence converges to $\bar x$, and we set $x^\infty:=\bar x\in\Omega$. Because a single feasible cluster point together with convergence of the distances $\norm{x^k-\bar x}$ already forces the entire sequence to converge, $\Omega$ need not be a singleton.}
+\leavevmode\textcolor{red}{Hence the whole sequence converges to $\bar x$, and we set $x^\infty:=\bar x\in\Omega$. The argument uses only one feasible cluster point and the convergence of $\norm{x^k-\bar x}$, so $\Omega$ need not be a singleton.}
 \end{proof}
 
 \begin{remark}\label{rem:weight-scope}
@@ -497,13 +497,13 @@ Now $d_k=\eta^{\ps}_k g^{\ps}_k$ with $\norm{d_k}^2\le\gamma_k^2$, so~\eqref{eq:
 
 \section{Numerical experiments}\label{sec:experiments}
 % NEED RECHECK: rewritten section intro (general; two-axes framing)
-\leavevmode\textcolor{red}{This section evaluates DTAP on the feature-selection problem. We first formulate feature selection as a normal-box NSFP, then describe the experimental setup and baselines, and finally report results along two complementary axes. One axis is predictive performance, measured by the quality of the selected features in downstream classification. The other is the numerical solution of the feasibility system, where we examine how DTAP drives the constraint residuals and how it compares with a tuned subgradient method.}
+\leavevmode\textcolor{red}{We first cast feature selection as a normal-box NSFP and describe the experimental setup. We then report predictive performance and the numerical solution of the feasibility systems separately. The classification comparison uses eight datasets (Section~\ref{ssec:results}). The solver diagnostic adds Movement Libras and test problems with a nonconvex pseudoconvex constraint, and compares DTAP with tuned subgradient methods (Section~\ref{ssec:feasibility-audit}}).
 
 % NEED RECHECK: retitled "Feature-selection model" -> "Problem setup"; rewritten intro previewing 3.1.1-3.1.3
 \subsection{\textcolor{red}{Problem setup}}\label{sec:fs}
-\leavevmode\textcolor{red}{We obtain a test problem for DTAP by casting feature selection as a normal-box NSFP. The constraints are built from two feature-quality criteria taken from prior work, the fractional redundancy--relevance criterion of Wang et al.~\citep{wang2021fractional} and the fuzzy-rough criterion of AFRSFCV~\citep{wang2026afrsfcv}. We first describe these two criteria together with the baseline solvers built on them, and then assemble them into the feasibility problem and state the selection rule.}
+\leavevmode\textcolor{red}{We obtain a test problem for DTAP by casting feature selection as a normal-box NSFP. The constraints are built from two feature-quality criteria taken from prior work, the fractional redundancy--relevance criterion of Wang et al.~\citep{wang2021fractional} and the fuzzy-rough criterion of AFRSFCV~\citep{wang2026afrsfcv}. We first describe the two criteria, then assemble them into the feasibility problem and state the selection rule. The solvers are described in Section~\ref{sssec:baselines}}.
 
-\leavevmode\textcolor{red}{Let $x_1,\ldots,x_n$ be the training samples and $a_1,\ldots,a_p$ the features, collected in the data matrix $X\in\R^{n\times p}$ whose row $i$ is sample $x_i$, with class labels $y\in\{1,\ldots,r\}^n$. Here $n$ is the number of samples and $p$ the number of features; we index features by $k$ and samples by $i$ or $j$. The feature weights belong to the compact convex simplex $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. All supervised quantities below are estimated from the training data.}
+\leavevmode\textcolor{red}{Let $x_1,\ldots,x_n$ be the training samples and $a_1,\ldots,a_p$ the features, collected in the data matrix $X\in\R^{n\times p}$ whose row $i$ is sample $x_i$, with class labels $y\in\{1,\ldots,r\}^n$. Here $n$ is the number of samples and $p$ the number of features. The feature weights belong to the compact convex simplex $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. All supervised quantities below are estimated from the training data.}
 
 % NEED RECHECK: retitled (dropped "and N-Fscore"); baseline desc moved to 3.2.1
 \subsubsection{\textcolor{red}{Fractional criterion}}\label{ssec:wang}\label{sssec:wang-inputs}\label{sssec:nfscore}
@@ -633,7 +633,7 @@ Each dataset is split \leavevmode\textcolor{red}{once into a stratified $80/20$ 
 \leavevmode\textcolor{red}{The DTAP runs reported here start at the uniform weight vector and use $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, tolerance $10^{-6}$, and a budget of $1000$ iterations. They assign $F_1,F_2$ to the convex track and $F_3$ to the pseudoconvex track ($I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$), which is admissible since convex functions are pseudoconvex. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also admissible, and Theorem~\ref{thm:strong} applies to both.} The shared cumulative threshold \leavevmode\textcolor{red}{for feature selection} is $\theta=0.9$.
 
 % NEED RECHECK: "models" -> "criteria" to match retitled 3.1.1/3.1.2
-\leavevmode\textcolor{red}{We compare against four baseline solvers. N-Fscore and AFRSFCV solve the fractional and fuzzy-rough criteria of Sections~\ref{sssec:nfscore} and~\ref{sssec:afrsfcv-model}, while SG-const and SG-dyn are subgradient methods for the feasibility problem.}
+\leavevmode\textcolor{red}{We compare against four baseline solvers. N-Fscore and AFRSFCV optimize the fractional and fuzzy-rough criteria of Sections~\ref{sssec:nfscore} and~\ref{sssec:afrsfcv-model}, while SG-const and SG-dyn are subgradient methods for the feasibility problem.}
 
 % NEED RECHECK: compressed N-Fscore; removed PNN ODE (eq:pnn), kept citation/config/adaptation; opening reworded to "This baseline" to avoid repeating the heading name
 \paragraph*{\textcolor{red}{N-Fscore}}
@@ -669,7 +669,7 @@ s_j^2=\frac{1}{N_f-1}\sum_{b=1}^{N_f}(Z_{bj}-\bar Z_j)^2,\quad
 
 \leavevmode\textcolor{red}{For each classifier metric, we compare DTAP against each baseline with a two-sided signed-rank test on the paired differences across the eight datasets, and apply Holm's correction over the four DTAP--baseline comparisons. A Friedman test compares DTAP and the baselines jointly. The signed-rank tests enumerate the exact sign distribution, use midranks for ties, omit zero differences, and return the $p$-value $1$ when all differences vanish.}
 
-\leavevmode\textcolor{red}{The test set is never used to select features or to choose any parameter or threshold, and the threshold levels depend only on dataset sizes, not on feature values. Because a single split is used, this is an exploratory evaluation, not a nested-validation study.}
+\leavevmode\textcolor{red}{The test set is never used to select features or to choose any parameter or threshold. The rule that chooses the percentile levels $q_i$ uses only the sample size, the numbers of features and classes, and the class imbalance of the whole dataset, not any feature values. Because a single split is used, this is an exploratory evaluation, not a nested-validation study.}
 
 \subsection{Classification results}\label{ssec:results}
 \leavevmode\textcolor{red}{Tables~\ref{tab:nfeat}--\ref{tab:perf-summary} report selected-set size, stability, and predictive performance. DTAP retains $84.2\%$ of the features on average, including $33/36$ on Satimage and $49/57$ on Spambase. Its mean stability is $0.786$, compared with N-Fscore's $0.822$. Thus DTAP reduces the number of features moderately; it does not select sparser or more stable sets than the base models. AFRSFCV selects much smaller sets on several datasets, with lower mean accuracy under the fixed configuration.}
