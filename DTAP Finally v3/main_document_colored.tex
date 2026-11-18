@@ -471,8 +471,7 @@ The parameter $\delta>0$ is not necessary for convergence. When $\delta=0$ one a
 From~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, whence \leavevmode\textcolor{red}{$\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. This bounds the \emph{best} convex-track violation over the first $N$ iterates. It is not a last-iterate bound, a rate for the full residual $J(x^k)$, or a rate for the distance to a feasible point. For these latter quantities, under (A1), (A2) and (P1)--(P3) alone we assert only qualitative convergence.}
 \end{remark}
 
-\subsection{Degenerate constraint structures}\label{ssec:degenerate}
-When the constraint structure degenerates (only a convex track or only a pseudoconvex track), \dtap{} and its analysis simplify, yielding two corollaries of Theorem~\ref{thm:strong}.
+\leavevmode\textcolor{red}{When only one track is present, \dtap{} and its analysis simplify. Theorem~\ref{thm:strong} then yields the following two corollaries.}
 
 \begin{corollary}\label{cor:cvx}
 If $I^{\ps}=\emptyset$, then $J^{\ps}_k\equiv0$, $g^{\ps}_k\equiv0$, and $\mu_k\equiv1$ whenever $J^{\cvx}_k>0$, so Algorithm~\ref{alg:dtap} reduces to $x^{k+1}=P_K(x^k-\eta^{\cvx}_k g^{\cvx}_k)$. The sequence converges strongly to a point \leavevmode\textcolor{red}{$x^\infty\in\Omega=\{x\in K:F_i(x)\le b_i\text{ for all }i\in I^{\cvx}\}$}.
@@ -593,8 +592,7 @@ s=\min\left\{s'\in\{1,\ldots,p\}:\sum_{j=1}^{s'}w^\star_{(j)}\ge\theta\right\},\
 \leavevmode\textcolor{red}{With the precomputed matrices, evaluating $F_1,\nabla F_1$ costs $O(nrp)$, evaluating $F_2,\nabla F_2$ costs $O(np)$, and evaluating $F_3,\nabla F_3$ costs $O(p^2)$. Projection onto $K=\Delta_{p-1}$ by sorting costs $O(p\log p)$ operations~\citep{condat2016simplex}. A dense iteration therefore costs $O(nrp+p^2)$ operations and requires $O(nrp+p^2)$ storage, including $Q_R$. Preprocessing and classifier training are separate costs.}
 \end{remark}
 
-\subsection{Experimental setup}\label{ssec:setup}
-\subsubsection{Datasets}\label{sssec:datasets}
+\subsection{Experimental setup}\label{ssec:setup}\label{sssec:datasets}
 \leavevmode\textcolor{red}{The main classification study uses the eight UCI datasets~\citep{kelly2023uci} in Table~\ref{tab:datasets}. They range from $214$ to $10\,992$ samples and from $7$ to $57$ features, span $2$ to $10$ classes, and include both balanced and imbalanced distributions. A ninth dataset, Movement Libras, is used only for the solver diagnostic in Section~\ref{ssec:feasibility-audit}}.
 
 \begin{table}[htbp]
@@ -622,21 +620,16 @@ Each dataset is split \leavevmode\textcolor{red}{once into a stratified $80/20$ 
 
 \leavevmode\textcolor{red}{We compare against four baseline solvers. N-Fscore and AFRSFCV optimize the fractional and fuzzy-rough criteria of Sections~\ref{sssec:nfscore} and~\ref{sssec:afrsfcv-model}, while SG-const and SG-dyn are subgradient methods for the feasibility problem.}
 
-\paragraph*{\textcolor{red}{N-Fscore}}
-\leavevmode\textcolor{red}{This baseline solves the fractional program~\eqref{eq:wangOrig} by the projection neural network (PNN) of Wang et al.~\citep{wang2021fractional}, which they couple with a $k$-winners-take-all stage. We integrate the PNN by the explicit Euler method on a uniform grid of $1000$ points in $[0,0.2]$, without a stopping rule, with time constant $\varepsilon_{\mathrm{PNN}}=10^{-3}$, and take $w^\star$ as the projection onto $K$ of the final PNN output.} For a uniform comparison we use only the PNN \leavevmode\textcolor{red}{stage and replace the $k$-winners-take-all output by the shared selection} rule of Section~\ref{ssec:selection}.
+\leavevmode\textcolor{red}{N-Fscore uses the projection neural network (PNN) of Wang et al.~\citep{wang2021fractional}, which they couple with a $k$-winners-take-all stage. We integrate the PNN by the explicit Euler method on a uniform grid of $1000$ points in $[0,0.2]$, without a stopping rule, with time constant $\varepsilon_{\mathrm{PNN}}=10^{-3}$, and take $w^\star$ as the projection onto $K$ of the final PNN output.} For a uniform comparison we use only the PNN \leavevmode\textcolor{red}{stage and replace the $k$-winners-take-all output by the shared selection} rule of Section~\ref{ssec:selection}.
 
-\paragraph*{\textcolor{red}{AFRSFCV}}
-\leavevmode\textcolor{red}{This baseline minimizes the softmax loss~\eqref{eq:afrsfcvLoss} over $\tau\in\R^p$ by gradient descent~\citep{wang2026afrsfcv}, with learning rate $\eta=10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, and a fixed budget of $T=1000$ steps.} The final weight $w^\star=w(\tau^T)\in K$ feeds the shared selection rule of Section~\ref{ssec:selection}.
+\leavevmode\textcolor{red}{AFRSFCV minimizes the softmax loss~\eqref{eq:afrsfcvLoss} over $\tau\in\R^p$ by gradient descent~\citep{wang2026afrsfcv}, with learning rate $\eta=10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, and a fixed budget of $T=1000$ steps.} The final weight $w^\star=w(\tau^T)\in K$ feeds the shared selection rule of Section~\ref{ssec:selection}.
 
-\paragraph*{\textcolor{red}{SG-const and SG-dyn}}
-\leavevmode\textcolor{red}{These subgradient methods for quasiconvex feasibility~\citep{hu2022quasi} follow its most-violated-constraint strategy: with $\mathcal I_k=\argmax_i v_i(w^k)$},
+\leavevmode\textcolor{red}{SG-const and SG-dyn follow the most-violated-constraint strategy of~\citep{hu2022quasi}: with $\mathcal I_k=\argmax_i v_i(w^k)$},
 \[\textcolor{red}{
 w^{k+1}=P_K(w^k-\nu_k\bar h_k),\qquad
 \bar h_k=\frac1{|\mathcal I_k|}\sum_{i\in\mathcal I_k}\frac{\nabla F_i(w^k)}{\|\nabla F_i(w^k)\|}.
 }\]
 \leavevmode\textcolor{red}{SG-const uses $\nu_k=10^{-3}$; SG-dyn uses the dynamic step $\nu_k=J(w^k)/L$ (H\"older exponent $1$), with $L=\widehat L$, the largest gradient norm at $500$ points sampled in $K$. Tuned moduli are considered only in Section~\ref{ssec:feasibility-audit}}.
-
-
 
 \subsubsection{Evaluation protocol}\label{sssec:protocol}
 \leavevmode\textcolor{red}{In each fold, a method's weights are thresholded by the cumulative-weight rule~\eqref{eq:thetaRule} with $\theta=0.9$, giving a selected subset of features for that fold. A feature is kept in the voted feature set $A^\star$ when a strict majority of the folds select it, that is at least $\lfloor N_f/2\rfloor+1$ of them.}
