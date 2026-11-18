@@ -38,3 +38,6 @@ DTAP_NEW_DIR="DTAP Finally v2" python3 make_colored.py   # bản tô đỏ cho v
 Script tự kiểm tra rằng mọi khối văn bản của cả hai bản đều xuất hiện đúng một lần trong file đối chiếu (dòng `coverage: …`) và báo các mã chưa có mô tả (`changes without a note`). Nếu sửa `main_document.tex`, số mã có thể thay đổi; khi đó cần xem lại `change_notes.json`.
 
 Bản cũ được so sánh: `DTAP_submission/main_document_old.tex` (khớp `DTAP_OMS_submission.pdf`). Bản mới: `DTAP Finally/main_document.tex` (khớp `DTAP_OMS.pdf`).
+
+## vi_v3/
+Vietnamese translation of `DTAP Finally v3/response_letter.tex` (review only, not for submission): `response_letter_vi.tex` / `.pdf`, built with `lualatex` from the v2 translation with the v3 changes (quotes R1.1-R1.3, v3 numbering, M1/M2/m15-m17, protocol item).
