@@ -88,7 +88,6 @@ x^{k+1}=P_C\bigl(x^k-\tau\mathcal A^\top(I-P_Q)\mathcal A x^k\bigr),
 }\end{equation}
 \leavevmode\textcolor{red}{Here $\norm{\mathcal A}$ is the spectral norm of $\mathcal A$. This scheme has since been refined in several directions: relaxed variants project onto supporting half-spaces~\citep{yang2004}; self-adaptive steps avoid estimating $\norm{\mathcal A}$~\citep{zhang2009adaptive,zhao2011adaptive,lopez2012}; and operator splitting~\citep{zhang2012simultaneous} and alternating direction methods~\citep{yang2014alternating} decompose the problem.}
 
-% NEED RECHECK: introduced components F=(F_1,...,F_m) here so that "each F_i" below has a referent; changes a core definition.
 \leavevmode\textcolor{red}{Replacing $\mathcal A$ by a nonlinear map $F=(F_1,\dots,F_m)$ gives the nonlinear SFP~\citep{li2013nsfp,yen2019}}
 \begin{equation}\label{eq:nsfp-intro}
 \text{find }x^\star\in K\quad\text{such that}\quad F(x^\star)\in Q,
@@ -453,7 +452,6 @@ by \leavevmode\textcolor{red}{(P3),} contradicting Lemma~\ref{lem:bounded}(iii).
 \lim_{k\to\infty}\norm{x^k-\bar x}^2
 =\lim_{l\to\infty}\norm{x^{k_l}-\bar x}^2=0.
 }\]
-% NEED RECHECK: reworded Stage 3 closing sentence (singleton remark)
 \leavevmode\textcolor{red}{Hence the whole sequence converges to $\bar x$, and we set $x^\infty:=\bar x\in\Omega$. The argument uses only one feasible cluster point and the convergence of $\norm{x^k-\bar x}$, so $\Omega$ need not be a singleton.}
 \end{proof}
 
@@ -496,18 +494,14 @@ Now $d_k=\eta^{\ps}_k g^{\ps}_k$ with $\norm{d_k}^2\le\gamma_k^2$, so~\eqref{eq:
 
 
 \section{Numerical experiments}\label{sec:experiments}
-% NEED RECHECK: rewritten section intro (general; two-axes framing)
 \leavevmode\textcolor{red}{We first cast feature selection as a normal-box NSFP and describe the experimental setup. We then report predictive performance and the numerical solution of the feasibility systems separately. The classification comparison uses eight datasets (Section~\ref{ssec:results}). The solver diagnostic adds Movement Libras and test problems with a nonconvex pseudoconvex constraint, and compares DTAP with tuned subgradient methods (Section~\ref{ssec:feasibility-audit}}).
 
-% NEED RECHECK: retitled "Feature-selection model" -> "Problem setup"; rewritten intro previewing 3.1.1-3.1.3
 \subsection{\textcolor{red}{Problem setup}}\label{sec:fs}
 \leavevmode\textcolor{red}{We obtain a test problem for DTAP by casting feature selection as a normal-box NSFP. The constraints are built from two feature-quality criteria taken from prior work, the fractional redundancy--relevance criterion of Wang et al.~\citep{wang2021fractional} and the fuzzy-rough criterion of AFRSFCV~\citep{wang2026afrsfcv}. We first describe the two criteria, then assemble them into the feasibility problem and state the selection rule. The solvers are described in Section~\ref{sssec:baselines}}.
 
 \leavevmode\textcolor{red}{Let $x_1,\ldots,x_n$ be the training samples and $a_1,\ldots,a_p$ the features, collected in the data matrix $X\in\R^{n\times p}$ whose row $i$ is sample $x_i$, with class labels $y\in\{1,\ldots,r\}^n$. Here $n$ is the number of samples and $p$ the number of features. The feature weights belong to the compact convex simplex $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. All supervised quantities below are estimated from the training data.}
 
-% NEED RECHECK: retitled (dropped "and N-Fscore"); baseline desc moved to 3.2.1
 \subsubsection{\textcolor{red}{Fractional criterion}}\label{ssec:wang}\label{sssec:wang-inputs}\label{sssec:nfscore}
-% NEED RECHECK: added lead-in defining the fractional criterion and the role of S before the formula
 \leavevmode\textcolor{red}{The fractional criterion scores a weight vector by its redundancy relative to its relevance. Redundancy is captured by the supervised similarity matrix $S\in\R^{p\times p}$, whose entry $s_{ij}$ grows with the class-relevant information shared by features $a_i$ and $a_j$. Its entries are}
 \begin{equation}\label{eq:simMI}\textcolor{red}{
 s_{ij}=\max\left\{0,\frac{I(Z_i;Z_j;C)}{H(Z_i)+H(Z_j)}\right\},\qquad i,j=1,\ldots,p,
@@ -526,14 +520,12 @@ Q_R=S+\delta_QI_p,\qquad \delta_Q\ge-\min\{0,\lambda_{\min}(S)\},
 }\end{equation}
 \leavevmode\textcolor{red}{These scores are nonnegative. The denominator regularization prevents division by zero but does not ensure $\rho_k>0$, since the numerator can vanish.}
 
-% NEED RECHECK: citation moved here; N-Fscore baseline prose replaced by parenthetical pointer to 3.2.2 (Solvers)
 \leavevmode\textcolor{red}{The fractional program of Wang et al.~\citep{wang2021fractional} is}
 \begin{equation}\label{eq:wangOrig}\textcolor{red}{
 \min_{w\in K}\ \frac{w^{\top}Q_Rw}{\rho^{\top}w},
 }\end{equation}
 \leavevmode\textcolor{red}{assuming the denominator is positive on $K$. The numerator measures redundancy and the denominator relevance, where $\rho$ is the Fisher-score vector~\eqref{eq:rhoFisher}. The baseline N-Fscore optimizes this objective (Section~\ref{sssec:baselines}}).
 
-% NEED RECHECK: retitled (dropped "and AFRSFCV"); baseline solver sentence moved to 3.2.1
 \subsubsection{\textcolor{red}{Fuzzy-rough criterion}}\label{ssec:afrsfcv}\label{sssec:afrsfcv-inputs}\label{sssec:afrsfcv-model}
 \leavevmode\textcolor{red}{The fuzzy-rough criterion scores the features by how well they recover the class labels through fuzzy-rough lower approximations. For each class $t$, let $D_t=\{x_i:y_i=t\}$ be its sample set, with membership indicator $D_t(x_j)=\mathbf1_{\{y_j=t\}}$. AFRSFCV builds a fuzzy similarity relation that incorporates the within-class variance. With $a_k(x_i)=X_{ik}$, the implemented relation is}
 \begin{equation}\label{eq:simRel}\textcolor{red}{
@@ -541,11 +533,9 @@ R_k(x_i,x_j)=\exp\!\left(-\frac{[a_k(x_i)-a_k(x_j)]^2}{2\widetilde\sigma_{k,y_i}
 \qquad \widetilde\sigma_{kt}^2=\max\{\sigma_{kt}^2,10^{-10}\}.
 }\end{equation}
 \leavevmode\textcolor{red}{The variance floor makes the formula defined when a feature is constant within a class. The fuzzy lower approximation is}
-% NEED RECHECK: min over samples was $\min_{x_j\in\mathcal{X}}$; dropped the sample-set symbol $\mathcal{X}$ (clashed with data matrix $X$)
 \begin{equation}\label{eq:lower}\textcolor{red}{
 \underline{R_k}(D_t)(x_i)=\min_{1\le j\le n}\max\{1-R_k(x_i,x_j),D_t(x_j)\}.
 }\end{equation}
-% NEED RECHECK: added interpretation of the lower approximation; defined the stacked matrix $\underline{R_k}(D)$
 \leavevmode\textcolor{red}{It is large when every sample that feature $a_k$ deems similar to $x_i$ belongs to class $t$, so it grades how firmly $a_k$ assigns $x_i$ to class $t$. Stacking it over samples $i$ and classes $t$ gives the matrix $\underline{R_k}(D)\in[0,1]^{n\times r}$}.
 
 \leavevmode\textcolor{red}{Let $Y_{it}=\mathbf1_{\{y_i=t\}}$ be the label matrix and define the decision matrix by}
@@ -562,7 +552,7 @@ P_{ik}=\mathbf1_{\{\argmax_{1\le t\le r}\underline{R_k}(D_t)(x_i)=y_i\}}.
 &\quad+\frac{\lambda_1}{2}\|\mathbf1_n-Pw(\tau)\|^2+\frac{\lambda_2}{2}\|w(\tau)\|^2,
 \end{split}
 \end{equation}
-\leavevmode\textcolor{red}{where $w_k(\tau)=e^{\tau_k}/\sum_{l=1}^{p}e^{\tau_l}$ ensures $w(\tau)\in K$. The three terms are the label-approximation error, the weight of misclassifying features per sample, and a Tikhonov term. % NEED RECHECK: dropped gradient-descent sentence; solver pointer to 3.2.1
+\leavevmode\textcolor{red}{where $w_k(\tau)=e^{\tau_k}/\sum_{l=1}^{p}e^{\tau_l}$ ensures $w(\tau)\in K$. The three terms are the label-approximation error, the weight of misclassifying features per sample, and a Tikhonov term.
 The solver that minimizes this loss is given in Section~\ref{sssec:baselines}}.
 
 \subsubsection{\textcolor{red}{Feasibility and feature selection}}\label{ssec:reduction}\label{ssec:selection}
@@ -604,7 +594,6 @@ s=\min\left\{s'\in\{1,\ldots,p\}:\sum_{j=1}^{s'}w^\star_{(j)}\ge\theta\right\},\
 \end{remark}
 
 \subsection{Experimental setup}\label{ssec:setup}
-% NEED RECHECK: restructured 3.2 into Datasets / Solvers / Evaluation protocol; baseline hyperparameters moved into 3.2.2
 \subsubsection{Datasets}\label{sssec:datasets}
 \leavevmode\textcolor{red}{The main classification study uses the eight UCI datasets~\citep{kelly2023uci} in Table~\ref{tab:datasets}. They range from $214$ to $10\,992$ samples and from $7$ to $57$ features, span $2$ to $10$ classes, and include both balanced and imbalanced distributions. A ninth dataset, Movement Libras, is used only for the solver diagnostic in Section~\ref{ssec:feasibility-audit}}.
 
@@ -626,20 +615,16 @@ Pendigits    & $10\,992$   & $16$         & $10$        & Balanced   \\
 \bottomrule
 \end{tabular}
 \end{table}
-% NEED RECHECK: 80/20 split, N_f-fold partitioning, and min--max scaling moved here from Evaluation protocol; seeds removed
 Each dataset is split \leavevmode\textcolor{red}{once into a stratified $80/20$ training} pool and test set. \leavevmode\textcolor{red}{Within the pool we form stratified $N_f$-fold partitions for feature selection, with $N_f=10$, reduced to $7$ on Glass and $4$ on Yeast. Min--max scaling is fitted once on the full training pool, not within the folds, and is then applied to the test set.}
 
 \subsubsection{\textcolor{red}{Solvers}}\label{sssec:baselines}
 \leavevmode\textcolor{red}{The DTAP runs reported here start at the uniform weight vector and use $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, tolerance $10^{-6}$, and a budget of $1000$ iterations. They assign $F_1,F_2$ to the convex track and $F_3$ to the pseudoconvex track ($I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$), which is admissible since convex functions are pseudoconvex. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also admissible, and Theorem~\ref{thm:strong} applies to both.} The shared cumulative threshold \leavevmode\textcolor{red}{for feature selection} is $\theta=0.9$.
 
-% NEED RECHECK: "models" -> "criteria" to match retitled 3.1.1/3.1.2
 \leavevmode\textcolor{red}{We compare against four baseline solvers. N-Fscore and AFRSFCV optimize the fractional and fuzzy-rough criteria of Sections~\ref{sssec:nfscore} and~\ref{sssec:afrsfcv-model}, while SG-const and SG-dyn are subgradient methods for the feasibility problem.}
 
-% NEED RECHECK: compressed N-Fscore; removed PNN ODE (eq:pnn), kept citation/config/adaptation; opening reworded to "This baseline" to avoid repeating the heading name
 \paragraph*{\textcolor{red}{N-Fscore}}
 \leavevmode\textcolor{red}{This baseline solves the fractional program~\eqref{eq:wangOrig} by the projection neural network (PNN) of Wang et al.~\citep{wang2021fractional}, which they couple with a $k$-winners-take-all stage. We integrate the PNN by the explicit Euler method on a uniform grid of $1000$ points in $[0,0.2]$, without a stopping rule, with time constant $\varepsilon_{\mathrm{PNN}}=10^{-3}$, and take $w^\star$ as the projection onto $K$ of the final PNN output.} For a uniform comparison we use only the PNN \leavevmode\textcolor{red}{stage and replace the $k$-winners-take-all output by the shared selection} rule of Section~\ref{ssec:selection}.
 
-% NEED RECHECK: compressed AFRSFCV; removed gradient formula (eq:gradTau), kept citation/config/adaptation; opening reworded to "This baseline" to avoid repeating the heading name
 \paragraph*{\textcolor{red}{AFRSFCV}}
 \leavevmode\textcolor{red}{This baseline minimizes the softmax loss~\eqref{eq:afrsfcvLoss} over $\tau\in\R^p$ by gradient descent~\citep{wang2026afrsfcv}, with learning rate $\eta=10^{-3}$, $\lambda_1=1$, $\lambda_2=0.5$, and a fixed budget of $T=1000$ steps.} The final weight $w^\star=w(\tau^T)\in K$ feeds the shared selection rule of Section~\ref{ssec:selection}.
 
@@ -654,7 +639,6 @@ w^{k+1}=P_K(w^k-\nu_k\bar h_k),\qquad
 
 
 \subsubsection{Evaluation protocol}\label{sssec:protocol}
-% NEED RECHECK: protocol restructured (voting / classifiers / stability / stats / caveat); split+folds+scaling moved to Datasets; seeds removed
 \leavevmode\textcolor{red}{In each fold, a method's weights are thresholded by the cumulative-weight rule~\eqref{eq:thetaRule} with $\theta=0.9$, giving a selected subset of features for that fold. A feature is kept in the voted feature set $A^\star$ when a strict majority of the folds select it, that is at least $\lfloor N_f/2\rfloor+1$ of them.}
 
 \leavevmode\textcolor{red}{The final classifiers, an RBF-SVM ($C=1$, \texttt{gamma=scale}) and a $5$-NN, are trained on the full training pool restricted to the voted features $A^\star$, with the full feature set as a reference. On the test set we report accuracy and macro one-vs-rest AUC, with SVM probability calibration for the AUC.}
