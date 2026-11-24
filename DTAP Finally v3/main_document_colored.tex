@@ -108,7 +108,7 @@ x^{k+1}=P_C\bigl(x^k-\tau\mathcal A^\top(I-P_Q)\mathcal A x^k\bigr),
 Section~\leavevmode\textcolor{red}{\ref{sec:convergence} presents} \dtap{} and its convergence analysis. Section~\leavevmode\textcolor{red}{\ref{sec:experiments} reports experiments, and Section~\ref{sec:conclusion} concludes.}
 
 
-\section{The DTAP algorithm and its convergence analysis}\label{sec:convergence}
+\section{\textcolor{red}{Algorithm and convergence analysis}}\label{sec:convergence}
 \leavevmode\textcolor{red}{We first fix notation and recall the projection and generalized-convexity facts used below.}
 Throughout, $H=\R^n$ \leavevmode\textcolor{red}{is} the Euclidean space with inner product \leavevmode\textcolor{red}{$\inner{\cdot}{\cdot}$ and induced norm $\norm{\cdot}$. All convergence statements refer to the norm topology, and since $H$ is finite-dimensional, bounded sequences have convergent subsequences. The standard projection and generalized convexity facts below can be found in~\citep{bauschke2011,mangasarian1994}}.
 
@@ -835,13 +835,13 @@ median number of evaluated points in parentheses, including capped runs.}}
 \section{Conclusion}\label{sec:conclusion}
 \leavevmode\textcolor{red}{DTAP solves normal-box nonlinear split feasibility problems with convex and pseudoconvex components by combining a residual-scaled convex step with a safeguarded pseudoconvex step. Under consistency and continuous differentiability, the whole sequence converges to a feasible point; no regularity modulus is an input, although the analysis uses bounds on a compact set containing the iterates. In the feature-selection application all constraints are convex, and test problems with a nonconvex pseudoconvex constraint exercise the pseudoconvex track. In the experiments, tuned subgradient methods can match or outperform DTAP, whose finite-budget performance depends on the starting point and the step scale. Rates for the full residual $J(x^k)$, beyond the convex-track bound of Remark~\ref{rem:rate}, and guarantees under error-bound conditions remain open.}
 
-\section*{Declaration of competing interest}
+\section*{\textcolor{red}{Disclosure statement}}
 The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 \section*{Funding}
 The authors received no specific funding for this work.
 \section*{Declaration of generative AI use}
 \leavevmode\textcolor{red}{OpenAI Codex was used during revision for language editing.}
-\section*{Data availability}
+\section*{\textcolor{red}{Data availability statement}}
 The datasets are available from the UCI Machine Learning Repository~\citep{kelly2023uci}. \leavevmode\textcolor{red}{The accompanying reproducibility package contains the scripts, recorded numerical outputs, and instructions for regenerating the reported tables.}
 
 \section*{ORCID}
