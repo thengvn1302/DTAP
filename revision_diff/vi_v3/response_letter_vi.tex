@@ -35,7 +35,7 @@
 
 \noindent Chúng tôi cảm ơn Editor và cả hai Reviewer đã đọc kỹ và góp ý mang tính xây dựng.
 Các ý kiến đã làm bài báo vững hơn đáng kể, và ở nhiều chỗ đã khiến
-chúng tôi bỏ đi các khẳng định quá mức và bổ sung bằng chứng mới, trung thực hơn. Dưới đây chúng tôi trả lời
+chúng tôi bỏ đi các khẳng định quá mức và bổ sung bằng chứng mới, đầy đủ hơn. Dưới đây chúng tôi trả lời
 từng ý kiến và chỉ ra thay đổi tương ứng trong bản thảo sửa.
 \textbf{Mọi phần chữ được thêm hoặc sửa trong bản thảo sửa đều được in bằng
 \textcolor{red}{chữ màu}} để dễ tìm thấy các thay đổi. Số mục, công thức,
@@ -45,16 +45,16 @@ từng ý kiến và chỉ ra thay đổi tương ứng trong bản thảo sửa
         duy nhất, ngắn hơn, và rút bài từ $39$ xuống $23$ trang, viết lại toàn bộ
         bằng các câu ngắn hơn;
   \item làm rõ giới hạn của khẳng định ``không cần hằng số'' (Nhận xét~3 mới) và trình bày lại trọng số tỉ lệ
-        như một cách phân bổ kinh nghiệm theo tỉ phần phần dư, không khẳng định là cần thiết hay
+        như một cách phân bổ thích nghi theo tỉ phần phần dư, không khẳng định là cần thiết hay
         tối ưu (Nhận xét~2 mới);
   \item làm tường minh lập luận hội tụ của toàn bộ dãy (viết lại Giai đoạn~3 của
         Định lý~2.14), làm rõ rằng nó chỉ cần một điểm tụ chấp nhận được và
         tính đơn điệu Fej\'er, không cần giới hạn duy nhất;
   \item bổ sung một phần chẩn đoán bộ giải (Mục~3.4 mới) báo cáo mức hoạt động của ràng buộc
         theo từng quỹ đạo, một phép so sánh với phương pháp dưới gradient có mô-đun tinh chỉnh cùng chi phí tinh chỉnh, và
-        các bài toán có kiểm soát với một ràng buộc giả lồi thực sự không lồi;
+        các bài toán có kiểm soát với một ràng buộc giả lồi không lồi;
   \item chứng minh rằng tỉ số dùng trong chọn đặc trưng thực ra là lồi (Mệnh đề~3.1 mới),
-        nói rõ rằng ứng dụng là một trường hợp riêng lồi, và bỏ mọi
+        nêu rằng ứng dụng là một trường hợp riêng lồi, và bỏ mọi
         khẳng định về ưu thế đồng đều;
   \item thống nhất định dạng tài liệu tham khảo, bổ sung các công trình về bước tự thích nghi và phân rã
         cho SFP theo yêu cầu, chuyển các kết quả ở phụ lục vào thân bài, và giải quyết
@@ -67,10 +67,7 @@ từng ý kiến và chỉ ra thay đổi tương ứng trong bản thảo sửa
 \begin{point}{Associate Editor không ghi ý kiến cụ thể nào; quyết định là sửa lớn (major
 revision).}
 \response{Chúng tôi đã sửa bản thảo theo đúng báo cáo của cả hai Reviewer,
-như trình bày chi tiết dưới đây, và đã đánh dấu mọi thay đổi bằng chữ màu. Hai thay đổi
-cấu trúc lớn nhất --- gộp và rút ngắn phần mở đầu (Reviewer~2)
-và bổ sung phần chẩn đoán bộ giải với bằng chứng về mức hoạt động của ràng buộc và phương pháp cơ sở đã tinh chỉnh
-(Reviewer~1) --- đã được tóm tắt trong danh sách ở trên.}
+như trình bày chi tiết dưới đây, và đã đánh dấu mọi thay đổi bằng chữ màu. Hai thay đổi cấu trúc lớn nhất, cụ thể là gộp và rút ngắn phần mở đầu (Reviewer~2) và bổ sung phần chẩn đoán bộ giải với bằng chứng về mức hoạt động của ràng buộc và phương pháp cơ sở đã tinh chỉnh (Reviewer~1), đã được tóm tắt trong danh sách ở trên.}
 \end{point}
 
 % =====================================================================
@@ -87,10 +84,7 @@ thỏa một số điều kiện khả tổng -- bất kỳ dãy nào trong $[0,
 cụ thể này, hoặc trình bày lại đóng góp cho phù hợp.}
 \response{Chúng tôi chọn đề nghị thứ hai của Reviewer và trình bày lại đóng góp.
 Chúng tôi đồng ý rằng dạng tỉ lệ không cần thiết về mặt cấu trúc: bất đẳng thức
-tựa Fej\'er một bước (Bổ đề~2.10) đúng với mọi $\mu_k\in[0,1]$, và chứng minh
-hội tụ chỉ cần trọng số giữ cho mỗi nhánh còn hoạt động --- chẳng hạn với trọng số hằng
-$\mu_k\equiv\tfrac12$, chứng minh của Bổ đề~2.12 và của Giai đoạn~2 vẫn đúng với
-vài thay đổi nhỏ. Thực nghiệm cũng cho thấy điều tương tự: một biến thể cân bằng, gán
+tựa Fej\'er một bước (Bổ đề~2.10) đúng với mọi $\mu_k\in[0,1]$, và chứng minh hội tụ chỉ dùng dạng tỉ lệ ở hai bước, là hai bước giữ cho mỗi nhánh còn hoạt động. Với một trọng số khác, chẳng hạn trọng số hằng $\mu_k\equiv\tfrac12$, hai bước này phải được chứng minh lại. Thực nghiệm cũng cho thấy điều tương tự: một biến thể cân bằng, gán
 trọng số bằng nhau khi cả hai nhánh bị vi phạm, thành công ở $26/36$ lần chạy trên các bài toán
 đặc trưng và $24/36$ trên họ bài toán không lồi, đúng bằng số lần của DTAP \loc{Mục~3.4,
 Bảng~7}. Vì vậy chúng tôi không còn trình bày trọng số cụ thể này như một điều cần thiết về lý thuyết hay
@@ -98,10 +92,7 @@ một lựa chọn tối ưu. Nhận xét~2 mới \loc{Nhận xét~2, Mục~2.6}
 dạng tỉ lệ được dùng trong chứng minh hiện tại và lưu ý rằng bất đẳng thức một bước,
 dù đúng với mọi $\mu_k\in[0,1]$, tự nó không suy ra hội tụ với mọi
 dãy trọng số. Các chế độ suy biến của Hệ quả~2.15--2.16 ứng với
-$\mu_k\equiv1$ và $\mu_k\equiv0$. Cấu trúc hai nhánh
---- một bước điều chỉnh theo phần dư ở nơi có bất đẳng thức gradient định lượng,
-và một bước có bảo vệ ở nơi chỉ có thông tin về dấu --- vẫn là
-đóng góp; còn trọng số cụ thể dùng để pha trộn chúng thì không.}
+$\mu_k\equiv1$ và $\mu_k\equiv0$. Đóng góp là cấu trúc hai nhánh: một bước điều chỉnh theo phần dư ở nơi có bất đẳng thức gradient định lượng, và một bước có bảo vệ ở nơi chỉ có thông tin về dấu. Trọng số cụ thể dùng để pha trộn hai bước không thuộc phần đóng góp.}
 \end{point}
 
 \begin{point}{R1.2 Khẳng định ``không cần hằng số'' bị phóng đại. Thuật toán không
@@ -163,13 +154,11 @@ giả thiết, và các mức cụ thể được ghi trong siêu dữ liệu b�
 \loc{Mục~3.1.3 và Mục~3.4}. Về mức hoạt động: chúng tôi báo cáo tần suất
 $F_3(w^k)-b_3>10^{-6}$ dọc theo mọi quỹ đạo. Ràng buộc thứ ba thực ra
 \emph{không hoạt động} trên bảy trong tám bộ dữ liệu và chỉ hoạt động tại $1$ trong $48$ điểm được
-đánh giá trên Abalone (Bảng~6). Chúng tôi nói thẳng hệ quả, đồng ý với
-Reviewer: trên các bài toán này nhánh giả lồi hầu như không bao giờ chặt, nên
-cơ chế hai nhánh không cần thiết ở đó --- các bài toán chọn đặc trưng này chỉ kiểm tra một
-lớp con lồi. Thật vậy, Mệnh đề~3.1 mới chứng minh rằng
+đánh giá trên Abalone (Bảng~6). Chúng tôi đồng ý với Reviewer về hệ quả: trên các bài toán này nhánh giả lồi hầu như không bao giờ chặt, nên
+cơ chế hai nhánh không cần thiết ở đó, và các bài toán chọn đặc trưng này chỉ kiểm tra một lớp con lồi. Thật vậy, Mệnh đề~3.1 mới chứng minh rằng
 tiêu chí phân thức $F_3=w^{\top}Q_Rw/\rho^{\top}w$ là \emph{lồi} trên một lân cận
 của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$, nên mô hình đặc trưng là
-một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Để thực sự kích hoạt bối cảnh hỗn hợp, chúng tôi bổ sung các bài toán
+một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Để kích hoạt bối cảnh hỗn hợp, chúng tôi bổ sung các bài toán
 có kiểm soát với một ràng buộc giả lồi được chứng minh là không lồi,
 $F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Công thức~(45), Mục~3.4}; ở đó
 nhánh giả lồi hoạt động trong cả $36$ lần chạy (mức hoạt động gộp $12\,835/12\,877$ điểm
@@ -186,9 +175,7 @@ chọn từ một lưới thủ công $c\in\{10^{-3},\dots,10^{1}\}$ trên các 
 tính riêng chi phí tinh chỉnh ($179\,744$ lần tính hàm trong tối ưu và
 $10.80$\,s trên các bài toán đặc trưng; số liệu tương tự cho họ bài toán tổng hợp). Tinh chỉnh
 nâng số lần thành công từ điểm xuất phát chuẩn của SG-dyn từ $5/9$ lên $9/9$ và, như Reviewer
-dự đoán, một phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP --- chẳng hạn trên Abalone,
-và trên họ bài toán không lồi, SG-const tinh chỉnh và SG-dyn tinh chỉnh đạt sai số cho phép ở cả
-$36$ lần chạy, so với $24/36$ của DTAP (Bảng~7). Vì vậy chúng tôi đã sửa mọi khẳng định
+dự đoán, một phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn DTAP. Điều này xảy ra, chẳng hạn, trên Abalone, và trên họ bài toán không lồi, nơi SG-const tinh chỉnh và SG-dyn tinh chỉnh đạt sai số cho phép ở cả $36$ lần chạy, so với $24/36$ của DTAP (Bảng~7). Vì vậy chúng tôi đã sửa mọi khẳng định
 so sánh: bài nay nói rằng không phép so sánh từng cặp nào có ý nghĩa sau hiệu chỉnh
 Holm, rằng kết quả phân loại phản ánh sự đánh đổi giữa kích thước và khả năng dự đoán chứ không phải
 ưu thế, và, trong phần Kết luận, rằng ``các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn
@@ -286,7 +273,7 @@ m4 (tr.~2, d.~39) --- ``active index set'' hay ``active set'' (tập active).
 m5 (tr.~2, d.~47--49) --- câu ``We ask instead \dots'' (thay vào đó chúng tôi hỏi \dots) không rõ.
   & Đã bỏ; quan hệ giữa các lớp hàm được nêu lại bằng các câu ngắn (Mục~1).\\
 m6 (tr.~3, d.~48--53) --- các câu quá dài.
-  & Đã bỏ đoạn đó; rút còn một câu (Mục~1).\\
+  & Đoạn được rút còn một câu (Mục~1).\\
 m7 (tr.~3) --- năm đóng góp quá chi tiết.
   & Thay bằng ba mục ngắn C1--C3 (Mục~1).\\
 m8 (tr.~5) --- ngữ pháp của câu ``Rule (3) has since been extended'' (quy tắc (3) từ đó đã được mở rộng).
@@ -340,9 +327,7 @@ Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
   bao gồm các hàm phân thức có mẫu số dương trên $K$. Một đoạn ngắn sau
   Giả thiết~1 giải thích điều này và lý do $\Omega$ lồi.
 \item \textbf{Phạm vi của phân tích.} Ngoài Nhận xét~2 và~3 (xem R1.1, R1.2), Nhận xét~5
-  nay nói chính xác rằng cận $O(N^{-1/3})$ chỉ liên quan đến mức vi phạm \emph{tốt nhất}
-  của nhánh lồi --- không phải cận cho điểm lặp cuối, không phải tốc độ cho toàn bộ phần dư hay
-  cho khoảng cách tới tập chấp nhận được.
+  nay nói chính xác rằng cận $O(N^{-1/3})$ chỉ liên quan đến mức vi phạm \emph{tốt nhất} của nhánh lồi. Đó không phải cận cho điểm lặp cuối, cũng không phải tốc độ cho toàn bộ phần dư hay cho khoảng cách tới tập chấp nhận được.
 \item \textbf{Quy trình thực nghiệm.} Mục~3.2 và~3.2.2 nay nêu chính xác quy trình:
   chuẩn hóa min--max được khớp một lần trên tập huấn luyện, quy tắc bỏ phiếu và các bộ phân lớp
   cuối cùng được nêu cụ thể, và việc đánh giá là
@@ -368,7 +353,7 @@ Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
 
 \bigskip
 \noindent Chúng tôi tin rằng các sửa đổi này đã trả lời đầy đủ ý kiến của các Reviewer và Editor
-và đã cải thiện độ rõ ràng, chặt chẽ và trung thực của bản thảo. Chúng tôi một lần nữa cảm ơn
+và đã cải thiện độ rõ ràng và chặt chẽ của bản thảo. Chúng tôi một lần nữa cảm ơn
 các Reviewer và Editor đã dành thời gian.
 
 \end{document}
