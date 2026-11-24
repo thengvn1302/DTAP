@@ -63,7 +63,7 @@
 \response{We now address both halves of this comment directly, in the new subsection \emph{Constraint activity and a tuned subgradient comparison} \loc{Sec.~3.4}. On thresholds: we clarify that externally specified thresholds remain fixed inputs, and that the percentile calibration is used only to define the benchmark instance, with the same thresholds shared by all solvers; consistency ($\Omega\neq\emptyset$) is treated as an assumption, and the exact levels are recorded in the supplementary metadata \loc{Sec.~3.1.3 and Sec.~3.4}. On activation: we report the frequency of $F_3(w^k)-b_3>10^{-6}$ along every trajectory. The third constraint is in fact \emph{inactive} on seven of the eight datasets and active at only $1$ of $48$ evaluated points on Abalone (Table~6). We agree with the Reviewer on the consequence: on these instances the pseudoconvex track is essentially never binding, so the dual-track mechanism is not needed there, and these feature-selection instances exercise a convex subclass. Indeed, new Proposition~3.1 proves that the fractional criterion $F_3=w^{\top}Q_Rw/\rho^{\top}w$ is \emph{convex} on a neighbourhood of the simplex when $Q_R\succeq0$ and $\min_k\rho_k>0$, so the feature model is an all-convex normal-box NSFP. To engage the mixed setting, we added controlled instances with a provably nonconvex pseudoconvex constraint, $F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Eq.~(45), Sec.~3.4}; there the pseudoconvex track is active in all $36$ runs (pooled activity $12\,835/12\,877$ evaluated points), so the pseudoconvex track is exercised directly rather than vacuously.}
 \end{point}
 
-\begin{point}{R1.5 DTAP and SG-const/SG-dyn are statistically indistinguishable on three of four metrics (Table~5). SG-dyn's failure on $3$ datasets is attributed to poor H\"older modulus estimation --- but with a tuned modulus it might perform comparably. An additional experiment with manually tuned moduli would strengthen the comparison.}
+\begin{point}{R1.5 DTAP and SG-const/SG-dyn are statistically indistinguishable on three of four metrics (Table~5). SG-dyn's failure on $3$ datasets is attributed to poor H\"older modulus estimation -- but with a tuned modulus it might perform comparably. An additional experiment with manually tuned moduli would strengthen the comparison.}
 \response{We added exactly this experiment \loc{Sec.~3.4, Tables~6--8}. For SG-dyn we now report, alongside the sampled-modulus variant, a \emph{tuned} variant whose modulus is selected from a manual grid $c\in\{10^{-3},\dots,10^{1}\}$ on held-out starts, and we account for its tuning cost separately ($179\,744$ optimization evaluations and $10.80$\,s on the feature instances; comparable figures for the synthetic family). Tuning raises SG-dyn's standard-start success from $5/9$ to $9/9$ and, as the Reviewer anticipated, a tuned subgradient method can match or outperform DTAP. This happens, for example, on Abalone, and on the nonconvex family, where tuned SG-const and tuned SG-dyn reach the tolerance in all $36$ runs versus $24/36$ for DTAP (Table~7). We have accordingly revised every comparative claim: the text now states that no pairwise comparison is significant after Holm adjustment, that the classification results reflect a size--prediction trade-off rather than superiority, and, in the Conclusion, that ``tuned subgradient methods can match or outperform DTAP''. The reported advantage of DTAP is narrowed to the fact that no modulus has to be estimated or tuned as an input of the iteration.}
 \end{point}
 
@@ -110,26 +110,26 @@
 \endhead
 \bottomrule
 \endfoot
-m1 (p.~2, l.~18) --- ``reference point'' is ambiguous. & Phrase removed; the L\'opez et al.\ rule is now cited among the self-adaptive methods in Sec.~1.\\
-m2 (p.~2, l.~27) --- ``differing'' vs.\ ``different densities''. & ``Different''; the radiotherapy sentence was removed (Sec.~1).\\
-m3 (p.~2, l.~35) --- polish ``The NSFP is not itself new''. & Sentence removed; Li et al., Yen et al.\ and Hu et al.\ are now compared with DTAP directly (Sec.~1).\\
-m4 (p.~2, l.~39) --- ``active index set'' vs.\ ``active set''. & ``Active set''; sentence removed; we use ``approximate active set'' (Sec.~2.2).\\
-m5 (p.~2, ll.~47--49) --- ``We ask instead \dots'' is unclear. & Removed; the class relation is restated in short sentences (Sec.~1).\\
-m6 (p.~3, ll.~48--53) --- sentences too long. & Paragraph reduced to one sentence (Sec.~1).\\
-m7 (p.~3) --- five contributions too detailed. & Replaced by three short items C1--C3 (Sec.~1).\\
-m8 (p.~5) --- ``Rule (3) has since been extended'' grammar. & Sentence removed with the Related work section.\\
-m9 (p.~5, l.~33) --- ``drives their proof is for free''; ``nonconvexity sits in the sets''. & Unclear passage removed with the Related work section.\\
-m10 (p.~5, l.~35) --- ``plain gradient inequality''. & Removed (it meant the convex gradient inequality $f(y)\ge f(x)+\langle\nabla f(x),y-x\rangle$).\\
-m11 (p.~5, l.~44) --- ``the closest predecessor''. & Removed; the three antecedents are compared with DTAP directly (Sec.~1).\\
-m12 (p.~5, l.~48) --- ``step'' vs.\ ``step size''. & ``Step size''; sentence removed with the Related work section.\\
-m13 (p.~7, l.~31) --- ``dtap'' should be ``DTAP''. & Corrected throughout; the acronym is now always ``DTAP''.\\
-m14 (p.~7, l.~39) --- ``Combettes 10'' should be ``Combettes~[10]''. & Corrected; the surviving citation reads ``in the sense of Combettes~[5]'' (Sec.~2.5).\\
-m15 (p.~9) --- subsections 3.1--3.2 unnecessary; 3.3 should move to the experiments. & Preliminaries merged, without subsections, into the opening of Sec.~2; the feature-selection model is now Sec.~3.1.\\
-m16 (p.~12) --- $H:=\mathbb{R}^n$ repeated. & Repetition removed; $H=\mathbb{R}^n$ is stated once, at the start of Sec.~2.\\
-m17 (p.~13) --- meaning of ``standing assumption''. & The name was dropped. The assumptions on the problem are stated as Assumption~1 (Sec.~2.2), and the conditions on the parameters as (P1)--(P3) of the algorithm (Sec.~2.3).\\
-m18 (p.~18, l.~40) --- AMS style for $\sum_{k=0}^{\infty}\lVert x^{k+1}-x^k\rVert^2<\infty$. & Series displayed with limits above/below (Prop.~2.13); other displays checked.\\
-m19 (p.~20, l.~36) --- polish ``so no Young splitting is needed''. & Phrase removed from the proof of Corollary~2.15.\\
-m20 (p.~20, l.~35) --- expression $K\cap\bigcap_{i\in I^{\mathrm{cvx}}}$ is not good. & Rewritten as $\Omega=\{x\in K:F_i(x)\le b_i\ \forall i\in I^{\mathrm{cvx}}\}$ (Cor.~2.15), and as $\bigcap_{i\in I^{\mathrm{cvx}}}\{x\in K:F_i(x)\le b_i\}$ in the proof of Thm.~2.14.\\
+m1 (p.~2, l.~18): ``reference point'' is ambiguous. & Phrase removed; the L\'opez et al.\ rule is now cited among the self-adaptive methods in Sec.~1.\\
+m2 (p.~2, l.~27): ``differing'' vs.\ ``different densities''. & ``Different''; the radiotherapy sentence was removed (Sec.~1).\\
+m3 (p.~2, l.~35): polish ``The NSFP is not itself new''. & Sentence removed; Li et al., Yen et al.\ and Hu et al.\ are now compared with DTAP directly (Sec.~1).\\
+m4 (p.~2, l.~39): ``active index set'' vs.\ ``active set''. & ``Active set''; sentence removed; we use ``approximate active set'' (Sec.~2.2).\\
+m5 (p.~2, ll.~47--49): ``We ask instead \dots'' is unclear. & Removed; the class relation is restated in short sentences (Sec.~1).\\
+m6 (p.~3, ll.~48--53): sentences too long. & Paragraph reduced to one sentence (Sec.~1).\\
+m7 (p.~3): five contributions too detailed. & Replaced by three short items C1--C3 (Sec.~1).\\
+m8 (p.~5): ``Rule (3) has since been extended'' grammar. & Sentence removed with the Related work section.\\
+m9 (p.~5, l.~33): ``drives their proof is for free''; ``nonconvexity sits in the sets''. & Unclear passage removed with the Related work section.\\
+m10 (p.~5, l.~35): ``plain gradient inequality''. & Removed (it meant the convex gradient inequality $f(y)\ge f(x)+\langle\nabla f(x),y-x\rangle$).\\
+m11 (p.~5, l.~44): ``the closest predecessor''. & Removed; the three antecedents are compared with DTAP directly (Sec.~1).\\
+m12 (p.~5, l.~48): ``step'' vs.\ ``step size''. & ``Step size''; sentence removed with the Related work section.\\
+m13 (p.~7, l.~31): ``dtap'' should be ``DTAP''. & Corrected throughout; the acronym is now always ``DTAP''.\\
+m14 (p.~7, l.~39): ``Combettes 10'' should be ``Combettes~[10]''. & Corrected; the surviving citation reads ``in the sense of Combettes~[5]'' (Sec.~2.5).\\
+m15 (p.~9): subsections 3.1--3.2 unnecessary; 3.3 should move to the experiments. & Preliminaries merged, without subsections, into the opening of Sec.~2; the feature-selection model is now Sec.~3.1.\\
+m16 (p.~12): $H:=\mathbb{R}^n$ repeated. & Repetition removed; $H=\mathbb{R}^n$ is stated once, at the start of Sec.~2.\\
+m17 (p.~13): meaning of ``standing assumption''. & The name was dropped. The assumptions on the problem are stated as Assumption~1 (Sec.~2.2), and the conditions on the parameters as (P1)--(P3) of the algorithm (Sec.~2.3).\\
+m18 (p.~18, l.~40): AMS style for $\sum_{k=0}^{\infty}\lVert x^{k+1}-x^k\rVert^2<\infty$. & Series displayed with limits above/below (Prop.~2.13); other displays checked.\\
+m19 (p.~20, l.~36): polish ``so no Young splitting is needed''. & Phrase removed from the proof of Corollary~2.15.\\
+m20 (p.~20, l.~35): expression $K\cap\bigcap_{i\in I^{\mathrm{cvx}}}$ is not good. & Rewritten as $\Omega=\{x\in K:F_i(x)\le b_i\ \forall i\in I^{\mathrm{cvx}}\}$ (Cor.~2.15), and as $\bigcap_{i\in I^{\mathrm{cvx}}}\{x\in K:F_i(x)\le b_i\}$ in the proof of Thm.~2.14.\\
 \end{longtable}}
 
 \begin{point}{General. Please consider the above comments and make the paper concise.}
