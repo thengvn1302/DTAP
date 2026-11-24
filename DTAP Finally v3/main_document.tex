@@ -737,7 +737,8 @@ AUC, $5$-NN & $0.0781/0.3125$ & $0.1562/0.4688$ & $1.0000/1.0000$ & $1.0000/1.00
 \subsection{Constraint activity and a tuned subgradient comparison}
 \label{ssec:feasibility-audit}
 
-As noted in Section~\ref{ssec:reduction}, the calibrated thresholds need not yield $\Omega\ne\varnothing$. For each full-data instance below, we keep the evaluated point with the largest slack $\min_i(b_i-F_i(w))$ over all runs. Re-evaluated on matrices rebuilt from the data, each of these points satisfies all three inequalities strictly. The smallest slack is $4.33\times10^{-4}$.
+% NEED RECHECK: feasibility-audit paragraph reworded for clarity (goal/slack/procedure/conclusion); numbers unchanged
+The calibrated thresholds need not make the feasibility set $\Omega$ non-empty (Section~\ref{ssec:reduction}), so we first check that each instance is solvable. For a weight vector $w$, each constraint $i$ leaves a margin $b_i-F_i(w)$, positive when it is satisfied and negative when violated. The slack of $w$ is the smallest of these three margins, $\min_i(b_i-F_i(w))$, so it is positive exactly when $w$ lies strictly inside $\Omega$. For each full-data instance we take the point of largest slack found across all runs and re-evaluate it on the constraint matrices rebuilt from the data. Every such point satisfies the three constraints strictly. The smallest slack over all instances is $4.33\times10^{-4}$, so every instance is feasible.
 
 We count the iterates of a run, including the last (its evaluated points), at which $F_3(w^k)-b_3>10^{-6}$. Table~\ref{tab:activation-tuning} shows that, from the standard start, $F_3$ is violated at no evaluated point on seven of the eight classification datasets, and at one of the $48$ evaluated points on Abalone. Since $F_3$ is convex (Proposition~\ref{prop:fs-reg}), these feature-selection instances test a convex subclass, and the nonconvex case is examined below on test problem~\eqref{eq:logball-test}. We also report the all-convex comparator (AC), which assigns all three constraints to the convex track.
 
@@ -777,7 +778,7 @@ Tuning raises SG-dyn's standard-start success count from $5/9$ to $9/9$. It can 
 
 The nine feature-instance searches required $179\,744$ optimization evaluations and $10.80$ seconds of tuning solver time in total. These costs are additional to Table~\ref{tab:activation-tuning}. DTAP was not tuned. Initial modulus sampling, preprocessing and search overhead are excluded from this solver-time total. The supplementary records give the cost of each search separately.
 
-\paragraph*{A genuinely nonconvex pseudoconvex constraint.}
+\paragraph*{A nonconvex pseudoconvex constraint.}
 To exercise the pseudoconvex track directly, consider $K=[-2,2]^d$ and
 \begin{equation}\label{eq:logball-test}
 \begin{aligned}
@@ -786,7 +787,7 @@ To exercise the pseudoconvex track directly, consider $K=[-2,2]^d$ and
  F_3(x)&=\kappa\log(1+\|x-e_1\|^2)\le \kappa\log3.
 \end{aligned}
 \end{equation}
-Here $d\in\{2,10,50\}$ and $\kappa\in\{0.3,1,3\}$ give nine configurations. The third function is pseudoconvex: it is an increasing differentiable transform, with positive derivative, of a convex quadratic. It is not convex, since its radial Hessian eigenvalue is $2\kappa(1-r^2)/(1+r^2)^2<0$ for $r=\|x-e_1\|>1$. The exact witness $x=-e_1/10$ has positive slacks $19/100$, $31/25$, and $\kappa\log(300/221)$. The standard start is $1.5\mathbf1$. The three evaluation starts and three tuning starts are drawn uniformly from $[0.8,1.8]^d$ (NumPy \texttt{default\_rng}). For modulus sampling we use $500$ uniform points in $K$. SG-const uses the same step $\nu_k=10^{-3}$ as on the feature instances. Tuned SG-const uses a constant step $\nu$ selected from the grid $\{10^{-3},10^{-2.5},\ldots,10^1\}$ with the tuning starts and selection rule of tuned SG-dyn. It selects $\nu=10^{-0.5}$ in all nine configurations. The balanced variant is the one described above.
+Here $d\in\{2,10,50\}$ and $\kappa\in\{0.3,1,3\}$ give nine configurations. The third function is pseudoconvex: it is an increasing differentiable transform, with positive derivative, of a convex quadratic. It is not convex, since its radial Hessian eigenvalue is $2\kappa(1-r^2)/(1+r^2)^2<0$ for $r=\|x-e_1\|>1$. The exact witness $x=-e_1/10$ has positive slacks $19/100$, $31/25$, and $\kappa\log(300/221)$. The standard start is $1.5\mathbf1$. The three evaluation starts and three tuning starts are drawn uniformly from $[0.8,1.8]^d$. For modulus sampling we use $500$ uniform points in $K$. SG-const uses the same step $\nu_k=10^{-3}$ as on the feature instances. Tuned SG-const uses a constant step $\nu$ selected from the grid $\{10^{-3},10^{-2.5},\ldots,10^1\}$ with the tuning starts and selection rule of tuned SG-dyn. It selects $\nu=10^{-0.5}$ in all nine configurations. The balanced variant is the one described above.
 
 \begin{table}[t]
 \centering\small
@@ -837,9 +838,6 @@ $s=1$ & $0\ (1000)$ & $0\ (1000)$\\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\paragraph*{Reproducibility.}
-The feature-selection results were saved with Python~3.11.7 and NumPy~1.26.4 on Windows, with one BLAS/OpenMP thread requested. The feature oracles use algebraically compressed quadratic forms. Checked differences from the original values and gradients are at most $1.82\times10^{-12}$ and $1.10\times10^{-11}$, respectively. The solver times reported for the feature instances refer to this compressed implementation. The accompanying package contains the uncompressed oracles. It reproduces the evaluation counts, while the reported solver times are those of the original compressed implementation. Tables~\ref{tab:synthetic-scale} and~\ref{tab:dtap-sweep} and the synthetic tuning costs were produced with Python~3.13.4 and NumPy~2.1.3 on Windows with the default number of BLAS threads. Their counts are deterministic, and their solver times are single measurements on that machine. With Python~3.13.4 and NumPy~2.1.3, the package also reproduces exactly every numerical entry of Tables~\ref{tab:datasets}--\ref{tab:wilcoxon} (Tables~\ref{tab:perf-summary} and~\ref{tab:wilcoxon} from unrounded scores) and of Table~\ref{tab:activation-tuning}, and the counts quoted in Sections~\ref{ssec:results} and~\ref{ssec:feasibility-audit}. The supplementary scripts, raw trajectories, tuning records, witnesses, source hashes and validation instructions accompany the results.
 
 \section{Conclusion}\label{sec:conclusion}
 DTAP solves normal-box nonlinear split feasibility problems with convex and pseudoconvex components by combining a residual-scaled convex step with a safeguarded pseudoconvex step. Under consistency and continuous differentiability, the whole sequence converges to a feasible point; no regularity modulus is an input, although the analysis uses bounds on a compact set containing the iterates. In the feature-selection application all constraints are convex, and test problems with a nonconvex pseudoconvex constraint exercise the pseudoconvex track. In the experiments, tuned subgradient methods can match or outperform DTAP, whose finite-budget performance depends on the starting point and the step scale. Rates for the full residual $J(x^k)$, beyond the convex-track bound of Remark~\ref{rem:rate}, and guarantees under error-bound conditions remain open.
