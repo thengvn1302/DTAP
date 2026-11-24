@@ -27,7 +27,7 @@
 
 \noindent We thank the Editor and both Reviewers for their careful and constructive reading. The comments have materially strengthened the paper, and in several places led us to remove overstated claims and to add new, more honest evidence. Below we respond to each point individually and indicate the corresponding change in the revised manuscript. \textbf{All added or modified text in the revised manuscript is typeset in \textcolor{red}{colored text}} so the changes are easy to locate. Section, equation, theorem, and table numbers below refer to the revised manuscript. In summary, the revision:
 \begin{itemize}[nosep]
-\item merges the former Introduction and Related work into a single, shorter Introduction and cuts the paper from $39$ to $24$ pages, rewriting it throughout in shorter sentences;
+\item merges the former Introduction and Related work into a single, shorter Introduction and cuts the paper from $39$ to $23$ pages, rewriting it throughout in shorter sentences;
 \item qualifies the ``constant-free'' claim (new Remark~3) and reframes the proportional weight as a heuristic residual-share allocation, with no claim of necessity or optimality (new Remark~2);
 \item makes the whole-sequence convergence argument explicit (rewritten Stage~3 of Theorem~2.14), clarifying that it needs only one feasible cluster point and Fej\'er monotonicity, not a unique limit;
 \item adds a solver diagnostic (new Sec.~3.4) reporting per-trajectory constraint activation, a tuned-modulus subgradient comparison with its tuning cost, and controlled instances with a genuinely nonconvex pseudoconvex constraint;
@@ -75,7 +75,7 @@
 \subsection*{Major issues}
 
 \begin{point}{M1. Sections~1 (Introduction) and~2 (Related work) should be reorganized and merged into Section~1, limited to about $4$ pages; the paper should be shortened (about $25$ pages) by removing redundant content and long sentences.}
-\response{Done. The Related work section (and its Table~1) has been removed and its essential content condensed into the Introduction \loc{Sec.~1}, which now recalls the $CQ$ method, self-adaptive and decomposition strategies, and the closest nonlinear antecedents (Li et al., Yen et al., Hu et al.) in a few short paragraphs and states three contributions instead of five. The Preliminaries were reduced to the facts actually used and merged into the opening of Section~2, without subsections; the separate subsections on the assumptions and on the per-iteration cost were removed; the feature-selection framework (former Section~5) is now a subsection of the experiments \loc{Sec.~3.1}; the sparse variant DTAP-S, the runtime comparison, the robustness/ablation section, and the ``Summary of findings'' were removed; the Conclusion is a single paragraph. The paper is now $24$ pages, down from $39$.}
+\response{Done. The Related work section (and its Table~1) has been removed and its essential content condensed into the Introduction \loc{Sec.~1}, which now recalls the $CQ$ method, self-adaptive and decomposition strategies, and the closest nonlinear antecedents (Li et al., Yen et al., Hu et al.) in a few short paragraphs and states three contributions instead of five. The Preliminaries were reduced to the facts actually used and merged into the opening of Section~2, without subsections; the separate subsections on the assumptions and on the per-iteration cost were removed; the feature-selection framework (former Section~5) is now a subsection of the experiments \loc{Sec.~3.1}; the sparse variant DTAP-S, the runtime comparison, the robustness/ablation section, and the ``Summary of findings'' were removed; the Conclusion is a single paragraph. The paper is now $23$ pages, down from $39$.}
 \end{point}
 
 \begin{point}{M2. The writing should be substantially improved: many sentences are ambiguous or too long. Describe the problem, algorithms, etc.\ in short sentences; polish each sentence; remove ``nonsense'' descriptions.}
@@ -133,7 +133,7 @@ m20 (p.~20, l.~35) --- expression $K\cap\bigcap_{i\in I^{\mathrm{cvx}}}$ is not 
 \end{longtable}}
 
 \begin{point}{General. Please consider the above comments and make the paper concise.}
-\response{We have followed every comment and shortened the paper from $39$ to $24$ pages (see M1 and M2).}
+\response{We have followed every comment and shortened the paper from $39$ to $23$ pages (see M1 and M2).}
 \end{point}
 
 % =====================================================================

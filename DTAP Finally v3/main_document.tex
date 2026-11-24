@@ -92,11 +92,7 @@ Replacing $\mathcal A$ by a nonlinear map $F=(F_1,\dots,F_m)$ gives the nonlinea
 \begin{equation}\label{eq:nsfp-intro}
 \text{find }x^\star\in K\quad\text{such that}\quad F(x^\star)\in Q,
 \end{equation}
-where $K\subseteq\R^n$ is nonempty, closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$ is a normal box, and each $F_i$ is differentiable and convex or pseudoconvex on $K$. We seek a point of the feasible set $\Omega=\{x\in K:F(x)\in Q\}$, not a minimizer of any $F_i$. Since pseudoconvex functions have convex sublevel sets, $\Omega$ is convex.
-Because $Q$ is a box, the $\ell_\infty$-distance from $F(x)$ to $Q$ has the closed form
-\[
-J(x)=d_\infty(F(x),Q)=\max_{1\le i\le m}(F_i(x)-b_i)^+.
-\]
+where $K\subseteq\R^n$ is nonempty, closed and convex, $Q=\prod_{i=1}^m(-\infty,b_i]$ is a normal box, and each $F_i$ is differentiable and convex or pseudoconvex on $K$. Pseudoconvex constraints arise, for example, as increasing transforms of convex functions, such as $\kappa\log(1+\norm{x-c}^2)$, which are pseudoconvex but not convex (Section~\ref{ssec:feasibility-audit}). We seek a point of the feasible set $\Omega=\{x\in K:F(x)\in Q\}$, not a minimizer of any $F_i$. Because $Q$ is a box, the $\ell_\infty$-distance from $F(x)$ to $Q$ is the max-type violation $\max_i(F_i(x)-b_i)^+$ (Section~\ref{ssec:model-stmt}).
 
 Li et al.~\citep{li2013nsfp} assume a convex aggregate proximity function, which componentwise pseudoconvexity does not ensure. Yen et al.~\citep{yen2019} use the same max-type violation measure and active-set device, but require quasilinear components, a class incomparable with ours. Hu et al.~\citep{hu2022quasi} treat quasiconvex inequalities, which contain our class, without using the gradient inequality of convex components.
 
@@ -114,7 +110,7 @@ Section~\ref{sec:convergence} presents \dtap{} and its convergence analysis. Sec
 
 \section{The DTAP algorithm and its convergence analysis}\label{sec:convergence}
 We first fix notation and recall the projection and generalized-convexity facts used below.
-Throughout, $H=\R^n$ is the Euclidean space with inner product $\inner{\cdot}{\cdot}$ and induced norm $\norm{\cdot}$. All convergence statements concern the norm topology. Bounded sequences have convergent subsequences. The standard projection and generalized convexity facts below can be found in~\citep{bauschke2011,mangasarian1994}.
+Throughout, $H=\R^n$ is the Euclidean space with inner product $\inner{\cdot}{\cdot}$ and induced norm $\norm{\cdot}$. All convergence statements refer to the norm topology, and since $H$ is finite-dimensional, bounded sequences have convergent subsequences. The standard projection and generalized convexity facts below can be found in~\citep{bauschke2011,mangasarian1994}.
 
 For a nonempty closed convex set $K\subseteq H$, the metric projection $P_K(x)$ is the unique minimizer of $\norm{y-x}$ over $y\in K$.
 \begin{proposition}\label{prop:proj-char}
@@ -185,7 +181,7 @@ $i\in I^{\cvx}$ and pseudoconvex on $K$ if $i\in I^{\ps}$.
 The open-neighbourhood formulation permits fractional functions whose denominators are positive on $K$. The algorithm evaluates these functions and their gradients only at points of $K$. Although some component functions may be nonconvex, the feasible set $\Omega$ is still convex. Indeed, differentiable pseudoconvex functions are quasiconvex on $K$, so all constraint sublevel sets in $K$ are convex.
 
 \subsection{The DTAP algorithm}\label{ssec:algorithm}
-The Dual-Track Adaptive Projection algorithm combines the two track-specific step sizes through the proportional weight $\mu_k$ and projects the combined update onto the base convex set $K$. Its parameters satisfy \textup{(P1)}~$\delta>0$, \textup{(P2)}~$\rho_{\cvx}\in(0,2)$, and \textup{(P3)}~$\{\gamma_k\}\subset(0,\infty)$ with $\sum_{k=0}^\infty\gamma_k^2<\infty$ and $\sum_{k=0}^\infty\gamma_k=\infty$. It is stated as Algorithm~\ref{alg:dtap}.
+The Dual-Track Adaptive Projection algorithm combines the two track-specific updates through the proportional weight $\mu_k$ and projects the combined update onto the base convex set $K$. Its parameters satisfy \textup{(P1)}~$\delta>0$, \textup{(P2)}~$\rho_{\cvx}\in(0,2)$, and \textup{(P3)}~$\{\gamma_k\}\subset(0,\infty)$ with $\sum_{k=0}^\infty\gamma_k^2<\infty$ and $\sum_{k=0}^\infty\gamma_k=\infty$. It is stated as Algorithm~\ref{alg:dtap}.
 \begin{example}\label{ex:gamma}
 The sequence $\gamma_k:=1/(k+1)$ satisfies (P3), since $\sum_{k\ge0}(k+1)^{-2}<\infty$ while $\sum_{k\ge0}(k+1)^{-1}=\infty$. More generally $\gamma_k=(k+c)^{-s}$ with $c>0$ and $s\in(1/2,1]$ qualifies. The experiments use $s=0.55$.
 \end{example}
@@ -234,8 +230,6 @@ d_k:=\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k,
 so $y^k=x^k-d_k$ and $x^{k+1}=P_K(x^k-d_k)$.
 
 \subsection{Auxiliary lemmas}\label{ssec:aux}
-The two tracks need different arguments. On the convex track, the gradient inequality bounds $\inner{\nabla F_i(x)}{x-x^\star}$ from below by the violation $v_i(x)$, which yields a decrease of $\norm{x^k-x^\star}^2$. On the pseudoconvex track, pseudoconvexity gives only the sign of this inner product. Combining the two tracks yields a single quasi-Fej\'er inequality, in which a suitable use of Young's inequality keeps the convex-track term negative. From it we show, by contradiction, that at least one cluster point is feasible, and then that the whole sequence converges strongly to it.
-
 Throughout, $\{x^k\}$ is the infinite sequence generated by Algorithm~\ref{alg:dtap} with the stopping test removed. As shown below (Lemma~\ref{lem:jcvx0} and Theorem~\ref{thm:strong}), $J(x^k)\to 0$. Hence, for any $\varepsilon>0$, there is a finite $k$ with $J(x^k)\le\varepsilon$, so the finite-stopping version terminates after finitely many steps with an $\varepsilon$-feasible point.
 
 We begin with two preparatory results used repeatedly below.
@@ -464,7 +458,7 @@ The iteration does not require prescribed operator norms, Lipschitz constants, o
 \end{remark}
 
 \begin{remark}\label{rem:delta-role}
-The parameter $\delta>0$ is not necessary for convergence. When $\delta=0$ one argues by subsequence: along $x^{k_l}\to\bar x\in C$, choose $j_l\in\argmax_{j\in I^{\ps}}v_j(x^{k_l})$; since $I^{\ps}$ is finite, extract $j_l\equiv j^\star$, and $v_{j^\star}(x^{k_l})=J^{\ps}(x^{k_l})\to J^{\ps}(\bar x)>0$, so $j^\star$ attains the maximal violation at $\bar x$ and the pseudoconvexity argument goes through. The role of $\delta>0$ is to simplify: a maximizer at $\bar x$ automatically lies in $K^{\ps}_{k_l}$ for large $l$, avoiding a `finitely many indices' extraction. Larger $\delta$ enlarges $K^{\cvx}_k$ and $K^{\ps}_k$, which may improve numerical stability when several $v_i(x^k)$ are nearly equal.
+The parameter $\delta>0$ is not necessary for convergence. When $\delta=0$ one argues by subsequence: along $x^{k_l}\to\bar x\in C$, choose $j_l\in\argmax_{j\in I^{\ps}}v_j(x^{k_l})$; since $I^{\ps}$ is finite, extract $j_l\equiv j^\star$, and $v_{j^\star}(x^{k_l})=J^{\ps}(x^{k_l})\to J^{\ps}(\bar x)>0$, so $j^\star$ attains the maximal violation at $\bar x$ and the pseudoconvexity argument goes through. With $\delta>0$, every maximizing index at $\bar x$ lies in $K^{\ps}_{k_l}$ for all large $l$, so no such extraction is needed.
 \end{remark}
 
 \begin{remark}\label{rem:rate}
@@ -496,9 +490,9 @@ Now $d_k=\eta^{\ps}_k g^{\ps}_k$ with $\norm{d_k}^2\le\gamma_k^2$, so~\eqref{eq:
 We first cast feature selection as a normal-box NSFP and describe the experimental setup. We then report predictive performance in Section~\ref{ssec:results} and the numerical solution of the feasibility systems in Section~\ref{ssec:feasibility-audit}. The latter adds Movement Libras and test problems with a nonconvex pseudoconvex constraint, and compares DTAP with tuned subgradient methods.
 
 \subsection{Problem setup}\label{sec:fs}
-We obtain a test problem for DTAP by casting feature selection as a normal-box NSFP. The constraints are built from two feature-quality criteria taken from prior work, the fractional redundancy--relevance criterion of Wang et al.~\citep{wang2021fractional} and the fuzzy-rough criterion of AFRSFCV~\citep{wang2026afrsfcv}. We first describe the two criteria, then assemble them into the feasibility problem and state the selection rule. The solvers are described in Section~\ref{sssec:baselines}.
+The constraints of the feature-selection NSFP are built from two feature-quality criteria taken from prior work, the fractional redundancy--relevance criterion of Wang et al.~\citep{wang2021fractional} and the fuzzy-rough criterion of AFRSFCV~\citep{wang2026afrsfcv}. We first describe the two criteria, then assemble them into the feasibility problem and state the selection rule.
 
-Let $x_1,\ldots,x_n$ be the training samples and $a_1,\ldots,a_p$ the features, collected in the data matrix $X\in\R^{n\times p}$ whose row $i$ is sample $x_i$, with class labels $y\in\{1,\ldots,r\}^n$. Here $n$ is the number of samples and $p$ the number of features. The feature weights belong to the compact convex simplex $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. All supervised quantities below are estimated from the training data.
+Let $x_1,\ldots,x_n$ be the training samples and $a_1,\ldots,a_p$ the features, collected in the data matrix $X\in\R^{n\times p}$ whose row $i$ is sample $x_i$, with class labels $y\in\{1,\ldots,r\}^n$. The feature weights belong to the compact convex simplex $K=\Delta_{p-1}=\{w\in\R^p:w\ge0,\ \mathbf1_p^{\top}w=1\}$. All supervised quantities below are estimated from the training data.
 
 \subsubsection{Fractional criterion}\label{ssec:wang}\label{sssec:wang-inputs}\label{sssec:nfscore}
 The fractional criterion scores a weight vector by its redundancy relative to its relevance. Redundancy is captured by the supervised similarity matrix $S\in\R^{p\times p}$, whose entry $s_{ij}$ grows with the class-relevant information shared by features $a_i$ and $a_j$. Its entries are
@@ -551,7 +545,7 @@ The AFRSFCV baseline~\citep{wang2026afrsfcv} minimizes
 &\quad+\frac{\lambda_1}{2}\|\mathbf1_n-Pw(\tau)\|^2+\frac{\lambda_2}{2}\|w(\tau)\|^2,
 \end{split}
 \end{equation}
-where $w_k(\tau)=e^{\tau_k}/\sum_{l=1}^{p}e^{\tau_l}$ ensures $w(\tau)\in K$. The three terms are the label-approximation error, the weight of misclassifying features per sample, and a Tikhonov term.
+where $w_k(\tau)=e^{\tau_k}/\sum_{l=1}^{p}e^{\tau_l}$ ensures $w(\tau)\in K$. The three terms are the label-approximation error, the total weight of the features that misclassify each sample, and a Tikhonov term.
 The solver that minimizes this loss is given in Section~\ref{sssec:baselines}.
 
 \subsubsection{Feasibility and feature selection}\label{ssec:reduction}\label{ssec:selection}
@@ -568,7 +562,7 @@ Here $F_1,F_2$ are the first two terms of~\eqref{eq:afrsfcvLoss}, without their 
 This formulation asks for simultaneous acceptability of the three criteria. It omits the Tikhonov term and does not preserve either source optimization problem or its minimizers.
 
 \begin{proposition}\label{prop:fs-reg}
-If $Q_R\succeq0$ and $\min_k\rho_k>0$, all three functions in~\eqref{eq:fsF1}--\eqref{eq:fsF3} are smooth and convex on an open convex neighbourhood of $K$. Consequently,~\eqref{eq:nsfp-fs} is an all-convex normal-box NSFP. Hence~\eqref{eq:nsfp-fs} satisfies (A1) and (A2) of Assumption~\ref{ass:standing}, with $U=U_\rho$, whenever $\Omega\ne\varnothing$.
+If $Q_R\succeq0$ and $\min_k\rho_k>0$, all three functions in~\eqref{eq:fsF1}--\eqref{eq:fsF3} are smooth and convex on an open convex neighbourhood of $K$. Consequently,~\eqref{eq:nsfp-fs} is an all-convex normal-box NSFP and, whenever $\Omega\ne\varnothing$, satisfies (A1) and (A2) of Assumption~\ref{ass:standing} with $U=U_\rho$.
 \end{proposition}
 \begin{proof}
 The first two functions are squared norms of affine maps. For $w\in U_\rho$ and any direction $h$, put $t=\rho^{\top}w$ and $a=\rho^{\top}h$. Direct differentiation gives
@@ -580,7 +574,7 @@ Thus $F_3$ is convex and smooth on the open half-space $U_\rho$. Since $\rho^{\t
 
 Proposition~\ref{prop:fs-reg} needs $\min_k\rho_k>0$. On all instances used here the smallest score is $4.77\times10^{-5}$, so the safeguard $\max\{\rho^\top w,10^{-15}\}$ in the implementation is never active and the implemented $F_3$ is~\eqref{eq:fsF3}.
 
-The thresholds are calibrated on the training data. Each $b_i$ is the $q_i$-th percentile of $F_i$ over $3\,000$ Dirichlet points and the $p$ vertices of $K$, where a fixed rule chooses $q_i$ from the sample size, the number of features and classes, and the class imbalance (supplementary metadata). All solvers share these thresholds. Calibrating each $b_i$ separately does not guarantee $\Omega\ne\varnothing$. Section~\ref{ssec:feasibility-audit} checks feasibility numerically. Prescribed thresholds would be used as given.
+The thresholds are calibrated on the training data. Each $b_i$ is the $q_i$-th percentile of $F_i$ over $3\,000$ Dirichlet points and the $p$ vertices of $K$, where a fixed rule chooses $q_i$ from the sample size, the number of features and classes, and the class imbalance (supplementary metadata). All solvers share these thresholds. Calibrating each $b_i$ separately does not guarantee $\Omega\ne\varnothing$. Section~\ref{ssec:feasibility-audit} checks feasibility numerically. Thresholds prescribed by an application are used as given.
 
 For every method, sort the computed weights as $w^\star_{(1)}\ge\cdots\ge w^\star_{(p)}$ and retain the first $s$ features, where
 \begin{equation}\label{eq:thetaRule}
@@ -597,7 +591,7 @@ The main classification study uses the eight UCI datasets~\citep{kelly2023uci} i
 
 \begin{table}[htbp]
 \centering
-\caption{Datasets used for the main classification comparison. The additional Movement Libras instance is used only in the solver diagnostic.}\label{tab:datasets}
+\caption{Datasets used for the main classification comparison.}\label{tab:datasets}
 \begin{tabular}{lrrrl}
 \toprule
 Dataset      & Samples $n$ & Features $p$ & Classes $r$ & Balance    \\
@@ -616,7 +610,7 @@ Pendigits    & $10\,992$   & $16$         & $10$        & Balanced   \\
 Each dataset is split once into a stratified $80/20$ training pool and test set. Within the pool we form stratified $N_f$-fold partitions for feature selection, with $N_f=10$, reduced to $7$ on Glass and $4$ on Yeast. Min--max scaling is fitted once on the full training pool, not within the folds, and is then applied to the test set.
 
 \subsubsection{Solvers}\label{sssec:baselines}
-The DTAP runs reported here start at the uniform weight vector and use $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, tolerance $10^{-6}$, and a budget of $1000$ iterations. They assign $F_1,F_2$ to the convex track and $F_3$ to the pseudoconvex track ($I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$), which is admissible since convex functions are pseudoconvex. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also admissible, and Theorem~\ref{thm:strong} applies to both. The shared cumulative threshold for feature selection is $\theta=0.9$.
+The DTAP runs reported here start at the uniform weight vector and use $\rho_{\cvx}=1.98$, $\delta=10^{-3}$, $\gamma_k=(k+0.5)^{-0.55}$, tolerance $10^{-6}$, and a budget of $1000$ iterations. They assign $F_1,F_2$ to the convex track and $F_3$ to the pseudoconvex track ($I^{\cvx}=\{1,2\}$, $I^{\ps}=\{3\}$), which is admissible since convex functions are pseudoconvex. The all-convex assignment $I^{\cvx}=\{1,2,3\}$ is also admissible, and Theorem~\ref{thm:strong} applies to both.
 
 We compare against four baseline solvers. N-Fscore and AFRSFCV optimize the fractional and fuzzy-rough criteria of Sections~\ref{sssec:nfscore} and~\ref{sssec:afrsfcv-model}, while SG-const and SG-dyn are subgradient methods for the feasibility problem.
 
@@ -651,9 +645,9 @@ The test set is never used to select features or to choose any parameter or thre
 \subsection{Classification results}\label{ssec:results}
 Tables~\ref{tab:nfeat}--\ref{tab:perf-summary} report selected-set size, stability, and predictive performance. DTAP retains $84.2\%$ of the features on average, including $33/36$ on Satimage and $49/57$ on Spambase. Its mean stability is $0.786$, compared with N-Fscore's $0.822$. Thus DTAP reduces the number of features moderately. N-Fscore selects more stable sets, and AFRSFCV much smaller ones on several datasets, with lower mean accuracy under the fixed configuration.
 
-DTAP's mean accuracy is within $0.44$ percentage points of the full-feature reference for both classifiers. It exceeds N-Fscore and AFRSFCV by $3.12$ and $4.83$ points on SVM accuracy, while retaining more features. These differences reflect a trade-off between subset size and predictive accuracy, since the methods select subsets of different sizes. Both SG variants have exactly the same voted masks as DTAP on seven datasets. Spambase is the exception, with $48$ versus $49$ features. SG-dyn used the full 1000-iteration budget in 6/7 selection folds on Glass, 7/10 on Diabetes and 10/10 on Abalone, and SG-const in 1/10 on Abalone (DTAP in none). The voted weights of both SG variants are the best iterates found within the budget. The SG results on Spambase are given below Table~\ref{tab:acc}, and Table~\ref{tab:perf-summary} includes all five methods. Fold-wise stability can differ even when the final voted mask is identical.
+DTAP's mean accuracy is within $0.44$ percentage points of the full-feature reference for both classifiers. It exceeds N-Fscore and AFRSFCV by $3.12$ and $4.83$ points on SVM accuracy while retaining more features, so these differences reflect a trade-off between subset size and predictive accuracy. Both SG variants have exactly the same voted masks as DTAP on seven datasets. Spambase is the exception, with $48$ versus $49$ features. Their fold-wise stability can still differ, as on Segmentation ($0.800$ for DTAP versus $0.888$ for both SG variants). SG-dyn used the full 1000-iteration budget in 6/7 selection folds on Glass, 7/10 on Diabetes and 10/10 on Abalone, and SG-const in 1/10 on Abalone (DTAP in none). The voted weights of both SG variants are the best iterates found within the budget. The SG results on Spambase are given below Table~\ref{tab:acc}, and Table~\ref{tab:perf-summary} includes all five methods.
 
-Table~\ref{tab:wilcoxon} reports the signed-rank tests. After Holm adjustment, no pairwise comparison is significant at the $0.05$ level. The SVM comparisons with the two base models have adjusted $p$-values between $0.0625$ and $0.0938$. The asymptotic Friedman tests reject equality of the five methods for every metric. All DTAP--SG $p$-values equal $1$, because the voted masks coincide on seven of the eight datasets.
+Table~\ref{tab:wilcoxon} reports the signed-rank tests. After Holm adjustment, no pairwise comparison is significant at the $0.05$ level. The SVM comparisons with the two base models have adjusted $p$-values between $0.0625$ and $0.0938$. The asymptotic Friedman tests reject equality of the five methods for every metric. All DTAP--SG $p$-values equal $1$.
 
 \begin{table}[htbp]
 \centering\small\setlength{\tabcolsep}{4pt}
@@ -771,7 +765,7 @@ Movement Libras & 637 & 637 & 62 & $1000^\dagger$ & 144 & $0/637$\\
 \end{tabular}
 \end{table}
 
-Whenever $F_3(w^k)\le b_3$ along a run, the pseudoconvex track is empty, $\mu_k=1$ and DTAP coincides step by step with the all-convex comparator. On the eight instances with zero $F_3$ activity, the DTAP and AC columns are therefore identical. On Abalone, $F_3$ is violated only at the uniform start ($1/48$), where $J^{\ps}_0\approx1.56\times10^{-3}$ is negligible against $J^{\cvx}_0\approx366.3$, so $1-\mu_0\approx4.27\times10^{-6}$. Along the two trajectories, $|J_{\rm DTAP}-J_{\rm AC}|\le3.18\times10^{-5}\,J_{\rm AC}$ at every evaluated point, and both runs stop after $48$ evaluated points. The two assignments differ only on the random starts, where they succeed in $26/36$ and $36/36$ runs.
+Whenever $F_3(w^k)\le b_3$ along a run, the pseudoconvex track is empty, $\mu_k=1$ and DTAP coincides step by step with the all-convex comparator. On the eight instances with zero $F_3$ activity, the DTAP and AC columns are therefore identical. On Abalone, $F_3$ is violated only at the uniform start ($1/48$), where the pseudoconvex track receives the weight $1-\mu_0\approx4.27\times10^{-6}$, and both runs stop after $48$ evaluated points. The two assignments differ only on the random starts, where they succeed in $26/36$ and $36/36$ runs.
 
 Tuning raises SG-dyn's standard-start success count from $5/9$ to $9/9$. Tuned SG-dyn can outperform DTAP, for example on Abalone ($3$ versus $48$ evaluated points), and SG-const is faster on Movement Libras ($62$ versus $637$). Across all four starts on all nine feature instances, the success counts are $26/36$ for DTAP, $36/36$ for the all-convex comparator, $33/36$ for SG-const, $15/36$ for sampled SG-dyn, and $28/36$ for tuned SG-dyn. A balanced DTAP variant, which assigns equal weights when both tracks are violated and full weight to the only violated track otherwise, also obtains $26/36$. On these instances, the proportional weight thus performs like the balanced one, and the outcome depends on the starting point.
 
@@ -812,7 +806,7 @@ DTAP encounters a third-constraint violation in every one of these $36$ runs. It
 
 With $\nu_k=10^{-3}$, SG-const moves at most $999\times10^{-3}=0.999$ from its start within the budget, whereas every start lies at distance at least $1.11$ from $\Omega$. Its zero counts are therefore fixed by the step size and the budget. For $\kappa\le1$ the convex track is satisfied from the second evaluated point on, so DTAP then follows the single-track iteration of Corollary~\ref{cor:ps}. Both tracks are violated simultaneously at only $32$ of these $12\,877$ evaluated points.
 
-All DTAP failures occur at $\kappa=0.3$. Changing $\kappa$ leaves the feasible set unchanged, but $v_3$ and $\nabla F_3$ both scale with $\kappa$, so when $\|g^{\ps}_k\|\le1$ the pseudoconvex step $(1-\mu_k)\gamma_k g^{\ps}_k$ scales with $\gamma_k\kappa^2$. Table~\ref{tab:dtap-sweep} changes one DTAP parameter at a time for $\kappa\in\{0.3,1\}$. With $\gamma_k=a(k+0.5)^{-0.55}$, $a=10$ and $a=100$ give $12/12$ successes at $\kappa=0.3$. The choice $\rho_{\cvx}=1$ gives $4/12$, all with $d=2$, and $\delta=10^{-1}$ reproduces the baseline iterates exactly (Remark~\ref{rem:delta-role}). The faster-decaying steps $s=0.75$ and $s=1$ give no success at $\kappa=0.3$, and $s=1$ also fails in all $12$ runs at $\kappa=1$. The failures at $\kappa=0.3$ therefore point to a diminishing step that is too small for this constraint scale. On~\eqref{eq:logball-test}, $\delta=10^{-1}$ and $\delta=10^{-3}$ give identical iterates because the pseudoconvex track has a single index, at every start either only $F_1$ is violated or $v_1-v_2\ge4.79$, and the convex track is satisfied from the second evaluated point on. The $\delta$ row of Table~\ref{tab:dtap-sweep} confirms this identity. The synthetic tuning searches consumed $188\,295$ optimization evaluations and $10.98$ seconds of solver time for SG-dyn, and $147\,331$ evaluations and $8.27$ seconds for SG-const, with the same exclusions as above.
+All DTAP failures occur at $\kappa=0.3$. Changing $\kappa$ leaves the feasible set unchanged, but $v_3$ and $\nabla F_3$ both scale with $\kappa$, so when $\|g^{\ps}_k\|\le1$ the pseudoconvex step $(1-\mu_k)\gamma_k g^{\ps}_k$ scales with $\gamma_k\kappa^2$. Table~\ref{tab:dtap-sweep} changes one DTAP parameter at a time for $\kappa\in\{0.3,1\}$. With $\gamma_k=a(k+0.5)^{-0.55}$, $a=10$ and $a=100$ give $12/12$ successes at $\kappa=0.3$. The choice $\rho_{\cvx}=1$ gives $4/12$, all with $d=2$. The faster-decaying steps $s=0.75$ and $s=1$ give no success at $\kappa=0.3$, and $s=1$ also fails in all $12$ runs at $\kappa=1$. The failures at $\kappa=0.3$ therefore point to a diminishing step that is too small for this constraint scale. On~\eqref{eq:logball-test}, $\delta=10^{-1}$ and $\delta=10^{-3}$ give identical iterates because the pseudoconvex track has a single index, at every start either only $F_1$ is violated or $v_1-v_2\ge4.79$, and the convex track is satisfied from the second evaluated point on. The $\delta$ row of Table~\ref{tab:dtap-sweep} confirms this identity (see also Remark~\ref{rem:delta-role}). The synthetic tuning searches consumed $188\,295$ optimization evaluations and $10.98$ seconds of solver time for SG-dyn, and $147\,331$ evaluations and $8.27$ seconds for SG-const, with the same exclusions as above.
 
 \begin{table}[t]
 \centering\small
