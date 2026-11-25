@@ -130,7 +130,7 @@ f(y)<f(x)\quad\Longrightarrow\quad\inner{\nabla f(x)}{y-x}<0.
 Every differentiable convex function is pseudoconvex. Pseudoconvex functions have convex sublevel sets, although the functions themselves need not be convex.
 
 \subsection{Problem statement and Tchebyshev scalarization}\label{ssec:model-stmt}
-Let $K\subseteq H$ be nonempty closed convex, and let $U\subseteq H$ be an open neighbourhood of $K$. Fix an integer $m\ge1$, let $F=(F_1,\dots,F_m):U\to\R^m$, let $b=(b_1,\dots,b_m)\in\R^m$, and set the normal box $Q:=(-\infty,b_1]\times\cdots\times(-\infty,b_m]$. We study the instance of~\eqref{eq:nsfp-intro}
+Let $K\subseteq H$ be nonempty closed convex. Fix an integer $m\ge1$, let $F=(F_1,\dots,F_m):H\to\R^m$, let $b=(b_1,\dots,b_m)\in\R^m$, and set the normal box $Q:=(-\infty,b_1]\times\cdots\times(-\infty,b_m]$. We study the instance of~\eqref{eq:nsfp-intro}
 \begin{equation}\label{eq:nsfp-box}
 \text{find } x^\star\in\Omega,\qquad
 \Omega:=\bigl\{x\in K: F_i(x)\le b_i,\ i=1,\dots,m\bigr\},
@@ -173,12 +173,12 @@ The vectors $g^{\cvx}(x),g^{\ps}(x)$ are the two search directions, and $\Phi^{\
 We assume the following about the problem:
 \begin{itemize}[leftmargin=2.4em,itemsep=2pt]
 \item[\textup{(A1)}] \textup{(a)} $\Omega\ne\emptyset$ (consistency). \textup{(b)} $I=\{1,\dots,m\}$
-is partitioned as $I=I^{\cvx}\cup I^{\ps}$; each $F_i:U\to\R$ is convex on $K$ if
+is partitioned as $I=I^{\cvx}\cup I^{\ps}$; each $F_i:H\to\R$ is convex on $K$ if
 $i\in I^{\cvx}$ and pseudoconvex on $K$ if $i\in I^{\ps}$.
-\item[\textup{(A2)}] Each $F_i:U\to\R$ is continuously differentiable on $U$.
+\item[\textup{(A2)}] Each $F_i:H\to\R$ is continuously differentiable on $H$.
 \end{itemize}
 \end{assumption}
-The open-neighbourhood formulation permits fractional functions whose denominators are positive on $K$. The algorithm evaluates these functions and their gradients only at points of $K$. Although some component functions may be nonconvex, the feasible set $\Omega$ is still convex. Indeed, differentiable pseudoconvex functions are quasiconvex on $K$, so all constraint sublevel sets in $K$ are convex.
+Although some component functions may be nonconvex, the feasible set $\Omega$ is still convex. Indeed, differentiable pseudoconvex functions are quasiconvex on $K$, so all constraint sublevel sets in $K$ are convex.
 
 \subsection{The DTAP algorithm}\label{ssec:algorithm}
 The Dual-Track Adaptive Projection algorithm combines the two track-specific updates through the proportional weight $\mu_k$ and projects the combined update onto the base convex set $K$. Its parameters satisfy \textup{(P1)}~$\delta>0$, \textup{(P2)}~$\rho_{\cvx}\in(0,2)$, and \textup{(P3)}~$\{\gamma_k\}\subset(0,\infty)$ with $\sum_{k=0}^\infty\gamma_k^2<\infty$ and $\sum_{k=0}^\infty\gamma_k=\infty$. It is stated as Algorithm~\ref{alg:dtap}.
@@ -197,7 +197,7 @@ split $I^{\cvx}\cup I^{\ps}$.\\
 sequence $\{\gamma_k\}$ satisfying (P3).\\
 \textbf{Initialization:} choose $x^0\in K$; set $k\leftarrow 0$.
 
-\algstep{Step 1 (per-track quantities).} If $J(x^k)\le\varepsilon$, stop and return $x^k$; otherwise:
+\algstep{Step 1 (per-track quantities).}
 \begin{itemize}[leftmargin=1.6em,itemsep=1pt,topsep=2pt]
 \item[(1a)] Compute $v_i(x^k)$ for all $i$, and $J^{\cvx}_k=\max_{i\in I^{\cvx}}v_i(x^k)$,
 $J^{\ps}_k=\max_{j\in I^{\ps}}v_j(x^k)$ (each $0$ if its track is empty).
@@ -218,7 +218,9 @@ $J^{\cvx}_k+J^{\ps}_k>0$, and $\mu_k=1/2$ otherwise.
 \item[(1f)] Combine the two directions:
 $\displaystyle y^k=x^k-\bigl[\mu_k\eta^{\cvx}_k g^{\cvx}_k+(1-\mu_k)\eta^{\ps}_k g^{\ps}_k\bigr].$
 \end{itemize}
-\algstep{Step 2 (projection).}\quad $x^{k+1}=P_K(y^k)$; set $k\leftarrow k+1$ and go to Step~1.
+\algstep{Step 2 (projection).}\quad $x^{k+1}=P_K(y^k)$.
+
+\algstep{Step 3 (stopping).}\quad If $J(x^k)\le\varepsilon$, stop and return $x^k$; otherwise set $k\leftarrow k+1$ and go to Step~1.
 \end{algorithm}
 
 Each \dtap{} iteration evaluates the componentwise violations $v_i(x^k)$ and the active-set gradients $\{\nabla F_i(x^k):i\in K^{\cvx}_k\cup K^{\ps}_k\}$, forms the two search directions $g^{\cvx}_k,g^{\ps}_k$ as weighted sums of these gradients, computes the step sizes, and performs one projection onto $K$. It uses neither an operator-norm estimate nor a line search. The cost is dominated by the constraint evaluations and the projection. Remark~\ref{rem:fs-cost} gives this cost for the feature-selection instance.
@@ -279,7 +281,7 @@ If $v_j(x)=0$ both sides vanish. If $v_j(x)>0$ then $F_j(x)>b_j\ge F_j(x^\star)$
 Finally, two compactness-based norm bounds on the search directions.
 
 \begin{lemma}\label{lem:bound-cvx}
-Assume $I^{\cvx}\ne\emptyset$ and let $B\subset U$ be compact. With $L_B:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}$ (finite by (A2)), for every $x\in B$,
+Assume $I^{\cvx}\ne\emptyset$ and let $B\subset H$ be compact. With $L_B:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}$ (finite by (A2)), for every $x\in B$,
 \[
 \norm{g^{\cvx}(x)}^2\le 2\,\abs{I^{\cvx}}\,L_B^2\,\Phi^{\cvx}(x).
 \]
@@ -294,7 +296,7 @@ Since $\sum_{i\in K'}v_i(x)^2=2\Phi^{\cvx}(x)$ and $\sum_{i\in K'}\norm{\nabla F
 \end{proof}
 
 \begin{lemma}\label{lem:bound-ps}
-Assume $I^{\ps}\ne\emptyset$ and let $B\subset U$ be compact. With $L'_B:=\max_{j\in I^{\ps}}\sup_{x\in B}\norm{\nabla F_j(x)}$ and $V_B:=\max_{j\in I^{\ps}}\sup_{x\in B}v_j(x)$ (both finite by (A2)), for every $x\in B$,
+Assume $I^{\ps}\ne\emptyset$ and let $B\subset H$ be compact. With $L'_B:=\max_{j\in I^{\ps}}\sup_{x\in B}\norm{\nabla F_j(x)}$ and $V_B:=\max_{j\in I^{\ps}}\sup_{x\in B}v_j(x)$ (both finite by (A2)), for every $x\in B$,
 \[
 \norm{g^{\ps}(x)}\le\abs{I^{\ps}}\,V_B\,L'_B .
 \]
@@ -364,7 +366,7 @@ The right side is bounded uniformly in $N$; letting $N\to\infty$ and using $c_0>
 $\displaystyle\lim_{k\to\infty}J^{\cvx}_k=0$.
 \end{lemma}
 \begin{proof}
-If $I^{\cvx}=\emptyset$ then $J^{\cvx}_k=0$ for all $k$. Assume $I^{\cvx}\ne\emptyset$, fix $x^\star\in\Omega$, and put $B:=\overline{\conv}\{x^k:k\ge0\}$, compact by Lemma~\ref{lem:bounded} and contained in $K\subset U$. By (A2) and compactness,
+If $I^{\cvx}=\emptyset$ then $J^{\cvx}_k=0$ for all $k$. Assume $I^{\cvx}\ne\emptyset$, fix $x^\star\in\Omega$, and put $B:=\overline{\conv}\{x^k:k\ge0\}$, compact by Lemma~\ref{lem:bounded}. By (A2) and compactness,
 \[
 L:=\max_{i\in I^{\cvx}}\sup_{x\in B}\norm{\nabla F_i(x)}<\infty,\qquad
 V:=\max_{i\in I}\sup_{x\in B}\abs{F_i(x)-b_i}<\infty.
@@ -462,7 +464,7 @@ The parameter $\delta>0$ is not necessary for convergence. When $\delta=0$ one a
 \end{remark}
 
 \begin{remark}\label{rem:rate}
-From~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, whence $\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. This bounds the \emph{best} convex-track violation over the first $N$ iterates. It is not a last-iterate bound, a rate for the full residual $J(x^k)$, or a rate for the distance to a feasible point. For these latter quantities, under (A1), (A2) and (P1)--(P3) alone we assert only qualitative convergence.
+From~\eqref{eq:p12}, $\sum_k(J^{\cvx}_k)^3<\infty$, whence $\min_{0\le k<N}J^{\cvx}_k=O(N^{-1/3})$. This bounds the \emph{best} convex-track violation over the first $N$ iterates, not $J^{\cvx}_N$ itself; under (A1), (A2) and (P1)--(P3) alone we assert only qualitative convergence.
 \end{remark}
 
 When only one track is present, \dtap{} and its analysis simplify. Theorem~\ref{thm:strong} then yields the following two corollaries.
@@ -562,7 +564,7 @@ Here $F_1,F_2$ are the first two terms of~\eqref{eq:afrsfcvLoss}, without their 
 This formulation asks for simultaneous acceptability of the three criteria. It omits the Tikhonov term and does not preserve either source optimization problem or its minimizers.
 
 \begin{proposition}\label{prop:fs-reg}
-If $Q_R\succeq0$ and $\min_k\rho_k>0$, all three functions in~\eqref{eq:fsF1}--\eqref{eq:fsF3} are smooth and convex on an open convex neighbourhood of $K$. Consequently,~\eqref{eq:nsfp-fs} is an all-convex normal-box NSFP and, whenever $\Omega\ne\varnothing$, satisfies (A1) and (A2) of Assumption~\ref{ass:standing} with $U=U_\rho$.
+If $Q_R\succeq0$ and $\min_k\rho_k>0$, all three functions in~\eqref{eq:fsF1}--\eqref{eq:fsF3} are smooth and convex on an open convex neighbourhood of $K$. Consequently,~\eqref{eq:nsfp-fs} is an all-convex normal-box NSFP and, whenever $\Omega\ne\varnothing$, satisfies (A1) and (A2) of Assumption~\ref{ass:standing}.
 \end{proposition}
 \begin{proof}
 The first two functions are squared norms of affine maps. For $w\in U_\rho$ and any direction $h$, put $t=\rho^{\top}w$ and $a=\rho^{\top}h$. Direct differentiation gives
@@ -572,7 +574,7 @@ D^2F_3(w)[h,h]=\frac2t\left(h-\frac atw\right)^{\!\top}Q_R\left(h-\frac atw\righ
 Thus $F_3$ is convex and smooth on the open half-space $U_\rho$. Since $\rho^{\top}w\ge\min_k\rho_k>0$ for $w\in K$, this half-space contains $K$.
 \end{proof}
 
-Proposition~\ref{prop:fs-reg} needs $\min_k\rho_k>0$. On all instances used here the smallest score is $4.77\times10^{-5}$, so the safeguard $\max\{\rho^\top w,10^{-15}\}$ in the implementation is never active and the implemented $F_3$ is~\eqref{eq:fsF3}.
+Proposition~\ref{prop:fs-reg} needs $\min_k\rho_k>0$. On all instances used here the smallest score is $4.77\times10^{-5}$, so the safeguard $\max\{\rho^\top w,10^{-15}\}$ in the implementation is never active and the implemented $F_3$ is~\eqref{eq:fsF3}. Although $F_3$ is defined only on the half-space $U_\rho$, we have $K\subset U_\rho$ and every DTAP iterate remains in $K$, so $F_3$ and $\nabla F_3$ are well defined along the sequence; since the analysis of Section~\ref{sec:convergence} evaluates the constraints only on $K$, it applies to~\eqref{eq:nsfp-fs}.
 
 The thresholds are calibrated on the training data. Each $b_i$ is the $q_i$-th percentile of $F_i$ over $3\,000$ Dirichlet points and the $p$ vertices of $K$, where a fixed rule chooses $q_i$ from the sample size, the number of features and classes, and the class imbalance (supplementary metadata). All solvers share these thresholds. Calibrating each $b_i$ separately does not guarantee $\Omega\ne\varnothing$. Section~\ref{ssec:feasibility-audit} checks feasibility numerically. Thresholds prescribed by an application are used as given.
 

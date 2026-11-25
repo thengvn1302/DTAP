@@ -158,7 +158,7 @@ $F_3(w^k)-b_3>10^{-6}$ dọc theo mọi quỹ đạo. Ràng buộc thứ ba th�
 cơ chế hai nhánh không cần thiết ở đó, và các bài toán chọn đặc trưng này chỉ kiểm tra một lớp con lồi. Thật vậy, Mệnh đề~3.1 mới chứng minh rằng
 tiêu chí phân thức $F_3=w^{\top}Q_Rw/\rho^{\top}w$ là \emph{lồi} trên một lân cận
 của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$, nên mô hình đặc trưng là
-một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Để kích hoạt bối cảnh hỗn hợp, chúng tôi bổ sung các bài toán
+một NSFP với hộp chuẩn mà mọi ràng buộc đều lồi. Trên mọi bài toán, điểm Fisher nhỏ nhất là $4.77\times10^{-5}>0$, nên giả thiết $\min_k\rho_k>0$ của Mệnh đề~3.1 được thỏa mãn và $F_3$ được cài đặt (với ngưỡng bảo vệ $\max\{\rho^{\top}w,10^{-15}\}$ không bao giờ có tác dụng) trùng với $F_3$ đã nêu. Để kích hoạt bối cảnh hỗn hợp, chúng tôi bổ sung các bài toán
 có kiểm soát với một ràng buộc giả lồi được chứng minh là không lồi,
 $F_3(x)=\kappa\log(1+\lVert x-e_1\rVert^2)$ \loc{Công thức~(45), Mục~3.4}; ở đó
 nhánh giả lồi hoạt động trong cả $36$ lần chạy (mức hoạt động gộp $12\,835/12\,877$ điểm
@@ -181,7 +181,7 @@ Holm, rằng kết quả phân loại phản ánh sự đánh đổi giữa kíc
 ưu thế, và, trong phần Kết luận, rằng ``các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc tốt hơn
 DTAP'' \en{tuned subgradient methods can match or outperform
 DTAP}. Ưu điểm được báo cáo của DTAP được thu hẹp lại ở chỗ không có mô-đun nào phải ước lượng hay
-tinh chỉnh như một đầu vào của phép lặp.}
+tinh chỉnh như một đầu vào của phép lặp. Chúng tôi cũng tính lại chỉ số ổn định của tập đặc trưng được chọn với hệ số chuẩn hóa phương sai không chệch $N_f/(N_f-1)$, và tính lại AUC của SVM cùng các giá trị $p$ (nay báo cáo cả giá trị gốc và sau hiệu chỉnh Holm, với SG-const và SG-dyn được thêm thành cột); độ chính xác và mọi kết quả $5$-NN không đổi.}
 \end{point}
 
 % =====================================================================
@@ -308,48 +308,6 @@ m20 (tr.~20, d.~35): biểu thức $K\cap\bigcap_{i\in I^{\mathrm{cvx}}}$ không
 \response{Chúng tôi đã làm theo mọi ý kiến và rút bài từ $39$ xuống $23$ trang
 (xem M1 và M2).}
 \end{point}
-
-% =====================================================================
-\section*{Các thay đổi khác do tác giả tự thực hiện}
-
-\noindent Trong khi sửa bài, chúng tôi còn thực hiện các thay đổi sau, không do
-Reviewer yêu cầu, được liệt kê để đầy đủ và minh bạch.
-\begin{enumerate}[leftmargin=1.6em,itemsep=3pt]
-\item \textbf{Tính lồi của tiêu chí phân thức.} Bản nộp ban đầu gọi
-  $F_3(w)=w^{\top}Q_Rw/\rho^{\top}w$ là giả lồi. Nay chúng tôi chứng minh nó \emph{lồi} trên một
-  lân cận mở của đơn hình khi $Q_R\succeq0$ và $\min_k\rho_k>0$
-  (Mệnh đề~3.1), nên bài toán chọn đặc trưng là một NSFP mà mọi ràng buộc đều lồi. Cách
-  gán $F_3$ vào nhánh giả lồi dùng trong thực nghiệm vẫn hợp lệ
-  (lồi $\Rightarrow$ giả lồi), và cách gán toàn lồi được báo cáo như một phương án
-  so sánh.
-\item \textbf{Miền xác định của các hàm thành phần.} Các hàm nay được định nghĩa trên một lân cận
-  mở $U$ của $K$, và (A2) đòi khả vi liên tục trên $U$; điều này
-  bao gồm các hàm phân thức có mẫu số dương trên $K$. Một đoạn ngắn sau
-  Giả thiết~1 giải thích điều này và lý do $\Omega$ lồi.
-\item \textbf{Phạm vi của phân tích.} Ngoài Nhận xét~2 và~3 (xem R1.1, R1.2), Nhận xét~5
-  nay nói chính xác rằng cận $O(N^{-1/3})$ chỉ liên quan đến mức vi phạm \emph{tốt nhất} của nhánh lồi. Đó không phải cận cho điểm lặp cuối, cũng không phải tốc độ cho toàn bộ phần dư hay cho khoảng cách tới tập chấp nhận được.
-\item \textbf{Quy trình thực nghiệm.} Mục~3.2 và~3.2.2 nay nêu chính xác quy trình:
-  chuẩn hóa min--max được khớp một lần trên tập huấn luyện, quy tắc bỏ phiếu và các bộ phân lớp
-  cuối cùng được nêu cụ thể, và việc đánh giá là
-  khám phá chứ không phải kiểm định lồng. Chỉ số ổn định Nogueira (với hệ số hiệu chỉnh phương sai đúng
-  $N_f/(N_f-1)$) và quy trình thống kê (kiểm định hạng có dấu chính xác,
-  hiệu chỉnh Holm, kiểm định Friedman) được nêu tường minh.
-\item \textbf{Các giá trị được tính lại.} Các giá trị độ ổn định, AUC của SVM, và
-  giá trị $p$ đã được tính lại và nay gồm cả giá trị $p$ gốc và sau hiệu chỉnh Holm; các cột cho
-  SG-const và SG-dyn đã được thêm vào. Độ chính xác và mọi kết quả $5$-NN không đổi.
-\item \textbf{Các khẳng định được sửa lại.} Các phát biểu về ưu thế (độ chính xác, tốc độ, độ bền)
-  đã được bỏ hoặc giới hạn lại: không phép so sánh từng cặp nào có ý nghĩa sau hiệu chỉnh Holm,
-  kết quả cho thấy sự đánh đổi giữa kích thước và khả năng dự đoán, và các phương pháp dưới gradient đã tinh chỉnh có thể bằng hoặc
-  tốt hơn DTAP.
-\item \textbf{Trình bày thuật toán.} Phép kiểm tra dừng của Thuật toán~1 nay được
-  đặt ở đầu Bước~1 thay vì ở một Bước~3 riêng; các điểm lặp và
-  điểm được trả về không đổi.
-\item \textbf{Chặn an toàn ở mẫu số.} Mục~3.1.3 nay báo cáo rằng điểm Fisher
-  nhỏ nhất trên mọi bài toán là $4.77\times10^{-5}$, nên ngưỡng bảo vệ $\max\{\rho^{\top}w,10^{-15}\}$
-  trong mã cài đặt không bao giờ có tác dụng và $F_3$ được cài đặt đúng là~(41).
-\item \textbf{Các tuyên bố.} Tuyên bố về việc dùng AI tạo sinh và tuyên bố về tính sẵn có của
-  dữ liệu đã được cập nhật, và một gói tái lập nay được cung cấp kèm bài.
-\end{enumerate}
 
 \bigskip
 \noindent Chúng tôi tin rằng các sửa đổi này đã trả lời đầy đủ ý kiến của các Reviewer và Editor
